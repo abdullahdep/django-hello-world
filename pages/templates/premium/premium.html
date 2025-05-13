@@ -1,0 +1,249 @@
+{% extends 'layouts/layouts.html' %}
+
+
+{% load static %}
+
+{% block title %}Safar Academy - Premium{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    {% if user.is_authenticated and user.profile.is_premium %}
+        <!-- Already Premium Member -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <i data-lucide="check-circle" class="h-16 w-16 text-success mx-auto mb-6"></i>
+            <h1 class="text-3xl font-bold mb-4">You're already a Premium member!</h1>
+            <p class="text-xl text-muted-foreground mb-8">
+                Thank you for your support. You have full access to all premium features.
+            </p>
+            <a href="{% url 'dashboard' %}" class="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+                Go to Dashboard
+            </a>
+        </div>
+    {% elif success %}
+        <!-- Success Message -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <i data-lucide="check-circle" class="h-16 w-16 text-success mx-auto mb-6"></i>
+            <h1 class="text-3xl font-bold mb-4">Upgrade Successful!</h1>
+            <p class="text-xl text-muted-foreground mb-8">
+                Thank you for upgrading to Premium. You now have full access to all premium features.
+            </p>
+            <p class="text-muted-foreground">Redirecting to dashboard...</p>
+        </div>
+    {% else %}
+        <!-- Premium Upgrade Page -->
+        <div class="text-center mb-16 animate-fade-in">
+            <div class="flex justify-center mb-4">
+                <div class="h-16 w-16 bg-secondary/20 rounded-full flex items-center justify-center">
+                    <i data-lucide="crown" class="h-8 w-8 text-secondary"></i>
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold mb-4">Upgrade to Premium</h1>
+            <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Get unlimited access to all premium content and features to boost your exam preparation.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <div>
+                <h2 class="text-2xl font-semibold mb-6 flex items-center">
+                    <i data-lucide="star" class="h-6 w-6 text-secondary mr-2"></i>
+                    Premium Features
+                </h2>
+                
+                <ul class="space-y-4">
+                    <li class="flex">
+                        <div class="mr-4 mt-1">
+                            <div class="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i data-lucide="check" class="h-4 w-4 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Complete Access to All Content</h3>
+                            <p class="text-muted-foreground">
+                                Unlock all subjects, chapters, and topics without any restrictions.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="mr-4 mt-1">
+                            <div class="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i data-lucide="check" class="h-4 w-4 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Detailed Explanations</h3>
+                            <p class="text-muted-foreground">
+                                Get in-depth explanations for all MCQs to understand concepts better.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="mr-4 mt-1">
+                            <div class="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i data-lucide="check" class="h-4 w-4 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">AI-Powered Feedback</h3>
+                            <p class="text-muted-foreground">
+                                Receive instant AI feedback on your short answer submissions.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="mr-4 mt-1">
+                            <div class="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i data-lucide="check" class="h-4 w-4 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Advanced Practice Tests</h3>
+                            <p class="text-muted-foreground">
+                                Access to longer, more comprehensive tests with varied question types.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="flex">
+                        <div class="mr-4 mt-1">
+                            <div class="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i data-lucide="check" class="h-4 w-4 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Progress Analysis</h3>
+                            <p class="text-muted-foreground">
+                                Get detailed insights into your performance with recommendations for improvement.
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="bg-card rounded-lg border border-border overflow-hidden">
+                <div class="p-8">
+                    <h2 class="text-2xl font-semibold mb-2">Premium Membership</h2>
+                    <p class="text-muted-foreground mb-6">
+                        Unlock your full potential with Safar Academy Premium
+                    </p>
+                    
+                    <div class="mb-6">
+                        <p class="text-4xl font-bold">
+                            PKR 500
+                            <span class="text-muted-foreground text-lg font-normal">/month</span>
+                        </p>
+                    </div>
+                    
+                    <form method="post" action="{% url 'upgrade_premium' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors mb-4">
+                            {% if is_processing %}Processing...{% else %}Upgrade Now{% endif %}
+                        </button>
+                    </form>
+                    
+                    <p class="text-xs text-muted-foreground text-center">
+                        Cancel anytime. No hidden fees.
+                    </p>
+                </div>
+                
+                <div class="border-t border-border px-8 py-4">
+                    <p class="font-medium mb-2">What's included:</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i data-lucide="check" class="h-4 w-4 text-primary mr-2"></i>
+                            <span class="text-sm">Unlimited access to all subjects</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="check" class="h-4 w-4 text-primary mr-2"></i>
+                            <span class="text-sm">MCQ explanations & AI feedback</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="check" class="h-4 w-4 text-primary mr-2"></i>
+                            <span class="text-sm">Advanced practice tests</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="check" class="h-4 w-4 text-primary mr-2"></i>
+                            <span class="text-sm">Performance analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-lucide="check" class="h-4 w-4 text-primary mr-2"></i>
+                            <span class="text-sm">Priority support</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-20">
+            <h2 class="text-2xl font-semibold mb-8 text-center">Why Premium Makes a Difference</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-card rounded-lg border border-border p-6">
+                    <div class="h-12 w-12 bg-accent rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="lightbulb" class="h-6 w-6 text-primary"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Better Understanding</h3>
+                    <p class="text-muted-foreground">
+                        Detailed explanations help you understand concepts more thoroughly, not just memorize answers.
+                    </p>
+                </div>
+                
+                <div class="bg-card rounded-lg border border-border p-6">
+                    <div class="h-12 w-12 bg-accent rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="book-open-check" class="h-6 w-6 text-primary"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Comprehensive Practice</h3>
+                    <p class="text-muted-foreground">
+                        More questions, harder tests, and varied formats prepare you for any exam scenario.
+                    </p>
+                </div>
+                
+                <div class="bg-card rounded-lg border border-border p-6">
+                    <div class="h-12 w-12 bg-accent rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="brain" class="h-6 w-6 text-primary"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Personalized Learning</h3>
+                    <p class="text-muted-foreground">
+                        AI feedback tailors suggestions to your specific needs, helping you improve faster.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-card rounded-lg border border-border p-6 sm:p-8 mb-12">
+            <div class="flex items-start">
+                <div class="mr-4 mt-1">
+                    <i data-lucide="alert-circle" class="h-5 w-5 text-primary"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">100% Satisfaction Guarantee</h3>
+                    <p class="text-muted-foreground">
+                        Not happy with Premium? Contact us within 7 days of your purchase, and we'll refund your payment.
+                        No questions asked. We're confident that you'll love the premium experience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+{% if success %}
+<script>
+    // Redirect to dashboard after successful upgrade
+    setTimeout(function() {
+        window.location.href = "{% url 'dashboard' %}";
+    }, 3000);
+</script>
+{% endif %}
+{% endblock %}

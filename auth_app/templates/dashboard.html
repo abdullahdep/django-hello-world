@@ -1,0 +1,36 @@
+
+{% if request.user.username != 'Admin_Mirzamabdullah12' %}
+
+  <header>
+    <!-- <h1 class="text-center">Hel</h1> -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">{{ request.user.username }}</a>
+
+    </nav>
+  </header>
+  {% endif %}
+
+
+
+  <!-- if user is Abdullah then show this div -->
+  {% if request.user.username == 'abdullah' %}
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Welcome, Abdullah!</h4>
+    <p>You have Admin access to this dashboard.</p>
+    <hr>
+    <p class="mb-0">Enjoy your time!</p>
+    <div></div>
+    {% endif %}
+
+  <!-- if user is not Abdullah then show this div
+{% if request.user.username != 'Admin_Mirzamabdullah12' %}
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Hello {{request.user.username}}</h4>
+  <p>You do not have permission to view this dashboard.</p>
+  <hr>
+  <p class="mb-0">Please contact the administrator.</p>
+<div></div>
+{% endif %} -->
+
+
+

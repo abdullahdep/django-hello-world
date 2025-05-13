@@ -1,0 +1,248 @@
+{% extends 'layouts/layouts.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Your Path to Academic Excellence</title>
+    <style>
+        :root {
+            --primary-color: hsl(26 100% 62%);
+            --primary-hover: #1d4ed8;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .main-container {
+            min-height: calc(100vh - 15rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 28rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 2.5rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            background-color: transparent;
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 2.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .is-invalid:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+    </style>
+</head>
+<body>
+    <main class="main-container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1>Create an account</h1>
+                <p>Join to excel in your studies</p>
+            </div>
+
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                
+                {% if messages %}
+                <div class="alert alert-danger mb-4">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="form-label" for="fullname">Full Name</label>
+                    <input type="text" name="fullname" id="fullname" 
+                           class="form-control {% if form.fullname.errors %}is-invalid{% endif %}" 
+                           value="{{ form.fullname.value|default:'' }}"
+                           placeholder="John Doe" required>
+                    {% if form.fullname.errors %}
+                    <small class="text-danger">{{ form.fullname.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" name="email" id="email" 
+                           class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                           value="{{ form.email.value|default:'' }}"
+                           placeholder="you@example.com" required>
+                    {% if form.email.errors %}
+                    <small class="text-danger">{{ form.email.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="grade">Grade</label>
+                    <select name="grade" id="grade" 
+                            class="form-control {% if form.grade.errors %}is-invalid{% endif %}" required>
+                        <option value="">Select your grade</option>
+                        {% for i in "123456789101112"|make_list %}
+                        <option value="{{ i }}" {% if form.grade.value == i %}selected{% endif %}>Grade {{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if form.grade.errors %}
+                    <small class="text-danger">{{ form.grade.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" name="username" id="username" 
+                           class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                           value="{{ form.username.value|default:'' }}"
+                           placeholder="username" required>
+                    {% if form.username.errors %}
+                    <small class="text-danger">{{ form.username.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password1">Password</label>
+                    <input type="password" name="password1" id="password1" 
+                           class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                           placeholder="••••••••" required>
+                    {% if form.password1.errors %}
+                    <small class="text-danger">{{ form.password1.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password2">Confirm Password</label>
+                    <input type="password" name="password2" id="password2" 
+                           class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                           placeholder="••••••••" required>
+                    {% if form.password2.errors %}
+                    <small class="text-danger">{{ form.password2.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="19" x2="19" y1="8" y2="14"></line>
+                        <line x1="22" x2="16" y1="11" y2="11"></line>
+                    </svg>
+                    Register
+                </button>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="{% url 'login' %}">Log in</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+{% endblock content %}

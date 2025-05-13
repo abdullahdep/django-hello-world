@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'example'
+    'auth_app',
+    'layouts',
+    'pages',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'layouts.views.global_variables',
             ],
         },
     },
@@ -76,7 +79,25 @@ WSGI_APPLICATION = 'api.wsgi.app'
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
-DATABASES = {}
+import pymysql
+pymysql.install_as_MySQLdb()
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'safaracademypk',  # Database name
+        'USER': '4X9NB55hrn1TRiV.root',  # Username
+        'PASSWORD': 'eFxeWY9M3ZT58BU9',  # Password
+        'HOST': 'gateway01.us-west-2.prod.aws.tidbcloud.com',  # Host
+        'PORT': '4000',  # Port
+        'OPTIONS': {
+            'ssl': {
+                'ca': BASE_DIR / 'certs/isrgrootx1.pem',  # Path to the CA certificate
+            },
+        },
+    }
+}
+
 
 
 # Password validation

@@ -1,0 +1,102 @@
+<footer class="bg-card mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <a href="{% url 'home' %}" class="flex items-center">
+                    <div class="h-10 w-10 mr-2 bg-primary rounded-lg flex items-center justify-center">
+                        <i data-lucide="book-open" class="h-6 w-6 text-background"></i>
+                    </div>
+                    <span class="text-xl font-bold text-foreground">Safar Academy</span>
+                </a>
+                <p class="mt-4 text-muted-foreground">
+                    Your path to academic excellence. We provide comprehensive study materials for students in grades 9-12.
+                </p>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'subjects' %}" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Subjects
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard' %}" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'premium' %}" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Premium
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}" class="text-muted-foreground hover:text-foreground transition-colors">
+                            About Us
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Subjects</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">
+                            English
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Mathematics
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Biology
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Physics
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">
+                            Chemistry
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <i data-lucide="mail" class="h-5 w-5 mr-2 text-primary"></i>
+                        <span class="text-muted-foreground">info@safaracademy.com</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i data-lucide="phone" class="h-5 w-5 mr-2 text-primary"></i>
+                        <span class="text-muted-foreground">+92-300-1234567</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-primary"></i>
+                        <span class="text-muted-foreground">
+                            123 Education Street, Lahore, Pakistan
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+            <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+        
+        <div class="mt-12 pt-8 border-t border-border">
+            <p class="text-center text-muted-foreground">
+                &copy; {% now "Y" %} Safar Academy. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>

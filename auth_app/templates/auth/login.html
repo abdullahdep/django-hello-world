@@ -1,0 +1,180 @@
+{% extends 'layouts/layouts.html' %}
+{% block content %}
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Your Path to Academic Excellence</title>
+    <style>
+        :root {
+            --primary-color: hsl(26 100% 62%);
+            --primary-hover: hsl(26, 74%, 64%);
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .main-container {
+            min-height: calc(100vh - 15rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 28rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 2.5rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: transparent;
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 2.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .password-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .register-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <main class="main-container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1>Welcome back</h1>
+                <p class="text-muted">Log in to your account</p>
+            </div>
+
+            <form method="POST" action="{% url 'login' %}" class="space-y-4">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger rounded-3">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" 
+                           placeholder="Enter your username" required>
+                    {% if form.username.errors %}
+                    <small class="text-danger">{{ form.username.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <div class="password-header">
+                        <label class="form-label" for="password">Password</label>
+                        
+                        <a href="" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <input type="password" name="password" id="password" class="form-control" 
+                           placeholder="••••••••" required>
+                    {% if form.password.errors %}
+                    <small class="text-danger">{{ form.password.errors }}</small>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" x2="3" y1="12" y2="12"></line>
+                    </svg>
+                    Log In
+                </button>
+            </form>
+
+            <div class="register-link">
+                Don't have an account? <a href="{% url 'register' %}">Register</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+{% endblock content %}
