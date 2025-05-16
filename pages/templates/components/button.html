@@ -1,0 +1,14 @@
+{% load static %}  <!-- To load static files if needed for stylesheets -->
+{% comment %} Define Button Component {% endcomment %}
+
+{% block button %}
+<button
+    class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none
+    {% if variant == 'default' %} bg-primary text-primary-foreground hover:bg-primary/90 {% elif variant == 'secondary' %} bg-secondary text-secondary-foreground hover:bg-secondary/90 {% elif variant == 'accent' %} bg-accent text-accent-foreground hover:bg-accent/90 {% elif variant == 'ghost' %} hover:bg-accent hover:text-accent-foreground {% elif variant == 'link' %} underline-offset-4 hover:underline text-primary {% elif variant == 'outline' %} border border-input hover:bg-accent hover:text-accent-foreground {% endif %}
+    {% if size == 'sm' %} h-9 px-3 rounded-md {% elif size == 'lg' %} h-11 px-8 rounded-md text-base {% elif size == 'icon' %} h-10 w-10 {% else %} h-10 py-2 px-4 {% endif %}
+    {% if class_name %} {{ class_name }} {% endif %}
+    {% if disabled %} disabled {% endif %}
+>
+    {% block button_content %} {{ content }} {% endblock %}
+</button>
+{% endblock %}

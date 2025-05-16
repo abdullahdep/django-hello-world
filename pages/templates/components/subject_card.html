@@ -1,0 +1,21 @@
+<!-- subject_card.html -->
+<a href="{% url 'subject_detail' subject_name|slugify %}" class="block h-full transition-all duration-300 hover:border-primary border rounded-lg p-4 bg-white shadow-sm">
+    <!-- Header -->
+    <div class="mb-4">
+        <!-- Icon for the subject -->
+        <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center mb-2">
+            <!-- Placeholder Icon (Change to actual icon) -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m8-12v12M4 6v12" />
+            </svg>
+        </div>
+        
+        <!-- Subject Name -->
+        <h3 class="text-lg font-semibold">{{ subject_name }}</h3>
+        
+        <!-- Subject Description -->
+        <p class="text-muted-foreground text-sm">
+            {{ subject_info.description }}
+        </p>
+    </div>
+</a>
