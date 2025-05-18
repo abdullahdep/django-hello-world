@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import json
 from globalvar import global_variables
 
 def index(request):
@@ -29,17 +30,19 @@ def subject_detail(request, slug):
     if selected_grade:
         try:
             grade = int(selected_grade)
-            # Get chapters for selected grade from chapters data in globalvar
             chapters = global_data['chapters'].get(slug.lower(), {}).get(grade, [])
-            print(f"Found {len(chapters)} chapters for grade {grade}")  # Debug output
         except (ValueError, TypeError):
-            print(f"Invalid grade value: {selected_grade}")  # Debug output
+            pass
+    
+    # Add chapters data as JSON for JavaScript
+    chapters_json = json.dumps(global_data['chapters'].get(slug.lower(), {}))
     
     context = {
         'subject': subject,
         'selected_grade': selected_grade,
         'chapters': chapters,
-        'grades': range(9, 13)  # Grades 9-12
+        'chapters_json': chapters_json,
+        'grades': range(9, 13)
     }
     
     return render(request, 'subject_detail.html', context)
