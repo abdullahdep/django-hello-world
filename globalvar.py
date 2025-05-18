@@ -66,4 +66,188 @@ def global_variables(request):
                 'anchor': 'https://www.safaracademy.com/subjects/computer-science'
             },
         },
+
+        # Chapters Data (Detailed structure for each subject and grade)
+        'chapters': {
+            'mathematics': {
+                9: [
+                    {
+                        'name': 'Algebra and Functions',
+                        'slug': 'algebra-and-functions',
+                        'topics': [
+                            'Quadratic Equations',
+                            'Linear Equations in Two Variables',
+                            'Polynomials',
+                            'Coordinate Geometry'
+                        ]
+                    },
+                    {
+                        'name': 'Geometry',
+                        'slug': 'geometry',
+                        'topics': [
+                            'Triangles and Congruence',
+                            'Circles',
+                            'Areas and Perimeters',
+                            'Surface Areas and Volumes'
+                        ]
+                    }
+                ],
+                10: [
+                    {
+                        'name': 'Trigonometry',
+                        'slug': 'trigonometry',
+                        'topics': [
+                            'Introduction to Trigonometry',
+                            'Trigonometric Ratios',
+                            'Heights and Distances',
+                            'Applications'
+                        ]
+                    },
+                    {
+                        'name': 'Statistics and Probability',
+                        'slug': 'statistics-and-probability',
+                        'topics': [
+                            'Mean, Median, Mode',
+                            'Probability Theory',
+                            'Data Handling',
+                            'Graphical Representation'
+                        ]
+                    }
+                ],
+                11: [
+                    {
+                        'name': 'Advanced Calculus',
+                        'slug': 'advanced-calculus',
+                        'topics': [
+                            'Limits and Derivatives',
+                            'Applications of Derivatives',
+                            'Integrals',
+                            'Differential Equations'
+                        ]
+                    },
+                    {
+                        'name': 'Complex Numbers',
+                        'slug': 'complex-numbers',
+                        'topics': [
+                            'Introduction to Complex Numbers',
+                            'Algebraic Properties',
+                            'Polar Form',
+                            'Applications in 2D Geometry'
+                        ]
+                    }
+                ],
+                12: [
+                    {
+                        'name': 'Linear Algebra',
+                        'slug': 'linear-algebra',
+                        'topics': [
+                            'Matrices and Determinants',
+                            'Vector Algebra',
+                            'Linear Programming',
+                            'Three Dimensional Geometry'
+                        ]
+                    },
+                    {
+                        'name': 'Advanced Integration',
+                        'slug': 'advanced-integration',
+                        'topics': [
+                            'Definite Integrals',
+                            'Applications in Physics',
+                            'Area Under Curves',
+                            'Differential Equations'
+                        ]
+                    }
+                ]
+            },
+            'science': {
+                9: [
+                    {
+                        'name': 'Motion and Force',
+                        'slug': 'motion-and-force',
+                        'topics': [
+                            'Laws of Motion',
+                            'Gravitation',
+                            'Work and Energy',
+                            'Sound'
+                        ]
+                    },
+                    {
+                        'name': 'Matter in Our Surroundings',
+                        'slug': 'matter',
+                        'topics': [
+                            'States of Matter',
+                            'Atoms and Molecules',
+                            'Structure of Atom',
+                            'Chemical Bonding'
+                        ]
+                    }
+                ],
+                10: [
+                    {
+                        'name': 'Chemical Reactions',
+                        'slug': 'chemical-reactions',
+                        'topics': [
+                            'Types of Reactions',
+                            'Acids, Bases and Salts',
+                            'Metals and Non-metals',
+                            'Carbon Compounds'
+                        ]
+                    },
+                    {
+                        'name': 'Life Processes',
+                        'slug': 'life-processes',
+                        'topics': [
+                            'Nutrition',
+                            'Respiration',
+                            'Transportation',
+                            'Excretion'
+                        ]
+                    }
+                ],
+                11: [
+                    {
+                        'name': 'Physical World and Measurement',
+                        'slug': 'physical-world',
+                        'topics': [
+                            'Units and Dimensions',
+                            'Errors in Measurement',
+                            'Physics in Daily Life',
+                            'Scientific Method'
+                        ]
+                    },
+                    {
+                        'name': 'Organic Chemistry',
+                        'slug': 'organic-chemistry',
+                        'topics': [
+                            'Basic Organic Chemistry',
+                            'Hydrocarbons',
+                            'Environmental Chemistry',
+                            'Polymers'
+                        ]
+                    }
+                ],
+                12: [
+                    {
+                        'name': 'Electromagnetic Waves',
+                        'slug': 'electromagnetic-waves',
+                        'topics': [
+                            'Wave Optics',
+                            'Electromagnetic Spectrum',
+                            'Dual Nature of Matter',
+                            'Quantum Physics'
+                        ]
+                    },
+                    {
+                        'name': 'Molecular Biology',
+                        'slug': 'molecular-biology',
+                        'topics': [
+                            'DNA and RNA',
+                            'Genetic Code',
+                            'Evolution',
+                            'Biotechnology'
+                        ]
+                    }
+                ]
+            }
+        }
     }
