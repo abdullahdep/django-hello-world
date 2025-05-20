@@ -31,41 +31,64 @@
 
             <div>
                 <label class="block text-sm font-medium mb-2">Subject</label>
-                <select name="subject" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
-                        onchange="loadGradeChapters(this.value)">
-                    <option value="">Select Subject</option>
-                    {% for subject in subjects %}
-                    <option value="{{ subject.slug }}">{{ subject.name }}</option>
-                    {% endfor %}
-                </select>
+                <div class="select-wrapper">
+                    <select name="subject" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
+                            onchange="loadGradeChapters(this.value)">
+                        <option value="">Select Subject</option>
+                        {% for subject in subjects %}
+                        <option value="{{ subject.slug }}">{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <svg class="loading-spin h-4 w-4 text-primary hidden" id="subject-loading" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
             </div>
-
             <div>
                 <label class="block text-sm font-medium mb-2">Grade</label>
-                <select name="grade" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
-                        onchange="loadChapters(document.querySelector('select[name=subject]').value, this.value)">
-                    <option value="">Select Grade</option>
-                    {% for grade in grades %}
-                    <option value="{{ grade }}">Grade {{ grade }}</option>
-                    {% endfor %}
-                </select>
+                <div class="select-wrapper">
+                    <select name="grade" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
+                            onchange="loadChapters(document.querySelector('select[name=subject]').value, this.value)">
+                        <option value="">Select Grade</option>
+                        {% for grade in grades %}
+                        <option value="{{ grade }}">Grade {{ grade }}</option>
+                        {% endfor %}
+                    </select>
+                    <svg class="loading-spin h-4 w-4 text-primary hidden" id="grade-loading" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
             </div>
 
             <div>
                 <label class="block text-sm font-medium mb-2">Chapter</label>
-                <select name="chapter" id="chapter-select" 
-                        class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
-                        onchange="loadTopics(this.value)" disabled>
-                    <option value="">Select Chapter</option>
-                </select>
+                <div class="select-wrapper">
+                    <select name="chapter" id="chapter-select" 
+                            class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
+                            onchange="loadTopics(this.value)" disabled>
+                        <option value="">Select Chapter</option>
+                    </select>
+                    <svg class="loading-spin h-4 w-4 text-primary hidden" id="chapter-loading" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
             </div>
 
             <div>
                 <label class="block text-sm font-medium mb-2">Topic</label>
-                <select name="topic" id="topic-select" 
-                        class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" disabled>
-                    <option value="">Select Topic</option>
-                </select>
+                <div class="select-wrapper">
+                    <select name="topic" id="topic-select" 
+                            class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" disabled>
+                        <option value="">Select Topic</option>
+                    </select>
+                    <svg class="loading-spin h-4 w-4 text-primary hidden" id="topic-loading" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
             </div>
 
             <div>
@@ -161,13 +184,39 @@ Q. Next question...</pre>
     </div>
 </div>
 
+<style>
+    .loading-spin {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        from { transform: translateY(-50%) rotate(0deg); }
+        to { transform: translateY(-50%) rotate(360deg); }
+    }
+    .select-wrapper {
+        position: relative;
+    }
+</style>
+
 <script>
 document.getElementById('file-upload').addEventListener('change', function(e) {
     const fileName = e.target.files[0]?.name || '';
     document.getElementById('selected-file').textContent = fileName ? `Selected: ${fileName}` : '';
 });
 
+// Helper function to toggle loading state
+function toggleLoading(elementId, isLoading) {
+    const loadingEl = document.getElementById(`${elementId}-loading`);
+    if (loadingEl) {
+        loadingEl.classList.toggle('hidden', !isLoading);
+    }
+}
+
 async function loadGradeChapters(subject) {
+    toggleLoading('grade', true);
     const gradeSelect = document.querySelector('select[name=grade]');
     const chapterSelect = document.getElementById('chapter-select');
     const topicSelect = document.getElementById('topic-select');
@@ -181,11 +230,12 @@ async function loadGradeChapters(subject) {
     
     if (!subject) {
         gradeSelect.innerHTML = '<option value="">Select Grade</option>';
-        return;
     }
+    toggleLoading('grade', false);
 }
 
 async function loadChapters(subject, grade) {
+    toggleLoading('chapter', true);
     const chapterSelect = document.getElementById('chapter-select');
     const topicSelect = document.getElementById('topic-select');
     
@@ -196,6 +246,7 @@ async function loadChapters(subject, grade) {
     if (!subject || !grade) {
         chapterSelect.disabled = true;
         chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+        toggleLoading('chapter', false);
         return;
     }
     
@@ -215,25 +266,27 @@ async function loadChapters(subject, grade) {
     } catch (error) {
         console.error('Error loading chapters:', error);
         alert('Failed to load chapters. Please try again.');
+    } finally {
+        toggleLoading('chapter', false);
     }
 }
 
 async function loadTopics(chapterSlug) {
+    toggleLoading('topic', true);
     const chapterSelect = document.getElementById('chapter-select');
     const topicSelect = document.getElementById('topic-select');
     
     if (!chapterSlug) {
         topicSelect.disabled = true;
         topicSelect.innerHTML = '<option value="">Select Topic</option>';
+        toggleLoading('topic', false);
         return;
     }
     
-    // Get selected chapter option
-    const selectedOption = chapterSelect.querySelector(`option[value="${chapterSlug}"]`);
-    if (!selectedOption) return;
-    
-    // Get topics from data attribute
     try {
+        const selectedOption = chapterSelect.querySelector(`option[value="${chapterSlug}"]`);
+        if (!selectedOption) return;
+        
         const topics = JSON.parse(selectedOption.dataset.topics || '[]');
         
         topicSelect.innerHTML = `
@@ -246,6 +299,8 @@ async function loadTopics(chapterSlug) {
     } catch (error) {
         console.error('Error loading topics:', error);
         alert('Failed to load topics. Please try again.');
+    } finally {
+        toggleLoading('topic', false);
     }
 }
 
