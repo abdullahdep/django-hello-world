@@ -1,0 +1,266 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8">Upload Content</h1>
+
+    {% if error %}
+    <div class="bg-error/10 border border-error rounded-md p-4 mb-6 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-error mr-2" viewBox="0 0 24 24" fill="none" 
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p class="text-error">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <div class="bg-card border border-border rounded-lg p-6">
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Question Type</label>
+                <select name="question_type" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2">
+                    <option value="mcq">Multiple Choice Questions</option>
+                    <option value="short">Short Questions</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Subject</label>
+                <select name="subject" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
+                        onchange="loadGradeChapters(this.value)">
+                    <option value="">Select Subject</option>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.slug }}">{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Grade</label>
+                <select name="grade" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
+                        onchange="loadChapters(document.querySelector('select[name=subject]').value, this.value)">
+                    <option value="">Select Grade</option>
+                    {% for grade in grades %}
+                    <option value="{{ grade }}">Grade {{ grade }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Chapter</label>
+                <select name="chapter" id="chapter-select" 
+                        class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" 
+                        onchange="loadTopics(this.value)" disabled>
+                    <option value="">Select Chapter</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Topic</label>
+                <select name="topic" id="topic-select" 
+                        class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" disabled>
+                    <option value="">Select Topic</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Upload Document</label>
+                <div class="border-2 border-dashed border-input rounded-md p-8">
+                    <div class="flex flex-col items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-muted-foreground mb-4" 
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <p class="text-sm text-muted-foreground mb-2">
+                            Upload a Word document (.docx) containing your questions
+                        </p>
+                        <input type="file" name="document" accept=".docx" class="hidden" id="file-upload">
+                        <label for="file-upload" class="button button-outline cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" 
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                 stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            Select File
+                        </label>
+                        <p id="selected-file" class="mt-2 text-sm text-muted-foreground"></p>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full button button-primary">
+                Upload Content
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-8 bg-card border border-border rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-4">Document Format Guidelines</h2>
+        
+        <div class="space-y-6">
+            <div>
+                <h3 class="font-medium mb-2">For MCQs:</h3>
+                <pre class="bg-accent p-4 rounded-md text-sm whitespace-pre-wrap font-mono">
+Q. What is the capital of Pakistan?
+A) Karachi
+B) Lahore
+C) Islamabad
+D) Peshawar
+Answer : C
+Explanation: Islamabad is the capital city of Pakistan since 1967.
+
+Q. Next question...</pre>
+                <div class="mt-2 text-sm text-muted-foreground">
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Start each question with "Q."</li>
+                        <li>Options must start with A), B), C), D)</li>
+                        <li>Correct answer format: "Answer : X" (where X is A, B, C, or D)</li>
+                        <li>Optional explanation starts with "Explanation:"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-medium mb-2">For Short Questions:</h3>
+                <pre class="bg-accent p-4 rounded-md text-sm whitespace-pre-wrap font-mono">
+Q. Explain the process of photosynthesis (10 marks)
+Answer: Photosynthesis is the process by which plants convert light energy into chemical energy...
+
+Q. Next question...</pre>
+                <div class="mt-2 text-sm text-muted-foreground">
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Start each question with "Q."</li>
+                        <li>Include marks in parentheses: (X marks)</li>
+                        <li>Answer must start with "Answer:"</li>
+                        <li>Separate questions with blank lines</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 bg-warning/10 border border-warning rounded-md">
+                <h4 class="font-medium text-warning mb-2">Important Notes:</h4>
+                <ul class="list-disc list-inside space-y-1 text-sm">
+                    <li>Upload plain text (.txt) files only</li>
+                    <li>Follow the exact format shown above</li>
+                    <li>Leave a blank line between questions</li>
+                    <li>Do not include question numbers</li>
+                    <li>File encoding should be UTF-8</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('file-upload').addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name || '';
+    document.getElementById('selected-file').textContent = fileName ? `Selected: ${fileName}` : '';
+});
+
+async function loadGradeChapters(subject) {
+    const gradeSelect = document.querySelector('select[name=grade]');
+    const chapterSelect = document.getElementById('chapter-select');
+    const topicSelect = document.getElementById('topic-select');
+    
+    // Reset and disable dependent fields
+    gradeSelect.disabled = !subject;
+    chapterSelect.disabled = true;
+    chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+    topicSelect.disabled = true;
+    topicSelect.innerHTML = '<option value="">Select Topic</option>';
+    
+    if (!subject) {
+        gradeSelect.innerHTML = '<option value="">Select Grade</option>';
+        return;
+    }
+}
+
+async function loadChapters(subject, grade) {
+    const chapterSelect = document.getElementById('chapter-select');
+    const topicSelect = document.getElementById('topic-select');
+    
+    // Reset topics
+    topicSelect.disabled = true;
+    topicSelect.innerHTML = '<option value="">Select Topic</option>';
+    
+    if (!subject || !grade) {
+        chapterSelect.disabled = true;
+        chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/chapters/${subject}/${grade}/`);
+        if (!response.ok) throw new Error('Failed to fetch chapters');
+        
+        const chapters = await response.json();
+        
+        chapterSelect.innerHTML = `
+            <option value="">Select Chapter</option>
+            ${chapters.map(chapter => 
+                `<option value="${chapter.slug}" data-topics='${JSON.stringify(chapter.topics)}'>${chapter.name}</option>`
+            ).join('')}
+        `;
+        chapterSelect.disabled = false;
+    } catch (error) {
+        console.error('Error loading chapters:', error);
+        alert('Failed to load chapters. Please try again.');
+    }
+}
+
+async function loadTopics(chapterSlug) {
+    const chapterSelect = document.getElementById('chapter-select');
+    const topicSelect = document.getElementById('topic-select');
+    
+    if (!chapterSlug) {
+        topicSelect.disabled = true;
+        topicSelect.innerHTML = '<option value="">Select Topic</option>';
+        return;
+    }
+    
+    // Get selected chapter option
+    const selectedOption = chapterSelect.querySelector(`option[value="${chapterSlug}"]`);
+    if (!selectedOption) return;
+    
+    // Get topics from data attribute
+    try {
+        const topics = JSON.parse(selectedOption.dataset.topics || '[]');
+        
+        topicSelect.innerHTML = `
+            <option value="">Select Topic</option>
+            ${topics.map(topic => 
+                `<option value="${topic.toLowerCase().replace(/\s+/g, '-')}">${topic}</option>`
+            ).join('')}
+        `;
+        topicSelect.disabled = false;
+    } catch (error) {
+        console.error('Error loading topics:', error);
+        alert('Failed to load topics. Please try again.');
+    }
+}
+
+// Add change event listeners
+document.querySelector('select[name=subject]').addEventListener('change', function() {
+    loadGradeChapters(this.value);
+});
+
+document.querySelector('select[name=grade]').addEventListener('change', function() {
+    const subject = document.querySelector('select[name=subject]').value;
+    loadChapters(subject, this.value);
+});
+
+document.getElementById('chapter-select').addEventListener('change', function() {
+    loadTopics(this.value);
+});
+</script>
+{% endblock %}
