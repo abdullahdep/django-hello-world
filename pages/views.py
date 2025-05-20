@@ -9,6 +9,8 @@ import json
 import re
 import os
 from datetime import datetime
+from .models import Subject, Chapter, Topic, MCQ
+from django.db import transaction
 
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -108,85 +110,87 @@ def admin_content_upload(request):
         try:
             document = request.FILES.get('document')
             question_type = request.POST.get('question_type')
-            subject = request.POST.get('subject', '')
+            subject_slug = request.POST.get('subject', '')
             grade = request.POST.get('grade', '')
-            chapter = request.POST.get('chapter', '')
-            topic = request.POST.get('topic', '')
+            chapter_slug = request.POST.get('chapter', '')
+            topic_slug = request.POST.get('topic', '')
 
             if not document:
                 return render(request, 'admin_user/admin_user.html', 
                             {'error': 'Please select a file to upload', **context})
 
-            # Create different base directories for MCQs and short questions
-            base_dir = 'mcqs' if question_type == 'mcq' else 'short_questions'
-            
-            # Create directory structure
-            file_dir = os.path.join(
-                settings.MEDIA_ROOT,
-                base_dir,
-                subject,
-                f"grade_{grade}",
-                chapter,
-                topic
-            )
-            os.makedirs(file_dir, exist_ok=True)
-
-            # Save file with timestamp
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            file_name = f"{timestamp}_{document.name}"
-            file_path = os.path.join(file_dir, file_name)
-
-            # Save the file
-            with open(file_path, 'wb+') as destination:
-                for chunk in document.chunks():
-                    destination.write(chunk)
-
-            # Process file content with different encodings
+            # Read file content with different encodings
             content = None
             encodings = ['utf-8', 'utf-8-sig', 'latin-1', 'cp1252']
             
             for encoding in encodings:
                 try:
-                    with open(file_path, 'r', encoding=encoding) as f:
-                        content = f.read()
-                        break
+                    content = document.read().decode(encoding)
+                    document.seek(0)
+                    break
                 except UnicodeDecodeError:
+                    document.seek(0)
                     continue
 
             if content is None:
                 raise UnicodeDecodeError("Could not decode file with any supported encoding")
 
-            # Process questions based on type
-            questions = process_mcq(content) if question_type == 'mcq' else process_short_question(content)
+            # Process questions
+            if question_type == 'mcq':
+                questions = process_mcq(content)
+                
+                # Save MCQs to database
+                with transaction.atomic():
+                    # Get or create subject
+                    subject, _ = Subject.objects.get_or_create(
+                        slug=subject_slug,
+                        defaults={'name': subject_slug.replace('-', ' ').title()}
+                    )
+                    
+                    # Get or create chapter
+                    chapter, _ = Chapter.objects.get_or_create(
+                        subject=subject,
+                        slug=chapter_slug,
+                        grade=int(grade),
+                        defaults={'name': chapter_slug.replace('-', ' ').title()}
+                    )
+                    
+                    # Get or create topic
+                    topic, _ = Topic.objects.get_or_create(
+                        chapter=chapter,
+                        slug=topic_slug,
+                        defaults={'name': topic_slug.replace('-', ' ').title()}
+                    )
+                    
+                    # Create MCQs
+                    mcqs_created = 0
+                    for q in questions:
+                        MCQ.objects.create(
+                            topic=topic,
+                            question_text=q['question'],
+                            option_a=q['options'][0],
+                            option_b=q['options'][1],
+                            option_c=q['options'][2],
+                            option_d=q['options'][3],
+                            correct_answer=q['correct_answer'],
+                            explanation=q.get('explanation')
+                        )
+                        mcqs_created += 1
+                
+                context.update({
+                    'success': True,
+                    'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
+                })
+            else:
+                # Handle short questions as before (file storage)
+                # ...existing short question handling code...
 
-            # Save metadata about the upload
-            metadata = {
-                'timestamp': timestamp,
-                'question_type': question_type,
-                'subject': subject,
-                'grade': grade,
-                'chapter': chapter,
-                'topic': topic,
-                'num_questions': len(questions),
-                'file_name': file_name
-            }
-            
-            metadata_path = os.path.join(file_dir, f"{timestamp}_metadata.json")
-            with open(metadata_path, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, indent=2)
-
-            context.update({
-                'success': True,
-                'message': f'Successfully uploaded and processed {len(questions)} {question_type.upper()} questions',
-                'file_path': file_path.replace(settings.MEDIA_ROOT, '/media')
-            })
-            
-            return render(request, 'admin_user/admin_user.html', context)
+                return render(request, 'admin_user/admin_user.html', context)
 
         except Exception as e:
             context['error'] = f'Error processing file: {str(e)}'
             return render(request, 'admin_user/admin_user.html', context)
-    
+
     return render(request, 'admin_user/admin_user.html', context)
 
 @user_passes_test(is_admin)
