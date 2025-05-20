@@ -1,0 +1,57 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumb -->
+    <div class="mb-8">
+        <div class="flex items-center text-sm text-muted-foreground mb-4">
+            <a href="{% url 'subjects' %}" class="hover:text-foreground transition-colors">
+                Subjects
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                 class="h-4 w-4 mx-2">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+            <a href="{% url 'subject_detail' subject.slug %}" class="hover:text-foreground transition-colors">
+                {{ subject.name }}
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                 class="h-4 w-4 mx-2">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+            <span>{{ chapter.name }}</span>
+        </div>
+
+        <div class="animate-fade-in">
+            <h1 class="text-3xl font-bold mb-4">{{ chapter.name }}</h1>
+        </div>
+    </div>
+
+    <!-- Chapter Content -->
+    {% if chapter %}
+    <div class="mt-8">
+        <h2 class="text-xl font-semibold mb-4">Topics Covered</h2>
+        <div class="space-y-3">
+            {% for topic in chapter.topics %}
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" 
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                     stroke-linejoin="round" class="h-4 w-4 text-primary mr-3">
+                    <path d="M9 11h6"/>
+                    <rect width="18" height="18" x="3" y="3" rx="2"/>
+                </svg>
+                <span>{{ topic }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-12 text-gray-600">
+        Chapter not found
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

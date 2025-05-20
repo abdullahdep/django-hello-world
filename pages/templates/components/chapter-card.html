@@ -1,0 +1,56 @@
+<div class="animate-fade-in" style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
+    <a href="{% url 'chapter_detail' subject.slug chapter.slug %}">
+        <div class="border rounded-lg p-6 h-full hover:border-primary transition-all duration-300 bg-card group hover:shadow-lg">
+            <!-- Card Header -->
+            <div class="flex items-start space-x-4 mb-6">
+                <div class="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="h-6 w-6 text-primary">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold group-hover:text-primary transition-colors">{{ chapter.name }}</h3>
+                    <p class="text-sm text-muted-foreground mt-1">
+                        {{ chapter.topics|length }} topic{{ chapter.topics|length|pluralize }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Topics Preview -->
+            <div class="space-y-3 mb-6">
+                {% for topic in chapter.topics|slice:":3" %}
+                <div class="flex items-center group-hover:translate-x-1 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="h-4 w-4 text-muted-foreground mr-3 flex-shrink-0">
+                        <path d="M9 11h6"/>
+                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                    </svg>
+                    <span class="text-sm text-muted-foreground">{{ topic }}</span>
+                </div>
+                {% endfor %}
+
+                {% if chapter.topics|length > 3 %}
+                <div class="text-sm text-muted-foreground pl-7">
+                    +{{ chapter.topics|length|add:"-3" }} more topics
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Card Footer -->
+            <div class="pt-4 border-t mt-auto">
+                <div class="inline-flex items-center text-primary text-sm font-medium">
+                    Explore Chapter
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
