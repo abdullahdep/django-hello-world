@@ -103,9 +103,12 @@
                             <line x1="12" y1="3" x2="12" y2="15"/>
                         </svg>
                         <p class="text-sm text-muted-foreground mb-2">
-                            Upload a Word document (.docx) containing your questions
+                            Upload a text file (.txt) containing your questions
                         </p>
-                        <input type="file" name="document" accept=".docx" class="hidden" id="file-upload">
+                        <p class="text-xs text-muted-foreground mb-4">
+                            Make sure your file is saved with UTF-8 encoding
+                        </p>
+                        <input type="file" name="document" accept=".txt" class="hidden" id="file-upload">
                         <label for="file-upload" class="button button-outline cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" 
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
@@ -184,6 +187,22 @@ Q. Next question...</pre>
     </div>
 </div>
 
+<div id="notification" class="fixed top-4 right-4 z-50 transform transition-transform duration-300 translate-x-full">
+    <div id="notification-content" class="rounded-lg p-4 shadow-lg">
+        <div class="flex items-center">
+            <svg id="success-icon" class="h-6 w-6 mr-2 hidden" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" class="stroke-success" stroke-width="2"/>
+                <path d="M8 12l3 3 5-5" class="stroke-success" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg id="error-icon" class="h-6 w-6 mr-2 hidden" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" class="stroke-error" stroke-width="2"/>
+                <path d="M15 9l-6 6M9 9l6 6" class="stroke-error" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span id="notification-message" class="text-sm font-medium"></span>
+        </div>
+    </div>
+</div>
+
 <style>
     .loading-spin {
         position: absolute;
@@ -213,6 +232,36 @@ function toggleLoading(elementId, isLoading) {
     if (loadingEl) {
         loadingEl.classList.toggle('hidden', !isLoading);
     }
+}
+
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    const content = document.getElementById('notification-content');
+    const messageEl = document.getElementById('notification-message');
+    const successIcon = document.getElementById('success-icon');
+    const errorIcon = document.getElementById('error-icon');
+    
+    // Set message
+    messageEl.textContent = message;
+    
+    // Set type-specific styles
+    if (type === 'success') {
+        content.className = 'rounded-lg p-4 shadow-lg bg-success/10 border border-success text-success';
+        successIcon.classList.remove('hidden');
+        errorIcon.classList.add('hidden');
+    } else {
+        content.className = 'rounded-lg p-4 shadow-lg bg-error/10 border border-error text-error';
+        successIcon.classList.add('hidden');
+        errorIcon.classList.remove('hidden');
+    }
+    
+    // Show notification
+    notification.classList.remove('translate-x-full');
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+    }, 3000);
 }
 
 async function loadGradeChapters(subject) {
@@ -263,9 +312,10 @@ async function loadChapters(subject, grade) {
             ).join('')}
         `;
         chapterSelect.disabled = false;
+        showNotification('Chapters loaded successfully');
     } catch (error) {
         console.error('Error loading chapters:', error);
-        alert('Failed to load chapters. Please try again.');
+        showNotification('Failed to load chapters. Please try again.', 'error');
     } finally {
         toggleLoading('chapter', false);
     }
