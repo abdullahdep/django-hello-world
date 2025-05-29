@@ -5,13 +5,19 @@ from django.views.decorators.http import require_http_methods
 from django.core.files.storage import FileSystemStorage
 from globalvar import global_variables
 from django.conf import settings
+<<<<<<< HEAD
 from django.contrib import messages
+=======
+>>>>>>> 1c688b85fa1c8b2026e4f72ddd6e41c32eb523c7
 import json
 import re
 import os
 from datetime import datetime
+<<<<<<< HEAD
 from .models import Subject, Chapter, Topic, MCQ, Test, UserTestAttempt, UserAnswer
 from django.db import transaction
+=======
+>>>>>>> 1c688b85fa1c8b2026e4f72ddd6e41c32eb523c7
 
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -111,15 +117,23 @@ def admin_content_upload(request):
         try:
             document = request.FILES.get('document')
             question_type = request.POST.get('question_type')
+<<<<<<< HEAD
             subject_slug = request.POST.get('subject', '')
             grade = request.POST.get('grade', '')
             chapter_slug = request.POST.get('chapter', '')
             topic_slug = request.POST.get('topic', '')
+=======
+            subject = request.POST.get('subject', '')
+            grade = request.POST.get('grade', '')
+            chapter = request.POST.get('chapter', '')
+            topic = request.POST.get('topic', '')
+>>>>>>> 1c688b85fa1c8b2026e4f72ddd6e41c32eb523c7
 
             if not document:
                 return render(request, 'admin_user/admin_user.html', 
                             {'error': 'Please select a file to upload', **context})
 
+<<<<<<< HEAD
             # Read file content with different encodings
             content = None
             encodings = ['utf-8', 'utf-8-sig', 'latin-1', 'cp1252']
@@ -131,11 +145,48 @@ def admin_content_upload(request):
                     break
                 except UnicodeDecodeError:
                     document.seek(0)
+=======
+            # Create different base directories for MCQs and short questions
+            base_dir = 'mcqs' if question_type == 'mcq' else 'short_questions'
+            
+            # Create directory structure
+            file_dir = os.path.join(
+                settings.MEDIA_ROOT,
+                base_dir,
+                subject,
+                f"grade_{grade}",
+                chapter,
+                topic
+            )
+            os.makedirs(file_dir, exist_ok=True)
+
+            # Save file with timestamp
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            file_name = f"{timestamp}_{document.name}"
+            file_path = os.path.join(file_dir, file_name)
+
+            # Save the file
+            with open(file_path, 'wb+') as destination:
+                for chunk in document.chunks():
+                    destination.write(chunk)
+
+            # Process file content with different encodings
+            content = None
+            encodings = ['utf-8', 'utf-8-sig', 'latin-1', 'cp1252']
+            
+            for encoding in encodings:
+                try:
+                    with open(file_path, 'r', encoding=encoding) as f:
+                        content = f.read()
+                        break
+                except UnicodeDecodeError:
+>>>>>>> 1c688b85fa1c8b2026e4f72ddd6e41c32eb523c7
                     continue
 
             if content is None:
                 raise UnicodeDecodeError("Could not decode file with any supported encoding")
 
+<<<<<<< HEAD
             # Process questions
             if question_type == 'mcq':
                 questions = process_mcq(content)
@@ -187,6 +238,34 @@ def admin_content_upload(request):
                 # ...existing short question handling code...
 
                 return render(request, 'admin_user/admin_user.html', context)
+=======
+            # Process questions based on type
+            questions = process_mcq(content) if question_type == 'mcq' else process_short_question(content)
+
+            # Save metadata about the upload
+            metadata = {
+                'timestamp': timestamp,
+                'question_type': question_type,
+                'subject': subject,
+                'grade': grade,
+                'chapter': chapter,
+                'topic': topic,
+                'num_questions': len(questions),
+                'file_name': file_name
+            }
+            
+            metadata_path = os.path.join(file_dir, f"{timestamp}_metadata.json")
+            with open(metadata_path, 'w', encoding='utf-8') as f:
+                json.dump(metadata, f, indent=2)
+
+            context.update({
+                'success': True,
+                'message': f'Successfully uploaded and processed {len(questions)} {question_type.upper()} questions',
+                'file_path': file_path.replace(settings.MEDIA_ROOT, '/media')
+            })
+            
+            return render(request, 'admin_user/admin_user.html', context)
+>>>>>>> 1c688b85fa1c8b2026e4f72ddd6e41c32eb523c7
 
         except Exception as e:
             context['error'] = f'Error processing file: {str(e)}'
