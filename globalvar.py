@@ -82,6 +82,16 @@ def global_variables(request):
                         ]
                     },
                     {
+                        'name': 'Number Systems',
+                        'slug': 'number-systems',
+                        'topics': [
+                            'Real Numbers',
+                            'Irrational Numbers',
+                            'Rational Numbers',
+                            'Decimal Representation'
+                        ]
+                    },
+                    {
                         'name': 'Geometry',
                         'slug': 'geometry',
                         'topics': [

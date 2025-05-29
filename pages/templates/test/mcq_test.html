@@ -1,0 +1,61 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+    {% if messages %}
+    <div class="mb-6">
+        {% for message in messages %}
+        <div class="p-4 {% if message.tags == 'error' %}bg-error/10 border-error{% else %}bg-success/10 border-success{% endif %} border rounded-lg">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if mcqs %}
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-4">MCQ Test: {{ topic }}</h1>
+        <p class="text-muted-foreground">Total Questions: {{ total_questions }}</p>
+    </div>
+
+    <form method="post" class="space-y-8">
+        {% csrf_token %}
+        {% for mcq in mcqs %}
+        <div class="bg-card border border-border rounded-lg p-6">
+            <h3 class="text-lg font-medium mb-4">
+                <span class="text-primary mr-2">Q{{ forloop.counter }}.</span>
+                {{ mcq.question }}
+            </h3>
+            
+            <div class="space-y-3 mt-4">
+                {% for option in mcq.options %}
+                <label class="flex items-center p-3 border rounded-md cursor-pointer transition-all hover:border-primary">
+                    <input type="radio" name="q{{ forloop.parentloop.counter }}" 
+                           value="{{ forloop.counter }}" class="mr-3" required>
+                    <span>{{ option }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if mcqs %}
+        <div class="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
+            <button type="submit" class="button button-primary w-full">
+                Submit Test
+            </button>
+        </div>
+        {% endif %}
+    </form>
+    {% else %}
+    <div class="text-center py-12">
+        <h2 class="text-2xl font-semibold mb-4">No MCQs Available</h2>
+        <p class="text-muted-foreground">There are no MCQ questions available for this topic yet.</p>
+        <a href="javascript:history.back()" class="button button-outline mt-6">
+            Go Back
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

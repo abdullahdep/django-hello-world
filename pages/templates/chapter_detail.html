@@ -43,7 +43,9 @@
                     <path d="M9 11h6"/>
                     <rect width="18" height="18" x="3" y="3" rx="2"/>
                 </svg>
-                <span>{{ topic }}</span>
+                <a href="#" onclick="showTestOptions('{{ topic }}')" class="hover:text-primary transition-colors">
+                    {{ topic }}
+                </a>
             </div>
             {% endfor %}
         </div>
@@ -54,4 +56,73 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Add Modal for Test Options -->
+<div id="testOptionsModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-card p-6 rounded-lg shadow-xl max-w-md w-full mx-4 animate-fade-in">
+        <h3 class="text-xl font-semibold mb-4" id="modalTopicTitle"></h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="#" id="mcqTestLink" class="flex flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11h6"></path>
+                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                </svg>
+                <span class="font-medium">MCQ Test</span>
+                <span class="text-sm text-muted-foreground mt-1">Multiple Choice Questions</span>
+            </a>
+            <a href="#" id="shortTestLink" class="flex flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span class="font-medium">Short Test</span>
+                <span class="text-sm text-muted-foreground mt-1">Written Answers</span>
+            </a>
+        </div>
+        <div class="flex justify-end mt-6">
+            <button onclick="hideTestOptions()" class="button button-outline">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTestOptions(topic) {
+    const modal = document.getElementById('testOptionsModal');
+    const topicTitle = document.getElementById('modalTopicTitle');
+    const mcqLink = document.getElementById('mcqTestLink');
+    const shortLink = document.getElementById('shortTestLink');
+    
+    // Set topic title
+    topicTitle.textContent = topic;
+    
+    // Update test links
+    const baseUrl = `/test/${encodeURIComponent(topic)}`;
+    mcqLink.href = `${baseUrl}/mcq`;
+    shortLink.href = `${baseUrl}/short`;
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            hideTestOptions();
+        }
+    });
+}
+
+function hideTestOptions() {
+    const modal = document.getElementById('testOptionsModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        hideTestOptions();
+    }
+});
+</script>
 {% endblock %}

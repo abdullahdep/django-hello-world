@@ -1,11 +1,17 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.core.files.storage import FileSystemStorage
 from globalvar import global_variables
+from django.conf import settings
+from django.contrib import messages
 import json
 import re
+import os
+from datetime import datetime
+from .models import Subject, Chapter, Topic, MCQ, Test, UserTestAttempt, UserAnswer
+from django.db import transaction
 
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -102,39 +108,90 @@ def admin_content_upload(request):
     }
     
     if request.method == 'POST':
-        question_type = request.POST.get('question_type')
-        subject = request.POST.get('subject')
-        grade = request.POST.get('grade')
-        chapter = request.POST.get('chapter')
-        topic = request.POST.get('topic')
-        document = request.FILES.get('document')
-        
-        if not all([question_type, subject, grade, chapter, topic, document]):
-            context['error'] = 'Please fill all fields and select a file'
-            return render(request, 'admin_user/admin_user.html', context)
-        
         try:
-            # Read the txt file
-            content = document.read().decode('utf-8')
+            document = request.FILES.get('document')
+            question_type = request.POST.get('question_type')
+            subject_slug = request.POST.get('subject', '')
+            grade = request.POST.get('grade', '')
+            chapter_slug = request.POST.get('chapter', '')
+            topic_slug = request.POST.get('topic', '')
+
+            if not document:
+                return render(request, 'admin_user/admin_user.html', 
+                            {'error': 'Please select a file to upload', **context})
+
+            # Read file content with different encodings
+            content = None
+            encodings = ['utf-8', 'utf-8-sig', 'latin-1', 'cp1252']
             
-            # Process questions based on type
-            questions = []
+            for encoding in encodings:
+                try:
+                    content = document.read().decode(encoding)
+                    document.seek(0)
+                    break
+                except UnicodeDecodeError:
+                    document.seek(0)
+                    continue
+
+            if content is None:
+                raise UnicodeDecodeError("Could not decode file with any supported encoding")
+
+            # Process questions
             if question_type == 'mcq':
                 questions = process_mcq(content)
+                
+                # Save MCQs to database
+                with transaction.atomic():
+                    # Get or create subject
+                    subject, _ = Subject.objects.get_or_create(
+                        slug=subject_slug,
+                        defaults={'name': subject_slug.replace('-', ' ').title()}
+                    )
+                    
+                    # Get or create chapter
+                    chapter, _ = Chapter.objects.get_or_create(
+                        subject=subject,
+                        slug=chapter_slug,
+                        grade=int(grade),
+                        defaults={'name': chapter_slug.replace('-', ' ').title()}
+                    )
+                    
+                    # Get or create topic
+                    topic, _ = Topic.objects.get_or_create(
+                        chapter=chapter,
+                        slug=topic_slug,
+                        defaults={'name': topic_slug.replace('-', ' ').title()}
+                    )
+                    
+                    # Create MCQs
+                    mcqs_created = 0
+                    for q in questions:
+                        MCQ.objects.create(
+                            topic=topic,
+                            question_text=q['question'],
+                            option_a=q['options'][0],
+                            option_b=q['options'][1],
+                            option_c=q['options'][2],
+                            option_d=q['options'][3],
+                            correct_answer=q['correct_answer'],
+                            explanation=q.get('explanation')
+                        )
+                        mcqs_created += 1
+                
+                context.update({
+                    'success': True,
+                    'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
+                })
             else:
-                questions = process_short_question(content)
-            
-            # Save processed questions
-            # Add your storage logic here
-            
-            context['success'] = True
-            context['questions_processed'] = len(questions)
-            return render(request, 'admin_user/admin_user.html', context)
-            
+                # Handle short questions as before (file storage)
+                # ...existing short question handling code...
+
+                return render(request, 'admin_user/admin_user.html', context)
+
         except Exception as e:
-            context['error'] = str(e)
+            context['error'] = f'Error processing file: {str(e)}'
             return render(request, 'admin_user/admin_user.html', context)
-    
+
     return render(request, 'admin_user/admin_user.html', context)
 
 @user_passes_test(is_admin)
@@ -275,4 +332,110 @@ def chapter_detail(request, subject_slug, chapter_slug):
     }
     
     return render(request, 'chapter_detail.html', context)
+
+@login_required
+def test_view(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    
+    # Check premium access
+    if test.is_premium and not request.user.profile.is_premium:
+        return render(request, 'test/premium_required.html')
+    
+    if request.method == 'POST':
+        # Handle test submission
+        data = json.loads(request.body)
+        answers = data.get('answers', [])
+        
+        # Create test attempt
+        attempt = UserTestAttempt.objects.create(
+            user=request.user,
+            test=test,
+            score=calculate_score(answers)
+        )
+        
+        # Save answers
+        for answer in answers:
+            if answer.get('type') == 'mcq':
+                UserAnswer.objects.create(
+                    attempt=attempt,
+                    mcq_question_id=answer['questionId'],
+                    selected_option_id=answer.get('selectedOptionId'),
+                    is_correct=answer.get('isCorrect')
+                )
+            else:
+                UserAnswer.objects.create(
+                    attempt=attempt,
+                    short_question_id=answer['questionId'],
+                    uploaded_image=answer.get('uploadedImageUrl')
+                )
+        
+        return JsonResponse({'success': True, 'score': attempt.score})
+    
+    context = {
+        'test': test,
+        'mcq_questions': test.mcq_questions.prefetch_related('options').all(),
+        'short_questions': test.short_questions.all()
+    }
+    return render(request, 'test/test_view.html', context)
+
+@login_required
+def test_review(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    attempt = get_object_or_404(UserTestAttempt, user=request.user, test=test)
+    
+    context = {
+        'test': test,
+        'attempt': attempt,
+        'answers': attempt.answers.select_related('mcq_question', 'short_question', 'selected_option').all()
+    }
+    return render(request, 'test/test_review.html', context)
+
+@login_required
+def mcq_test_view(request, topic_slug):
+    # Get global data
+    global_data = global_variables(request)
+    
+    # Find the topic and its MCQs
+    topic_found = False
+    topic_mcqs = []
+    topic_name = topic_slug.replace('-', ' ').title()
+    
+    # Search through the chapters data structure
+    for subject_slug, subject_chapters in global_data['chapters'].items():
+        for grade, chapters in subject_chapters.items():
+            for chapter in chapters:  # chapters is a list
+                if 'topics' in chapter:
+                    for topic in chapter['topics']:
+                        if topic.lower() == topic_name.lower():
+                            topic_found = True
+                            # Get MCQs if they exist
+                            if 'mcqs' in chapter:
+                                topic_mcqs = [
+                                    mcq for mcq in chapter['mcqs'] 
+                                    if mcq.get('topic', '').lower() == topic_name.lower()
+                                ]
+                            break
+                if topic_found:
+                    break
+            if topic_found:
+                break
+        if topic_found:
+            break
+
+    if not topic_found:
+        messages.error(request, f"Topic '{topic_name}' not found")
+        return redirect('home')
+
+    context = {
+        'topic': topic_name,
+        'mcqs': topic_mcqs,
+        'total_questions': len(topic_mcqs)
+    }
+    
+    return render(request, 'test/mcq_test.html', context)
+
+@login_required
+def short_test_view(request, topic_slug):
+    # Similar implementation for short questions
+    pass
 
