@@ -11,10 +11,10 @@
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-12 md:mb-0">
                     <div class="animate-fade-in">
-                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
-                            Your Path to <span class="text-primary">Academic Excellence</span>
+                        <h1 class="text-4xl white-color sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
+                            Your Path to <span class="text-primary primary-font">Academic <br> Excellence</span>
                         </h1>
-                        <p class="text-xl text-muted-foreground mb-8 max-w-lg">
+                        <p class="text-xl grey-color text-muted-foreground mb-8 max-w-lg">
                             Comprehensive study materials for grades 9-12. Practice, learn, and excel in your exams with Safar Academy.
                         </p>
                         <div class="flex flex-wrap gap-4">
@@ -23,8 +23,8 @@
                                     Go to Dashboard <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
                                 </a>
                             {% else %}
-                                <a href="{% url 'register' %}" class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors">
-                                    Get Started <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+                                <a href="{% url 'register' %}" class="inline-flex primary items-center justify-center px-6 py-3 text-white rounded-md text-lg font-medium ">
+                                    Get Started <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-5 w-5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
                                 </a>
                                 <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
                                     Login
@@ -35,14 +35,14 @@
                 </div>
                 <div class="md:w-1/2 w-full px-4 md:px-0">
                     <div class="animate-fade-in relative max-w-[500px] mx-auto">
-                        <div class="w-full h-[350px] sm:h-[400px] bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl overflow-hidden border border-border shadow-xl">
-                            <div class="absolute top-4 left-4 right-4 h-12 bg-card rounded-lg border border-border flex items-center px-4">
-                                <div class="w-3 h-3 bg-error rounded-full mr-2"></div>
-                                <div class="w-3 h-3 bg-warning rounded-full mr-2"></div>
-                                <div class="w-3 h-3 bg-success rounded-full mr-2"></div>
-                                <div class="flex-1 text-center text-sm font-medium truncate">Safar Academy - Physics Quiz</div>
+                        <div class="w-full brown-backgrond h-[350px] sm:h-[400px] bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl overflow-hidden border border-border shadow-xl">
+                            <div class="absolute shade-background top-4 left-4 right-4 h-12 bg-card rounded-lg border border-border flex items-center px-4">
+                                <div class="w-3 h-3 red-background bg-error rounded-full mr-2"></div>
+                                <div class="w-3 h-3 bg-warning yellow-background rounded-full mr-2"></div>
+                                <div class="w-3 h-3 bg-success green-background rounded-full mr-2"></div>
+                                <div class="flex-1 white-color text-center text-sm font-medium truncate">Safar Academy - Physics Quiz</div>
                             </div>
-                            <div class="absolute top-20 left-4 right-4 bottom-4 bg-card rounded-lg border border-border p-4 overflow-y-auto">
+                            <div class="white-color absolute shade-background top-20 left-4 right-4 bottom-4 bg-card rounded-lg border border-border p-4 overflow-y-auto">
                                 <div class="mb-4">
                                     <h3 class="font-medium mb-4">Q. What is the SI unit of force?</h3>
                                     <div class="space-y-3">
@@ -52,9 +52,9 @@
                                                 <span>Watt</span>
                                             </div>
                                         </div>
-                                        <div class="p-3 border border-primary bg-accent rounded-md">
+                                        <div class="p-3 border border-primary primary-border bg-accent rounded-md">
                                             <div class="flex items-center">
-                                                <div class="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center mr-2 text-xs">B</div>
+                                                <div class="w-6 h-6 primary  rounded-full bg-primary text-primary-foreground flex items-center justify-center mr-2 white-color text-xs">B</div>
                                                 <span>Newton</span>
                                             </div>
                                         </div>
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <div class="absolute bottom-4 right-4">
-                                    <button class="inline-flex items-center justify-center px-3 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">Next Question</button>
+                                    <button class="inline-flex items-center justify-center px-3 py-2 text-sm bg-primary primary text-white rounded-md hover:bg-primary/90 transition-colors">Next Question</button>
                                 </div>
                             </div>
                         </div>

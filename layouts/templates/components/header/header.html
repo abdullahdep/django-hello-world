@@ -4,8 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safar Academy</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,900;1,14..32,900&display=swap" rel="stylesheet">
 </head>
+<style>
+  .grey-color{
+    color:#97A3B4;
+  }
+    .primary{
+background-color:hsl(26 100% 62%);
+}
+.primary-border{
+    border-color:hsl(26 100% 57%);
+}
+    .primary:hover{
+background-color:hsl(26 100% 57%);
+    }
+    .primary-font{
+color: #FF913D;
+}
+.border-color{
+border-color: hsl(215 16% 65%);
+}
+.white-color{
+    color:white;
+}
+.red-background{
+    background-color: #F75050;
+}
+body{
+    background-color: #1D283A;
+}
+.yellow-background{
+    background-color: #FBC02D;
+}
+.green-background{
+    background-color:  #21C45D;
+}
+.brown-backgrond{
+    background-color: #4B3F3E;
+}
+.shade-background{
+    background-color: #26344B;
+}
 
+
+</style>
 
 <nav class="bg-background border-b border-border sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,7 +60,7 @@
                     <div class="h-10 w-10 mr-2 bg-primary rounded-lg flex items-center justify-center">
                         <i data-lucide="book-open" class="h-6 w-6 text-background"></i>
                     </div>
-                    <span class="text-xl font-bold text-foreground">Safar Academy</span>
+                    <span class="text-xl font-bold white-color text-foreground">Safar Academy</span>
                 </a>
             </div>
 
@@ -34,9 +79,12 @@
                         </a>
                     {% endif %}
                     {% if not user.profile.is_premium %}
+                     {% if not user.is_staff %}
                         <a href="{% url 'premium' %}" class="text-secondary font-medium hover:text-secondary/90 transition-colors py-2">
                             Upgrade
                         </a>
+                    {% endif %}
+
                     {% endif %}
                 {% endif %}
             </div>
@@ -58,10 +106,10 @@
                     </div>
                 {% else %}
                     <div class="flex items-center space-x-4">
-                        <a href="{% url 'login' %}" class="text-muted-foreground hover:text-foreground transition-colors px-3 py-2 text-sm rounded-md">
+                        <a href="{% url 'login' %}" class="white-color text-muted-foreground hover:text-foreground transition-colors px-3 py-2 text-sm rounded-md">
                             Login
                         </a>
-                        <a href="{% url 'register' %}" class="bg-primary text-white hover:bg-primary/90 transition-colors px-3 py-2 text-sm rounded-md">
+                        <a href="{% url 'register' %}" class="bg-primary primary text-white hover:bg-primary/90 transition-colors px-3 py-2 text-sm rounded-md">
                             Register
                         </a>
                     </div>
