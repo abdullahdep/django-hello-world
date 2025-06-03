@@ -9,8 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,900;1,14..32,900&display=swap" rel="stylesheet">
 </head>
 <style>
+    .gradient{
+
+    }
   .grey-color{
     color:#97A3B4;
+  }
+  .grey-color:hover{
+    color:white;
   }
     .primary{
 background-color:hsl(26 100% 62%);
@@ -33,8 +39,28 @@ border-color: hsl(215 16% 65%);
 .red-background{
     background-color: #F75050;
 }
-body{
+ nav , footer{
     background-color: #1D283A;
+    color:white;
+
+
+}
+.card-behaviour{
+    background-color:  hsl(217 33% 25%);
+}
+.card-behaviour:hover{
+    border-color: #FF913D ;
+}
+.light-section{
+       background-image:linear-gradient(to bottom, #1D283A, hsl(217 33% 25%));
+}
+.dark-section{
+    background-color: #1D283A;
+}
+body{
+        color:white;
+}
+*{    border-color: hsl(217 33% 30%);
 }
 .yellow-background{
     background-color: #FBC02D;
@@ -43,10 +69,18 @@ body{
     background-color:  #21C45D;
 }
 .brown-backgrond{
-    background-color: #4B3F3E;
+    background-color: #504A46;
 }
 .shade-background{
     background-color: #26344B;
+}
+.color1{
+    color:hsl(43 100% 64%);
+    background-color: hsl(43 100% 64%  / .1);
+}
+.color2{
+    color:hsl(26 100% 62%);
+    background-color: hsl(20 100% 62%  / .1);
 }
 
 
@@ -65,7 +99,7 @@ body{
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex md:items-center md:space-x-8">
+            <div class="hidden grey-color md:flex md:items-center md:space-x-8">
                 <a href="{% url 'subjects' %}" class="text-muted-foreground hover:text-foreground transition-colors py-2">
                     Subjects
                 </a>
