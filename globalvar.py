@@ -261,3 +261,4 @@ def global_variables(request):
             }
         }
     }
+

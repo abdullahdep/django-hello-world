@@ -4,8 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safar Academy</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,900;1,14..32,900&display=swap" rel="stylesheet">
 </head>
+<style>
+    .gradient{
 
+    }
+  .grey-color{
+    color:#97A3B4;
+  }
+  .grey-color:hover{
+    color:white;
+  }
+    .primary{
+background-color:hsl(26 100% 62%);
+}
+.primary-border{
+    border-color:hsl(26 100% 57%);
+}
+    .primary:hover{
+background-color:hsl(26 100% 57%);
+    }
+    .primary-font{
+color: #FF913D;
+}
+.border-color{
+border-color: hsl(215 16% 65%);
+}
+.white-color{
+    color:white;
+}
+.red-background{
+    background-color: #F75050;
+}
+ nav {
+    background-color: #1D283A;
+    color:white;
+
+
+}
+footer{
+    background-color: hsl(217 33% 25%);
+}
+.card-behaviour{
+    background-color:  hsl(217 33% 25%);
+}
+.card-behaviour:hover{
+    border-color: #FF913D ;
+}
+.light-section{
+       background-image:linear-gradient(to bottom, #1D283A, hsl(217 33% 25%));
+}
+.dark-section{
+    background-color: #1D283A;
+}
+body{
+        color:white;
+            background-color: #1D283A;
+
+}
+
+*{    border-color: hsl(217 33% 30%);
+}
+.yellow-background{
+    background-color: #FBC02D;
+}
+.green-background{
+    background-color:  #21C45D;
+}
+.brown-backgrond{
+    background-color: #504A46;
+}
+.shade-background{
+    background-color: #26344B;
+}
+.color1{
+    color:hsl(43 100% 64%);
+    background-color: hsl(43 100% 64%  / .1);
+}
+.color2{
+    color:hsl(26 100% 62%);
+    background-color: hsl(20 100% 62%  / .1);
+}
+
+
+</style>
 
 <nav class="bg-background border-b border-border sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,12 +100,12 @@
                     <div class="h-10 w-10 mr-2 bg-primary rounded-lg flex items-center justify-center">
                         <i data-lucide="book-open" class="h-6 w-6 text-background"></i>
                     </div>
-                    <span class="text-xl font-bold text-foreground">Safar Academy</span>
+                    <span class="text-xl font-bold white-color text-foreground">Safar Academy</span>
                 </a>
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex md:items-center md:space-x-8">
+            <div class="hidden grey-color md:flex md:items-center md:space-x-8">
                 <a href="{% url 'subjects' %}" class="text-muted-foreground hover:text-foreground transition-colors py-2">
                     Subjects
                 </a>
@@ -34,9 +119,12 @@
                         </a>
                     {% endif %}
                     {% if not user.profile.is_premium %}
+                     {% if not user.is_staff %}
                         <a href="{% url 'premium' %}" class="text-secondary font-medium hover:text-secondary/90 transition-colors py-2">
                             Upgrade
                         </a>
+                    {% endif %}
+
                     {% endif %}
                 {% endif %}
             </div>
@@ -58,10 +146,10 @@
                     </div>
                 {% else %}
                     <div class="flex items-center space-x-4">
-                        <a href="{% url 'login' %}" class="text-muted-foreground hover:text-foreground transition-colors px-3 py-2 text-sm rounded-md">
+                        <a href="{% url 'login' %}" class="white-color text-muted-foreground hover:text-foreground transition-colors px-3 py-2 text-sm rounded-md">
                             Login
                         </a>
-                        <a href="{% url 'register' %}" class="bg-primary text-white hover:bg-primary/90 transition-colors px-3 py-2 text-sm rounded-md">
+                        <a href="{% url 'register' %}" class="bg-primary primary text-white hover:bg-primary/90 transition-colors px-3 py-2 text-sm rounded-md">
                             Register
                         </a>
                     </div>
@@ -71,8 +159,21 @@
             <!-- Mobile menu button -->
             <div class="flex md:hidden items-center">
                 <button id="mobile-menu-button" class="text-foreground p-2 rounded-md focus:outline-none">
-                    <i data-lucide="menu" class="h-6 w-6 menu-icon"></i>
-                    <i data-lucide="x" class="h-6 w-6 hidden close-icon"></i>
+                    <!-- Menu Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="menu-icon h-6 w-6">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
+                    <!-- Close Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="close-icon h-6 w-6 hidden">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -112,7 +213,7 @@
                     <a href="{% url 'login' %}" class="block px-3 py-2 border border-border rounded-md text-base font-medium text-foreground hover:bg-accent text-center">
                         Login
                     </a>
-                    <a href="{% url 'register' %}" class="block px-3 py-2 bg-primary text-white rounded-md text-base font-medium hover:bg-primary/90 text-center">
+                    <a href="{% url 'register' %}" class="block primary px-3 py-2 bg-primary text-white rounded-md text-base font-medium hover:bg-primary/90 text-center">
                         Register
                     </a>
                 </div>
@@ -122,18 +223,26 @@
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const menuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.querySelector('.menu-icon');
-        const closeIcon = document.querySelector('.close-icon');
-        
-        if (menuButton && mobileMenu && menuIcon && closeIcon) {
-            menuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-                menuIcon.classList.toggle('hidden');
-                closeIcon.classList.toggle('hidden');
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = menuButton.querySelector('.menu-icon');
+    const closeIcon = menuButton.querySelector('.close-icon');
+    
+    function toggleMenu() {
+        mobileMenu.classList.toggle('hidden');
+        menuIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+    }
+    
+    // Toggle menu on button click
+    menuButton.addEventListener('click', toggleMenu);
+    
+    // Close menu on ESC key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+            toggleMenu();
         }
     });
+});
 </script>
