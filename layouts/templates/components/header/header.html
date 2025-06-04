@@ -62,7 +62,10 @@ footer{
 }
 body{
         color:white;
+            background-color: #1D283A;
+
 }
+
 *{    border-color: hsl(217 33% 30%);
 }
 .yellow-background{
@@ -156,8 +159,21 @@ body{
             <!-- Mobile menu button -->
             <div class="flex md:hidden items-center">
                 <button id="mobile-menu-button" class="text-foreground p-2 rounded-md focus:outline-none">
-                    <i data-lucide="menu" class="h-6 w-6 menu-icon"></i>
-                    <i data-lucide="x" class="h-6 w-6 hidden close-icon"></i>
+                    <!-- Menu Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="menu-icon h-6 w-6">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
+                    <!-- Close Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                         stroke-linejoin="round" class="close-icon h-6 w-6 hidden">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -197,7 +213,7 @@ body{
                     <a href="{% url 'login' %}" class="block px-3 py-2 border border-border rounded-md text-base font-medium text-foreground hover:bg-accent text-center">
                         Login
                     </a>
-                    <a href="{% url 'register' %}" class="block px-3 py-2 bg-primary text-white rounded-md text-base font-medium hover:bg-primary/90 text-center">
+                    <a href="{% url 'register' %}" class="block primary px-3 py-2 bg-primary text-white rounded-md text-base font-medium hover:bg-primary/90 text-center">
                         Register
                     </a>
                 </div>
@@ -207,18 +223,26 @@ body{
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const menuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.querySelector('.menu-icon');
-        const closeIcon = document.querySelector('.close-icon');
-        
-        if (menuButton && mobileMenu && menuIcon && closeIcon) {
-            menuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-                menuIcon.classList.toggle('hidden');
-                closeIcon.classList.toggle('hidden');
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = menuButton.querySelector('.menu-icon');
+    const closeIcon = menuButton.querySelector('.close-icon');
+    
+    function toggleMenu() {
+        mobileMenu.classList.toggle('hidden');
+        menuIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+    }
+    
+    // Toggle menu on button click
+    menuButton.addEventListener('click', toggleMenu);
+    
+    // Close menu on ESC key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+            toggleMenu();
         }
     });
+});
 </script>

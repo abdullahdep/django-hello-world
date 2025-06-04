@@ -36,7 +36,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {% for grade in grades %}
         
-            <button onclick="selectGrade({{ grade }})" class="block animate-fade-in w-full text-left" 
+            <button onclick="selectGrade({{ grade }})" class="block card-behaviour animate-fade-in w-full text-left" 
                style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
                 <div class="w-full p-6 rounded-lg border transition-all duration-300 
                     {% if selected_grade == grade %}
@@ -69,9 +69,9 @@
     <!-- Chapters Section -->
     <div id="chapters">
         {% if selected_grade %}
-        <div class="mt-12 animate-fade-in">
+        <div class="mt-12 animate-fade-in ">
             <h2 class="text-2xl font-semibold mb-6">Chapters for Grade {{ selected_grade }}</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="chapters-grid">
+            <div class="grid grid-cols-1 card-behaviourmd:grid-cols-2 gap-6" id="chapters-grid">
                 {% include "components/chapter_cards.html" with chapters=chapters %}
             </div>
         </div>
@@ -104,7 +104,7 @@
         if (chapters.length > 0) {
             // Render chapters
             const chapterCards = chapters.map((chapter, index) => `
-                <div class="animate-fade-in" style="animation-delay: ${index * 0.1}s">
+                <div class="animate-fade-in card-behaviour" style="animation-delay: ${index * 0.1}s">
                     <a href="/subject/{{ subject.slug }}/chapter/${chapter.slug}">
                         <div class="border rounded-lg p-6 h-full hover:border-primary transition-all duration-300 bg-card group hover:shadow-lg">
                             <!-- Chapter Header -->
