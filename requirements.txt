@@ -2,7 +2,5 @@ django
 PyMySQL
 django-allauth[socialaccount]
 django-environ
-whitenoise
-gunicorn
-python-dotenv
+whitenoise  
 requests
