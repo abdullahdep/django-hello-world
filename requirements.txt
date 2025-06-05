@@ -3,4 +3,6 @@ PyMySQL
 django-allauth[socialaccount]
 django-environ
 whitenoise
+gunicorn
+python-dotenv
 requests
