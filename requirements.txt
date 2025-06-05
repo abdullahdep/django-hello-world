@@ -1,6 +1,2 @@
 Django
-whitenoise
 PyMySQL
-requests
-django-allauth[socialaccount]
-django-environ
