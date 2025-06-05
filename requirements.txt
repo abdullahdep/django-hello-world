@@ -1,2 +1,4 @@
 django
 PyMySQL
+django-allauth[socialaccount]
+django-environ
