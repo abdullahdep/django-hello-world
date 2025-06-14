@@ -17,4 +17,5 @@ urlpatterns = [
     path('test/<int:test_id>/review/', views.test_review, name='test_review'),
     path('test/<str:topic_slug>/mcq/', views.mcq_test_view, name='mcq_test'),
     path('test/<str:topic_slug>/short/', views.short_test_view, name='short_test'),
+    path('sitemap/', views.html_sitemap, name='html_sitemap'),
 ]

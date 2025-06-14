@@ -1,0 +1,54 @@
+<!-- filepath: c:\Users\abdul\Documents\GitHub\django-hello-world\pages\templates\pages\html_sitemap.html -->
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+
+{% block title %}Safar Academy - Home{% endblock %}
+
+{% block content %}
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Site Map</title>
+    <link rel="stylesheet" href="{% static 'pages/styles.css' %}">
+</head>
+<body class="bg-background min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 py-12">
+        <div class="bg-card border border-border rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-primary mb-6">Site Map</h1>
+            <ul class="mb-8 space-y-2">
+                <li><a href="{% url 'home' %}" class="text-primary hover:underline">Home</a></li>
+                <li><a href="{% url 'about' %}" class="text-primary hover:underline">About</a></li>
+                <li><a href="{% url 'contact' %}" class="text-primary hover:underline">Contact</a></li>
+                <li><a href="{% url 'privacy_policy' %}" class="text-primary hover:underline">Privacy Policy</a></li>
+                <li><a href="{% url 'terms_and_conditions' %}" class="text-primary hover:underline">Terms & Conditions</a></li>
+            </ul>
+            <h2 class="text-2xl font-semibold text-primary mb-4">Subjects</h2>
+            <ul>
+            {% for subject in subjects %}
+                <li class="mb-2">
+                    <a href="{% url 'subject_detail' subject.slug %}" class="font-semibold text-accent hover:underline">{{ subject.name }}</a>
+                    <ul class="ml-4">
+                    {% for chapter in subject.chapters.all %}
+                        <li>
+                            <a href="{% url 'chapter_detail' subject.slug chapter.slug %}" class="text-foreground hover:underline">{{ chapter.name }}</a>
+                            <ul class="ml-4">
+                            {% for topic in chapter.topics.all %}
+                                <li>
+                                    <a href="{% url 'topic_detail' subject.slug chapter.slug topic.slug %}" class="text-muted-foreground hover:underline">{{ topic.name }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.sitemaps.views import sitemap
+from pages.sitemaps import StaticViewSitemap
 from django.conf import settings
 from django.conf.urls.static import static
 
+sitemaps = {
+    'static': StaticViewSitemap,
+    # Add other sitemaps here if needed
+}
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include('auth_app.urls')),
     path('', include('layouts.urls')),
     path('', include('pages.urls')),

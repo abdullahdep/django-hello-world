@@ -439,3 +439,8 @@ def short_test_view(request, topic_slug):
     # Similar implementation for short questions
     pass
 
+
+def html_sitemap(request):
+    subjects = Subject.objects.all().prefetch_related('chapters__topics')
+    return render(request, 'pages/html_sitemap.html', {'subjects': subjects})
+

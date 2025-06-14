@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safar Academy</title>
+    <link rel="icon" href="{{ logo }}" type="image/png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,900;1,14..32,900&display=swap" rel="stylesheet">
@@ -23,6 +24,14 @@ background-color:hsl(26 100% 62%);
 }
 .primary-border{
     border-color:hsl(26 100% 57%);
+}
+.primary-favour{
+    background-color:hsl(26deg 24.04% 94.17% / 10%);
+
+}
+.star{
+    color:hsl(43 100% 64%);
+    fill:hsl(43 100% 64%);
 }
     .primary:hover{
 background-color:hsl(26 100% 57%);
@@ -97,10 +106,13 @@ body{
         <div class="flex justify-between h-16">
             <div class="flex">
                 <a href="/" class="flex-shrink-0 flex items-center">
-                    <div class="h-10 w-10 mr-2 bg-primary rounded-lg flex items-center justify-center">
-                        <i data-lucide="book-open" class="h-6 w-6 text-background"></i>
+                    <div class="h-20 w-20 mr-4 bg-primary  flex items-center justify-center overflow-hidden  ">
+                        <img src="{{ logo }}" alt="Safar Academy Logo"
+                             class="object-contain h-20 w-20" style="max-width: 4rem; max-height: 4rem;">
                     </div>
-                    <span class="text-xl font-bold white-color text-foreground">Safar Academy</span>
+                    <span class="text-xl font-bold white-color text-foreground tracking-tight" style="font-family: 'Inter', sans-serif;">
+                        Safar Academy
+                    </span>
                 </a>
             </div>
 

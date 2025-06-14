@@ -2,9 +2,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <a href="{% url 'home' %}" class="flex items-center">
+                <a href="/" class="flex items-center">
                     <div class="h-10 w-10 mr-2 bg-primary rounded-lg flex items-center justify-center">
-                        <i data-lucide="book-open" class="h-6 w-6 text-background"></i>
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczPH1U1q1XyyTn7BQmKTdBEXxxK0SsCqW88OV7VITDEz-nQXA69Gqv5FxBWbisCUJ3Gbw6ALRs7YlAr7d7PJR5k4zNw90n54I6gj_GJ4bwnTRDUCD9LXyOsQLociy6CQ-kIBoRE91_GsXoQe-47Uc1nw=w869-h869-s-no-gm?authuser=0"></img>
                     </div>
                     <span class="text-xl font-bold text-foreground">Safar Academy</span>
                 </a>
@@ -106,10 +106,10 @@
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 
-        <div class="mt-12 pt-8 border-t border-border grey-color">
+        <div class="mt-12 pt-8 border-t border-border ">
             <p class="text-center text-muted-foreground">
-                &copy; {% now "Y" %} Safar Academy. All rights reserved.
-            </p>
+                &copy; {% now "Y" %} Safar Academy. All rights reserved. <br><br><a href="{% url 'privacy_policy' %}">Privacy Policy | </a><a href="{% url 'terms_and_conditions' %}">Term & Condition</a> | <a href="{% url 'html_sitemap' %}">Sitemap </a> | <a href="/">Cookies</a>
+            </a>
         </div>
     </div>
 </footer>
