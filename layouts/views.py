@@ -19,3 +19,8 @@ def subject_detail(request):
     pass
 def english(request):
     pass
+
+def privacy_policy(request):
+    return render(request, 'components\policites_and_terms\Privacy Policy.html')
+def terms_and_conditions(request):
+    return render(request, 'components\policites_and_terms\Terms And Conditions.html')
