@@ -11,6 +11,8 @@ def global_variables(request):
         'site_email': 'contact@safaracademy.com',
         'site_phone': '+1 234 567 890',
         'site_address': '123 Main St, Anytown, USA',
+        'grades': [6, 7, 8, 9, 10, 11, 12] ,
+
         
         # Social Links
         'site_facebook': 'https://www.facebook.com/safaracademy',

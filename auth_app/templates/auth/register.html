@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - Your Path to Academic Excellence</title>
+    
     <style>
         :root {
             --primary-color: hsl(26 100% 62%);
@@ -157,7 +158,7 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-
+                
                 <div class="form-group">
                     <label class="form-label" for="fullname">Full Name</label>
                     <input type="text" name="fullname" id="fullname" 
@@ -179,14 +180,13 @@
                     <small class="text-danger">{{ form.email.errors }}</small>
                     {% endif %}
                 </div>
-
                 <div class="form-group">
                     <label class="form-label" for="grade">Grade</label>
                     <select name="grade" id="grade" 
-                            class="form-control {% if form.grade.errors %}is-invalid{% endif %}" required>
-                        <option value="">Select your grade</option>
-                        {% for i in "123456789101112"|make_list %}
-                        <option value="{{ i }}" {% if form.grade.value == i %}selected{% endif %}>Grade {{ i }}</option>
+                            class="form-control  primary-font {% if form.grade.errors %}is-invalid{% endif %}" required>
+                        <option value="" class="">Select your grade</option>
+                        {% for i in grades %}
+                        <option class=''  value="{{ i }}" {% if form.grade.value == i %}selected{% endif %}>Grade {{ i }}</option>
                         {% endfor %}
                     </select>
                     {% if form.grade.errors %}
