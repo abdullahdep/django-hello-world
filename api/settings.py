@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'auth_app',
     'layouts',
     'pages',
-    'tailwind',
 
     
     'allauth',
