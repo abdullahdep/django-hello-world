@@ -4,4 +4,3 @@ django-allauth[socialaccount]
 django-environ
 whitenoise  
 requests
-numpy

@@ -301,18 +301,100 @@ def global_variables(request):
                     }
                 ],
                 10: [
-                    {
-                        'name': 'Chemical Reactions',
-                        'slug': 'chemical-reactions',
-                        'topics': [
-                            'Types of Reactions',
-                            'Acids, Bases and Salts',
-                            'Metals and Non-metals',
-                            'Carbon Compounds'
-                        ]
-                    },
-                    
-                ],
+  {
+    "name": "Chapter 10: Gaseous Exchange",
+    "slug": "gaseous-exchange",
+    "topics": [
+      "10.1 Gaseous Exchange In Plants",
+      "10.2 Gaseous Exchange In Humans",
+      "10.3 Respiratory Disorders"
+    ]
+  },
+  {
+    "name": "Chapter 11: Homeostasis",
+    "slug": "homeostasis",
+    "topics": [
+      "11.1 Homeostasis In Plants",
+      "11.2 Homeostasis In Humans",
+      "11.3 The Urinary System Of Humans",
+      "11.4 Disorders Of Kidney"
+    ]
+  },
+  {
+    "name": "Chapter 12: Coordination and Control",
+    "slug": "coordination-and-control",
+    "topics": [
+      "12.1 Types Of Coordination",
+      "12.2 Human Nervous System",
+      "12.3 Receptors In Humans",
+      "12.4 Endocrine System",
+      "12.5 Disorders Of Nervous System"
+    ]
+  },
+  {
+    "name": "Chapter 13: Support and Movement",
+    "slug": "support-and-movement",
+    "topics": [
+      "13.1 Human Skeleton",
+      "13.2 Types Of Joints",
+      "13.3 Muscles And Movement",
+      "13.4 Disorders Of Skeletal System"
+    ]
+  },
+  {
+    "name": "Chapter 14: Reproduction",
+    "slug": "reproduction",
+    "topics": [
+      "14.1 Reproduction",
+      "14.2 Methods Of Asexual Reproduction",
+      "14.3 Sexual Reproduction In Plants",
+      "14.4 Sexual Reproduction In Animals"
+    ]
+  },
+  {
+    "name": "Chapter 15: Inheritance",
+    "slug": "inheritance",
+    "topics": [
+      "15.1 Introduction To Genetics",
+      "15.2 Chromosomes And Genes",
+      "15.3 Mendel’s Laws Of Inheritance",
+      "15.4 Co-Dominance And Incomplete Dominance",
+      "15.5 Variations And Evolution"
+    ]
+  },
+  {
+    "name": "Chapter 16: Man and His Environment",
+    "slug": "man-and-his-environment",
+    "topics": [
+      "16.1 Levels Of Biological Selection",
+      "16.2 Flow Of Materials And Energy In Ecosystem",
+      "16.3 Interactions In Ecosystems",
+      "16.4 Ecosystem Balance And Human Impact",
+      "16.5 Pollution; Consequenses And Control",
+      "16.6 Conservation Of Nature"
+    ]
+  },
+  {
+    "name": "Chapter 17: Biotechnology",
+    "slug": "biotechnology",
+    "topics": [
+      "17.1 Introduction Of Biotechnology",
+      "17.2 Fermentation",
+      "17.3 Genetic Engineering",
+      "17.4 Single-Cell Protein"
+    ]
+  },
+  {
+    "name": "Chapter 18: Pharmacology",
+    "slug": "pharmacology",
+    "topics": [
+      "18.1 Medicinal Drugs",
+      "18.2 Addictive Drugs",
+      "18.3 Antibiotics And Vaccines"
+    ]
+  }
+]
+,
                 11: [
                     {
                         'name': 'Physical World and Measurement',
@@ -514,19 +596,156 @@ def global_variables(request):
                         ]
                     }
                 ],
-                10: [
-                    {
-                        'name': 'Chemical Reactions',
-                        'slug': 'chemical-reactions',
-                        'topics': [
-                            'Types of Reactions',
-                            'Acids, Bases and Salts',
-                            'Metals and Non-metals',
-                            'Carbon Compounds'
-                        ]
-                    },
-                    
-                ],
+                10:[
+  {
+    "name": "Unit 10: Simple Harmonic Motion and Waves",
+    "slug": "simple-harmonic-motion-and-waves",
+    "topics": [
+      "10.1 SIMPLE HARMONIC MOTION (SHM)",
+      "10.2 DAMPED OSCILLATIONS",
+      "10.3 WAVE MOTION",
+      "10.4 TYPES OF MECHANICAL WAVES",
+      "10.5 RIPPLE TANK"
+    ]
+  },
+  {
+    "name": "Unit 11: Sound",
+    "slug": "sound",
+    "topics": [
+      "11.1 SOUND WAVES",
+      "11.2 CHARACTERISTICS OF SOUND",
+      "11.3 REFLECTION (ECHO) OF SOUND",
+      "11.4 SPEED OF SOUND",
+      "11.5 NOISE POLLUTION",
+      "11.6 IMPORTANCE OF ACOUSTICS",
+      "11.7 AUDIBLE FREQUENCY RANGE",
+      "11.8 ULTRASOUND"
+    ]
+  },
+  {
+    "name": "Unit 12: Geometrical Optics",
+    "slug": "geometrical-optics",
+    "topics": [
+      "12.1 REFLECTION OF LIGHT",
+      "12.2 SPHERICAL MIRRORS",
+      "12.3 IMAGE LOCATION BY SPHERICAL MIRROR FORMULA",
+      "12.4 REFRACTION OF LIGHT",
+      "12.5 TOTAL INTERNAL REFLECTION",
+      "12.6 APPLICATIONS OF TOTAL INTERNAL REFLECTION",
+      "12.7 REFRACTION THROUGH PRISM",
+      "12.8 LENSES",
+      "12.9 IMAGE FORMATION BY LENSES",
+      "12.10 IMAGE LOCATION BY LENS EQUATION",
+      "12.11 APPLICATIONS OF LENSES",
+      "12.12 SIMPLE MICROSCOPE",
+      "12.13 COMPOUND MICROSCOPE",
+      "12.14 TELESCOPE GEOMETRICAL OPTICS",
+      "12.15 THE HUMAN EYE",
+      "12.16 DEFECTS OF VISION"
+    ]
+  },
+  {
+    "name": "Unit 13: Electrostatics",
+    "slug": "electrostatics",
+    "topics": [
+      "13.1 PRODUCTION OF ELECTRIC CHARGES",
+      "13.2 ELECTROSTATIC INDUCTION",
+      "13.3 ELECTROSCOPE",
+      "13.4 COULOMB'S LAW",
+      "13.5 ELECTRIC FIELD AND ELECTRIC FIELD INTENSITY",
+      "13.6 ELECTROSTATIC POTENTIAL",
+      "13.7 CAPACITORS AND CAPACITANCE",
+      "13.8 DIFFERENT TYPES OF CAPACITORS",
+      "13.9 APPLICATIONS OF ELECTROSTATICS",
+      "13.10 SOME HAZARDS OF STATIC ELECTRICITY"
+    ]
+  },
+  {
+    "name": "Unit 14: Current Electricity",
+    "slug": "current-electricity",
+    "topics": [
+      "14.1 ELECTRIC CURRENT",
+      "14.2 POTENTIAL DIFFERENCE",
+      "14.3 ELECTROMOTIVE FORCE (e.m.f)",
+      "14.4 OHM'S LAW",
+      "14.5 V-I Characteristics of Ohmic and Non Ohmic Conductors",
+      "14.6 FACTORS AFFECTING RESISTANCE",
+      "14.7 CONDUCTORS",
+      "14.8 INSULATORS",
+      "14.9 COMBINATION OF RESISTORS",
+      "14.10 ELECTRICAL ENERGY AND JOULE'S LAW",
+      "14.11 ELECTRIC POWER",
+      "14.12 DIRECT CURRENT AND ALTERNATING CURRENT",
+      "14.13 HAZARDS OF ELECTRICITY",
+      "14.14 SAFE USE OF ELECTRICITY IN HOMES"
+    ]
+  },
+  {
+    "name": "Unit 15: Electromagnetism",
+    "slug": "electromagnetism",
+    "topics": [
+      "15.1 MAGNETIC EFFECTS OF A STEADY CURRENT",
+      "15.2 FORCE ON A CURRENT CARRYING CONDUCTOR PLACED IN A MAGNETIC FIELD",
+      "15.3 TURNING EFFECT ON A CURRENT-CARRYING COIL IN A MAGNETIC FIELD",
+      "15.4 D. C. MOTOR",
+      "15.5 ELECTROMAGNETIC INDUCTION",
+      "15.6 Direction of induced e.m.f. – Lenz’s Law",
+      "15.7 A.C. GENERATOR",
+      "15.8 MUTUAL INDUCTION",
+      "15.9 TRANSFORMER",
+      "15.10 HIGH VOLTAGE TRANSMISSION"
+    ]
+  },
+  {
+    "name": "Unit 16: Basic Electronics",
+    "slug": "basic-electronics",
+    "topics": [
+      "16.1 THERMIONIC EMISSION",
+      "16.2 INVESTIGATING THE PROPERTIES OF ELECTRONS",
+      "16.3 CATHODE-RAY OSCILLOSCOPE (C.R.O)",
+      "16.4 ANALOGUE AND DIGITAL ELECTRONICS",
+      "16.5 BASIC OPERATION OF DIGITAL ELECTRONICS – LOGIC GATES",
+      "16.6 AND OPERATION",
+      "16.7 OR OPERATION",
+      "16.8 NOT OPERATION",
+      "16.9 NAND GATE",
+      "16.10 NOR GATE",
+      "16.11 USES OF LOGIC GATES"
+    ]
+  },
+  {
+    "name": "Unit 17: Information and Communication Technology",
+    "slug": "information-and-communication-technology",
+    "topics": [
+      "17.1 INFORMATION AND COMMUNICATION TECHNOLOGY",
+      "17.2 COMPONENTS OF COMPUTER BASED INFORMATION SYSTEM (CBIS)",
+      "17.3 FLOW OF INFORMATION",
+      "17.4 TRANSMISSION OF ELECTRICAL SIGNAL THROUGH WIRES",
+      "17.5 TRANSMISSION OF RADIOWAVES THROUGH SPACE",
+      "17.6 TRANSMISSION OF LIGHT SIGNALS THROUGH OPTICAL FIBRES",
+      "17.7 INFORMATION STORAGE DEVICES",
+      "17.8 APPLICATIONS OF COMPUTER WORD PROCESSING",
+      "17.9 INTERNET",
+      "17.10 RISKS OF ICT TO SOCIETY AND THE ENVIRONMENT"
+    ]
+  },
+  {
+    "name": "Unit 18: Atomic and Nuclear Physics",
+    "slug": "atomic-and-nuclear-physics",
+    "topics": [
+      "18.1 ATOM AND ATOMIC NUCLEUS",
+      "18.2 NATURAL RADIOACTIVITY",
+      "18.3 BACKGROUND RADIATIONS",
+      "18.4 NUCLEAR TRANSMUTATIONS",
+      "18.5 HALF-LIFE AND ITS MEASUREMENT",
+      "18.6 RADIOISOTOPES AND THEIR USES",
+      "18.7 FISSION REACTION",
+      "18.8 NUCLEAR FUSION",
+      "18.9 HAZARDS OF RADIATIONS AND SAFETY MEASURES"
+    ]
+  }
+]
+,
                 11: [
                     {
                         'name': 'Physical World and Measurement',
@@ -724,41 +943,165 @@ def global_variables(request):
     }
 ],
 
-                10: [
-                    {
-                        'name': 'Chemical Reactions',
-                        'slug': 'chemical-reactions',
-                        'topics': [
-                            'Types of Reactions',
-                            'Acids, Bases and Salts',
-                            'Metals and Non-metals',
-                            'Carbon Compounds'
-                        ]
-                    },
-                    
-                ],
-                11: [
-                    {
-                        'name': 'Physical World and Measurement',
-                        'slug': 'physical-world',
-                        'topics': [
-                            'Units and Dimensions',
-                            'Errors in Measurement',
-                            'Physics in Daily Life',
-                            'Scientific Method'
-                        ]
-                    },
-                    {
-                        'name': 'Organic Chemistry',
-                        'slug': 'organic-chemistry',
-                        'topics': [
-                            'Basic Organic Chemistry',
-                            'Hydrocarbons',
-                            'Environmental Chemistry',
-                            'Polymers'
-                        ]
-                    }
-                ],
+                10:[
+  {
+    "name": "Unit 1: Introduction to Programming",
+    "slug": "introduction-to-programming",
+    "topics": [
+      "1.1 Programming Environment",
+      "1.2 Programming Basics",
+      "1.3 Constants and Variables"
+    ]
+  },
+  {
+    "name": "Unit 2: User Interface",
+    "slug": "user-interface",
+    "topics": [
+      "2.1 Input/Output (I/O) Functions",
+      "2.2 Operators"
+    ]
+  },
+  {
+    "name": "Unit 3: Conditional Logic",
+    "slug": "conditional-logic",
+    "topics": [
+      "3.1 Control Statements",
+      "3.2 Selection Statements"
+    ]
+  },
+  {
+    "name": "Unit 4: Data and Repetition",
+    "slug": "data-and-repetition",
+    "topics": [
+      "4.1 Data Structures",
+      "4.2 Loop Structures"
+    ]
+  },
+  {
+    "name": "Unit 5: Function",
+    "slug": "function",
+    "topics": [
+      "5.1 Functions"
+    ]
+  }
+]
+,
+                11:[
+    {
+        "name": "Unit 1: Introduction to Software Development",
+        "slug": "software-development",
+        "topics": [
+            "1.1 Software Development",
+            "1.2 Introduction to Software Development Life Cycle (SDLC)",
+            "1.3 Software Development Methodologies",
+            "1.4 Project Planning and Management",
+            "1.5 Graphical Representation of Software Systems",
+            "1.6 Introduction to Design Patterns",
+            "1.7 Software Debugging and Testing",
+            "1.8 Software Development Tools"
+        ]
+    },
+    {
+        "name": "Unit 2: Python Programming",
+        "slug": "python-programming",
+        "topics": [
+            "2.1 Introduction to Python Programming",
+            "2.2 Basic Python Syntax and Structure",
+            "2.3 Operators and Expressions",
+            "2.4 Control Structures",
+            "2.5 Python Modules and Built-in Data Structures",
+            "2.6 Built-in Data Structures",
+            "2.7 Modular Programming in Python",
+            "2.8 Object-Oriented Programming in Python",
+            "2.9 Advanced Python Concepts",
+            "2.10 Testing and Debugging in Python"
+        ]
+    },
+    {
+        "name": "Unit 3: Algorithms and Problem Solving",
+        "slug": "algorithms-problem-solving",
+        "topics": [
+            "3.1 Understanding Computational Problems",
+            "3.2 Algorithms for Problem Solving",
+            "3.3 Problem Solvability and Complexity",
+            "3.4 Algorithm Analysis",
+            "3.5 Algorithm Efficiency and Scalability",
+            "3.6 Algorithm Design Techniques",
+            "3.7 Commonly Used Algorithms"
+        ]
+    },
+    {
+        "name": "Unit 4: Computational Structures",
+        "slug": "computational-structures",
+        "topics": [
+            "4.1 Primitive Computational Structures",
+            "4.2 Choosing the Right Data Structure for the Problem",
+            "4.3 Combining Computational Structures for Complex Problems"
+        ]
+    },
+    {
+        "name": "Unit 5: Data Analytics",
+        "slug": "data-analytics",
+        "topics": [
+            "5.1 Model Building",
+            "5.2 Basic Statistical Concepts",
+            "5.3 Data Collection and Preparation",
+            "5.4 Building Statistical Models",
+            "5.5 Introduction to Data Visualization",
+            "5.6 Tools for Data Visualization"
+        ]
+    },
+    {
+        "name": "Unit 6: Emerging Technologies",
+        "slug": "emerging-technologies",
+        "topics": [
+            "6.1 Definition and Overview of Emerging Technologies",
+            "6.2 Cloud Computing",
+            "6.3 Applications and Implications of Cloud Computing",
+            "6.4 Introduction to Blockchain Technology",
+            "6.5 Applications and Implications of Blockchain",
+            "6.6 Future Trends and Innovations"
+        ]
+    },
+    {
+        "name": "Unit 7: Legal and Ethical Aspects of Computing Systems",
+        "slug": "legal-ethical-computing",
+        "topics": [
+            "7.1 Understanding Terms of Use",
+            "7.2 Privacy and Security Threats",
+            "7.3 The Digital Divide and Its Impacts",
+            "7.4 Safe and Responsible Information Utilization",
+            "7.5 Computing's Impact on Individuals and Society",
+            "7.6 Digital Citizenship and Ethical Considerations"
+        ]
+    },
+    {
+        "name": "Unit 8: Online Research and Digital Literacy",
+        "slug": "online-research-digital-literacy",
+        "topics": [
+            "8.1 Introduction to Online Research and Digital Literacy",
+            "8.2 Formulating Research Inquiries",
+            "8.3 Utilizing Digital Resources",
+            "8.4 Research Ethics",
+            "8.5 Understanding Intellectual Property"
+        ]
+    },
+    {
+        "name": "Unit 9: Entrepreneurship in the Digital Age",
+        "slug": "entrepreneurship-digital-age",
+        "topics": [
+            "9.1 Introduction to Design Thinking and Business Solutions",
+            "9.2 Creating a Business Plan",
+            "9.3 Collecting Market Insights",
+            "9.4 Developing Effective Marketing and Sales Strategies",
+            "9.5 Financial Concepts for Business",
+            "9.6 Communication and Storytelling Skills",
+            "9.7 Collaboration and Iteration",
+            "9.8 Innovation and Creativity"
+        ]
+    }
+]
+,
                 12: [
                     {
                         'name': 'Electromagnetic Waves',
@@ -934,18 +1277,91 @@ def global_variables(request):
 ]
 ,
                 10: [
-                    {
-                        'name': 'Chemical Reactions',
-                        'slug': 'chemical-reactions',
-                        'topics': [
-                            'Types of Reactions',
-                            'Acids, Bases and Salts',
-                            'Metals and Non-metals',
-                            'Carbon Compounds'
-                        ]
-                    },
-                    
-                ],
+  {
+    "name": "Chapter 9: Chemical Equilibrium",
+    "slug": "chemical-equilibrium",
+    "topics": [
+      "9.1 Reversible Reaction and Dynamic Equilibrium",
+      "9.2 Law of Mass Action",
+      "9.3 Equilibrium Constant and Its Units",
+      "9.4 Importance of Equilibrium Constant"
+    ]
+  },
+  {
+    "name": "Chapter 10: Acids, Bases and Salts",
+    "slug": "acids-bases-and-salts",
+    "topics": [
+      "10.1 Concepts of Acids and Bases",
+      "10.2 pH Scale",
+      "10.3 Salts"
+    ]
+  },
+  {
+    "name": "Chapter 11: Organic Chemistry",
+    "slug": "organic-chemistry",
+    "topics": [
+      "11.1 Organic Compounds",
+      "11.2 Sources of Organic Compounds",
+      "11.3 Uses of Organic Compounds",
+      "11.4 Alkanes and Alkyl Radicals",
+      "11.5 Functional Groups",
+      "11.6 Tests of Functional Groups"
+    ]
+  },
+  {
+    "name": "Chapter 12: Hydrocarbons",
+    "slug": "hydrocarbons",
+    "topics": [
+      "12.1 Alkanes",
+      "12.2 Alkenes",
+      "12.3 Alkynes"
+    ]
+  },
+  {
+    "name": "Chapter 13: Biochemistry",
+    "slug": "biochemistry",
+    "topics": [
+      "13.1 Carbohydrates",
+      "13.2 Protein",
+      "13.3 Lipids",
+      "13.4 Nucleic Acids",
+      "13.5 Vitamins"
+    ]
+  },
+  {
+    "name": "Chapter 14: Environmental Chemistry I – The Atmosphere",
+    "slug": "environmental-chemistry-atmosphere",
+    "topics": [
+      "14.1 Composition of Atmosphere",
+      "14.2 Layers of Atmosphere",
+      "14.3 Pollutants",
+      "14.4 Acid Rain and Its Effects",
+      "14.5 Ozone Depletion and Its Effect"
+    ]
+  },
+  {
+    "name": "Chapter 15: Water",
+    "slug": "water",
+    "topics": [
+      "15.1 Properties of Water",
+      "15.2 Water as Solvent",
+      "15.3 Soft and Hard Water",
+      "15.4 Water Pollution",
+      "15.5 Waterborne Infectious Diseases"
+    ]
+  },
+  {
+    "name": "Chapter 16: Chemical Industries",
+    "slug": "chemical-industries",
+    "topics": [
+      "16.1 Basic Metallurgical Operations",
+      "16.2 Manufacture of Sodium Carbonate by Solvay’s Process",
+      "16.3 Manufacture of Urea",
+      "16.4 Petroleum Industry"
+    ]
+  }
+]
+,
                 11: [
                     {
                         'name': 'Physical World and Measurement',
