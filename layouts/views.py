@@ -4,7 +4,7 @@ from globalvar import global_variables
 def layouts(request):
     return render(request, 'layouts/layouts.html')
 def home(request):
-    return render(request, 'layouts/layouts.html')
+    pass
 def subjects(request):
     pass
 def premium(request):
