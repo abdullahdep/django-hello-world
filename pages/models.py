@@ -55,42 +55,42 @@ class MCQ(models.Model):
     def __str__(self):
         return f"MCQ: {self.question_text[:50]}..."
 
-class Test(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    duration = models.IntegerField(help_text="Duration in seconds")
-    is_premium = models.BooleanField(default=False)
-    subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
-    chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
-    topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+# class Test(models.Model):
+#     title = models.CharField(max_length=200)
+#     description = models.TextField(blank=True)
+#     duration = models.IntegerField(help_text="Duration in seconds")
+#     is_premium = models.BooleanField(default=False)
+#     subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
+#     chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
+#     topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-class MCQQuestion(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='mcq_questions')
-    text = models.TextField()
-    explanation = models.TextField(blank=True)
+# class MCQQuestion(models.Model):
+#     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='mcq_questions')
+#     text = models.TextField()
+#     explanation = models.TextField(blank=True)
 
-class MCQOption(models.Model):
-    question = models.ForeignKey(MCQQuestion, on_delete=models.CASCADE, related_name='options')
-    text = models.CharField(max_length=500)
-    is_correct = models.BooleanField(default=False)
+# class MCQOption(models.Model):
+#     question = models.ForeignKey(MCQQuestion, on_delete=models.CASCADE, related_name='options')
+#     text = models.CharField(max_length=500)
+#     is_correct = models.BooleanField(default=False)
 
-class ShortQuestion(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='short_questions')
-    text = models.TextField()
-    marks = models.IntegerField()
-    answer = models.TextField()
+# class ShortQuestion(models.Model):
+#     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='short_questions')
+#     text = models.TextField()
+#     marks = models.IntegerField()
+#     answer = models.TextField()
 
-class UserTestAttempt(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    score = models.FloatField()
-    completed_at = models.DateTimeField(auto_now_add=True)
+# class UserTestAttempt(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     test = models.ForeignKey(Test, on_delete=models.CASCADE)
+#     score = models.FloatField()
+#     completed_at = models.DateTimeField(auto_now_add=True)
 
-class UserAnswer(models.Model):
-    attempt = models.ForeignKey(UserTestAttempt, on_delete=models.CASCADE, related_name='answers')
-    mcq_question = models.ForeignKey(MCQQuestion, on_delete=models.CASCADE, null=True, blank=True)
-    short_question = models.ForeignKey(ShortQuestion, on_delete=models.CASCADE, null=True, blank=True)
-    selected_option = models.ForeignKey(MCQOption, on_delete=models.CASCADE, null=True, blank=True)
-    uploaded_image = models.ImageField(upload_to='answers/', null=True, blank=True)
-    is_correct = models.BooleanField(null=True, blank=True)
+# class UserAnswer(models.Model):
+#     attempt = models.ForeignKey(UserTestAttempt, on_delete=models.CASCADE, related_name='answers')
+#     mcq_question = models.ForeignKey(MCQQuestion, on_delete=models.CASCADE, null=True, blank=True)
+#     short_question = models.ForeignKey(ShortQuestion, on_delete=models.CASCADE, null=True, blank=True)
+#     selected_option = models.ForeignKey(MCQOption, on_delete=models.CASCADE, null=True, blank=True)
+#     uploaded_image = models.ImageField(upload_to='answers/', null=True, blank=True)
+#     is_correct = models.BooleanField(null=True, blank=True)
