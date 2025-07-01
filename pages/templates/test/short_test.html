@@ -1,0 +1,39 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8">Short Questions Test: {{ topic }}</h1>
+    <p class="text-muted-foreground mb-8">Total Questions: {{ total_questions }}</p>
+
+    <form method="post" class="space-y-8">
+        {% csrf_token %}
+        {% for sq in short_questions %}
+        <div class="bg-card border border-border rounded-lg p-6">
+            <h3 class="text-lg font-medium mb-4">
+                <span class="text-primary mr-2">Q{{ forloop.counter }}.</span>
+                {{ sq.question_text }}
+                {% if sq.marks %}<span class="ml-2 text-xs text-muted-foreground">({{ sq.marks }} marks)</span>{% endif %}
+            </h3>
+            <textarea name="answer_{{ forloop.counter }}" rows="4" class="w-full border rounded-md p-2" placeholder="Your answer..." required></textarea>
+        </div>
+        {% endfor %}
+        {% if short_questions %}
+        <div class="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
+            <button type="submit" class="button button-primary w-full">
+                Submit Test
+            </button>
+        </div>
+        {% endif %}
+    </form>
+    {% if not short_questions %}
+    <div class="text-center py-12">
+        <h2 class="text-2xl font-semibold mb-4">No Short Questions Available</h2>
+        <p class="text-muted-foreground">There are no short questions available for this topic yet.</p>
+        <a href="javascript:history.back()" class="button button-outline mt-6">
+            Go Back
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

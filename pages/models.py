@@ -55,6 +55,14 @@ class MCQ(models.Model):
     def __str__(self):
         return f"MCQ: {self.question_text[:50]}..."
 
+class ShortQuestion(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='short_questions')
+    question_text = models.TextField()
+    answer = models.TextField()
+    marks = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 # class Test(models.Model):
 #     title = models.CharField(max_length=200)
 #     description = models.TextField(blank=True)

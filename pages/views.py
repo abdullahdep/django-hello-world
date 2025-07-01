@@ -136,34 +136,34 @@ def admin_content_upload(request):
             if content is None:
                 raise UnicodeDecodeError("Could not decode file with any supported encoding")
 
-            # Process questions
+
+            # Process and save MCQs or Short Questions
             if question_type == 'mcq':
                 questions = process_mcq(content)
-                
-                # Save MCQs to database
-                with transaction.atomic():
-                    # Get or create subject
-                    subject, _ = Subject.objects.get_or_create(
-                        slug=subject_slug,
-                        defaults={'name': subject_slug.replace('-', ' ').title()}
-                    )
-                    
-                    # Get or create chapter
-                    chapter, _ = Chapter.objects.get_or_create(
-                        subject=subject,
-                        slug=chapter_slug,
-                        grade=int(grade),
-                        defaults={'name': chapter_slug.replace('-', ' ').title()}
-                    )
-                    
-                    # Get or create topic
-                    topic, _ = Topic.objects.get_or_create(
-                        chapter=chapter,
-                        slug=topic_slug,
-                        defaults={'name': topic_slug.replace('-', ' ').title()}
-                    )
-                    
-                    # Create MCQs
+            else:
+                questions = process_short_question(content)
+
+            with transaction.atomic():
+                # Get or create subject
+                subject, _ = Subject.objects.get_or_create(
+                    slug=subject_slug,
+                    defaults={'name': subject_slug.replace('-', ' ').title()}
+                )
+                # Get or create chapter
+                chapter, _ = Chapter.objects.get_or_create(
+                    subject=subject,
+                    slug=chapter_slug,
+                    grade=int(grade),
+                    defaults={'name': chapter_slug.replace('-', ' ').title()}
+                )
+                # Get or create topic
+                topic, _ = Topic.objects.get_or_create(
+                    chapter=chapter,
+                    slug=topic_slug,
+                    defaults={'name': topic_slug.replace('-', ' ').title()}
+                )
+
+                if question_type == 'mcq':
                     mcqs_created = 0
                     for q in questions:
                         MCQ.objects.create(
@@ -177,13 +177,25 @@ def admin_content_upload(request):
                             explanation=q.get('explanation')
                         )
                         mcqs_created += 1
-                
-                context.update({
-                    'success': True,
-                    'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
-                })
-
-            # If you want to handle short questions, implement here or remove if not needed
+                    context.update({
+                        'success': True,
+                        'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
+                    })
+                else:
+                    from .models import ShortQuestion
+                    shorts_created = 0
+                    for q in questions:
+                        ShortQuestion.objects.create(
+                            topic=topic,
+                            question_text=q['question'],
+                            answer=q['answer'],
+                            marks=q.get('marks')
+                        )
+                        shorts_created += 1
+                    context.update({
+                        'success': True,
+                        'message': f'Successfully uploaded and processed {shorts_created} Short Questions'
+                    })
 
         except Exception as e:
             context['error'] = f'Error processing file: {str(e)}'
