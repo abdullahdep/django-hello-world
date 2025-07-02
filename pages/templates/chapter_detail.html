@@ -1,4 +1,4 @@
-   <!--  chapter topics page  -->
+<!--  chapter topics page  -->
 
 {% extends 'layouts/layouts.html' %}
 {% load static %}
@@ -97,10 +97,16 @@ function showTestOptions(topic) {
     // Set topic title
     topicTitle.textContent = topic;
     
-    // Update test links
-    const baseUrl = `/test/${encodeURIComponent(topic)}`;
-    mcqLink.href = `${baseUrl}/mcq`;
-    shortLink.href = `${baseUrl}/short`;
+    // Get context variables from Django template
+    const subjectSlug = '{{ subject.slug }}';
+    const grade = '{{ grade }}';
+    const chapterSlug = '{{ chapter.slug }}';
+    // Slugify topic (replace spaces with dashes and lowercase)
+    const topicSlug = topic.toLowerCase().replace(/\s+/g, '-');
+    
+    // Update test links with full path
+    mcqLink.href = `/test/${subjectSlug}/${grade}/${chapterSlug}/${topicSlug}/mcq/`;
+    shortLink.href = `/test/${topicSlug}/short/`;
     
     // Show modal
     modal.classList.remove('hidden');

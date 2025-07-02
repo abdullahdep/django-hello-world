@@ -373,8 +373,18 @@ def mcq_test_view(request, subject_slug, grade, chapter_slug, topic_slug):
 
 @login_required
 def short_test_view(request, topic_slug):
-    # Similar implementation for short questions
-    pass
+    from .models import ShortQuestion, Topic
+    # Find the topic object
+    topic = Topic.objects.filter(slug=topic_slug).first()
+    short_questions = []
+    if topic:
+        short_questions = ShortQuestion.objects.filter(topic=topic)
+    context = {
+        'short_questions': short_questions,
+        'topic': topic.name if topic else topic_slug.replace('-', ' ').title(),
+        'total_questions': len(short_questions),
+    }
+    return render(request, 'test/short_test.html', context)
 
 
 def html_sitemap(request):
