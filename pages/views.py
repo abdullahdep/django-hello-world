@@ -374,11 +374,13 @@ def mcq_test_view(request, subject_slug, grade, chapter_slug, topic_slug):
 @login_required
 def short_test_view(request, topic_slug):
     from .models import ShortQuestion, Topic
+    import random
     # Find the topic object
     topic = Topic.objects.filter(slug=topic_slug).first()
     short_questions = []
     if topic:
-        short_questions = ShortQuestion.objects.filter(topic=topic)
+        all_questions = list(ShortQuestion.objects.filter(topic=topic))
+        short_questions = random.sample(all_questions, min(5, len(all_questions)))
     context = {
         'short_questions': short_questions,
         'topic': topic.name if topic else topic_slug.replace('-', ' ').title(),
