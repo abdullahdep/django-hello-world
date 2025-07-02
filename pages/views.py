@@ -380,7 +380,7 @@ def short_test_view(request, topic_slug):
     short_questions = []
     if topic:
         all_questions = list(ShortQuestion.objects.filter(topic=topic))
-        short_questions = random.sample(all_questions, min(5, len(all_questions)))
+        short_questions = random.sample(all_questions, min(7, len(all_questions)))
     context = {
         'short_questions': short_questions,
         'topic': topic.name if topic else topic_slug.replace('-', ' ').title(),

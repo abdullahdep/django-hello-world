@@ -17,14 +17,14 @@
     </div>
     {% endif %}
 
-    <div class="bg-card border border-border rounded-lg p-6">
+    <div class="bg-card bground rounded-lg p-6">
         <form method="POST" enctype="multipart/form-data" class="space-y-6">
             {% csrf_token %}
 
             <div>
-                <label class="block text-sm font-medium mb-2">Question Type</label>
+                <label class="block text-sm font-medium mb-2 ">Question Type</label>
                 <select name="question_type"
-                    class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2">
+                    class="w-full h-10 primary rounded-md border border-input bg-transparent px-3 py-2">
                     <option value="mcq">Multiple Choice Questions</option>
                     <option value="short">Short Questions</option>
                 </select>
@@ -33,14 +33,14 @@
             <div>
                 <label class="block text-sm font-medium mb-2">Subject</label>
                 <div class="select-wrapper">
-                    <select name="subject" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2"
+                    <select name="subject" class="w-full primary h-10 rounded-md border border-input bg-transparent px-3 py-2"
                         onchange="loadGradeChapters(this.value)">
                         <option value="">Select Subject</option>
                         {% for subject in subjects %}
                         <option value="{{ subject.slug }}">{{ subject.name }}</option>
                         {% endfor %}
                     </select>
-                    <svg class="loading-spin h-4 w-4 text-primary hidden" id="subject-loading" viewBox="0 0 24 24">
+                    <svg class="loading-spin h-4 w-4 text-primary  hidden" id="subject-loading" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
                         </circle>
                         <path class="opacity-75" fill="currentColor"
@@ -52,7 +52,7 @@
             <div>
                 <label class="block text-sm font-medium mb-2">Grade</label>
                 <div class="select-wrapper">
-                    <select name="grade" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2"
+                    <select name="grade" class="w-full h-10 primary rounded-md border border-input bg-transparent px-3 py-2"
                         onchange="loadChapters(document.querySelector('select[name=subject]').value, this.value)">
                         <option value="">Select Grade</option>
                         {% for grade in grades %}
@@ -73,7 +73,7 @@
                 <label class="block text-sm font-medium mb-2">Chapter</label>
                 <div class="select-wrapper">
                     <select name="chapter" id="chapter-select"
-                        class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2"
+                        class="w-full h-10 rounded-md border primary border-input bg-transparent px-3 py-2"
                         onchange="loadTopics(this.value)" disabled>
                         <option value="">Select Chapter</option>
                     </select>
@@ -91,7 +91,7 @@
                 <label class="block text-sm font-medium mb-2">Topic</label>
                 <div class="select-wrapper">
                     <select name="topic" id="topic-select"
-                        class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2" disabled>
+                        class="w-full h-10 rounded-md primary border border-input bg-transparent px-3 py-2" disabled>
                         <option value="">Select Topic</option>
                     </select>
                     <svg class="loading-spin h-4 w-4 text-primary hidden" id="topic-loading" viewBox="0 0 24 24">
@@ -121,8 +121,8 @@
                         <p class="text-xs text-muted-foreground mb-4">
                             Make sure your file is saved with UTF-8 encoding
                         </p>
-                        <input type="file" name="document" accept=".txt" class="hidden" id="file-upload">
-                        <label for="file-upload" class="button button-outline cursor-pointer">
+                        <input type="file" name="document" accept=".txt" class="hidden " id="file-upload">
+                        <label for="file-upload" class="button button-outline primary cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -136,13 +136,13 @@
                 </div>
             </div>
 
-            <button type="submit" class="w-full button button-primary">
+            <button type="submit" class="w-full button button-primary primary">
                 Upload Content
             </button>
         </form>
     </div>
 
-    <div class="mt-8 bg-card border border-border rounded-lg p-6">
+    <div class="mt-8 bg-card border border-border bground rounded-lg p-6">
         <h2 class="text-xl font-semibold mb-4">Document Format Guidelines</h2>
 
         <div class="space-y-6">
