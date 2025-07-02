@@ -350,7 +350,22 @@ def chapter_detail(request, subject_slug, chapter_slug):
 
 @login_required
 def mcq_test_view(request, subject_slug):
-    mcqs = MCQ.objects.filter(topic__chapter__subject__slug=subject_slug)
+    from .models import MCQ
+    import random
+    all_mcqs = list(MCQ.objects.all())
+    mcqs = random.sample(all_mcqs, min(10, len(all_mcqs)))
+    checked = False
+    results = []
+    if request.method == 'POST':
+        checked = True
+        for idx, mcq in enumerate(mcqs, 1):
+            user_answer = request.POST.get(f'q{idx}')
+            correct = user_answer == mcq.correct_answer
+            results.append({
+                'user_answer': user_answer,
+                'correct': correct,
+                'correct_answer': mcq.correct_answer
+            })
     context = {
         'mcqs': [
             {
@@ -361,8 +376,10 @@ def mcq_test_view(request, subject_slug):
             }
             for mcq in mcqs
         ],
-        'topic': subject_slug.replace('-', ' ').title(),
-        'total_questions': mcqs.count(),
+        'topic': 'All MCQs',
+        'total_questions': len(mcqs),
+        'checked': checked,
+        'results': results,
     }
     return render(request, 'test/mcq_test.html', context)
 

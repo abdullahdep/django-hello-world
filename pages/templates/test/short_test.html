@@ -4,9 +4,14 @@
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 py-12">
     <h1 class="text-3xl font-bold mb-8">Short Questions Test: {{ topic }}</h1>
-    <p class="text-muted-foreground mb-8">Total Questions: {{ total_questions }}</p>
 
-    <form method="post" class="space-y-8">
+    <p class="text-muted-foreground mb-8">Total Questions: {{ total_questions }}</p>
+    <div class="flex items-center gap-4 mt-2">
+        <span class="font-semibold">Time Remaining:</span>
+        <span id="timer" class="text-lg font-mono text-primary"></span>
+    </div>
+
+    <form method="post" class="space-y-8" id="shortTestForm">
         {% csrf_token %}
         {% for sq in short_questions %}
         <div class="bg-card border border-border rounded-lg p-6">
@@ -26,6 +31,31 @@
         </div>
         {% endif %}
     </form>
+    {% if short_questions %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Timer: 3 minutes per short question
+        const totalMinutes = {{ total_questions }} * 3;
+        let timeLeft = totalMinutes * 60; // seconds
+        const timerDisplay = document.getElementById('timer');
+        const form = document.getElementById('shortTestForm');
+
+        function updateTimer() {
+            const min = Math.floor(timeLeft / 60);
+            const sec = timeLeft % 60;
+            timerDisplay.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                // Auto-submit the form
+                if (form) form.submit();
+            }
+            timeLeft--;
+        }
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+    });
+    </script>
+    {% endif %}
     {% if not short_questions %}
     <div class="text-center py-12">
         <h2 class="text-2xl font-semibold mb-4">No Short Questions Available</h2>
