@@ -15,6 +15,6 @@ urlpatterns = [
     path('api/chapters/<str:subject_slug>/<int:grade>/', views.get_grade_chapters, name='get_grade_chapters'),
     # Removed test_view and test_review as those views no longer exist
     path('test/<str:topic_slug>/short/', views.short_test_view, name='short_test'),
-    path('test/<str:subject_slug>/<int:grade>/<str:chapter_slug>/<str:topic_slug>/mcq/', views.mcq_test_view, name='mcq_test'),
+path('test/<str:subject_slug>/mcq/', views.mcq_test_view, name='mcq_test'),
     path('sitemap/', views.html_sitemap, name='html_sitemap'),
 ]

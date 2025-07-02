@@ -105,7 +105,7 @@ function showTestOptions(topic) {
     const topicSlug = topic.toLowerCase().replace(/\s+/g, '-');
     
     // Update test links with full path
-    mcqLink.href = `/test/${subjectSlug}/${grade}/${chapterSlug}/${topicSlug}/mcq/`;
+    mcqLink.href = `/test/${subjectSlug}/mcq/`;
     shortLink.href = `/test/${topicSlug}/short/`;
     
     // Show modal

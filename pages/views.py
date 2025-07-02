@@ -349,13 +349,8 @@ def chapter_detail(request, subject_slug, chapter_slug):
 
 
 @login_required
-def mcq_test_view(request, subject_slug, grade, chapter_slug, topic_slug):
-    mcqs = MCQ.objects.filter(
-        topic__chapter__subject__slug=subject_slug,
-        topic__chapter__grade=grade,
-        topic__chapter__slug=chapter_slug,
-        topic__slug=topic_slug
-    )
+def mcq_test_view(request, subject_slug):
+    mcqs = MCQ.objects.filter(topic__chapter__subject__slug=subject_slug)
     context = {
         'mcqs': [
             {
@@ -366,7 +361,7 @@ def mcq_test_view(request, subject_slug, grade, chapter_slug, topic_slug):
             }
             for mcq in mcqs
         ],
-        'topic': topic_slug.replace('-', ' ').title(),
+        'topic': subject_slug.replace('-', ' ').title(),
         'total_questions': mcqs.count(),
     }
     return render(request, 'test/mcq_test.html', context)
