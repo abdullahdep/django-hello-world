@@ -10,8 +10,13 @@ import json
 import re
 import os
 from datetime import datetime
-from .models import Subject, Chapter, Topic, MCQ
+from .models import Subject, Chapter, Topic, MCQ, ShortQuestion
 from django.db import transaction
+from django.http import HttpResponse
+from django.utils import timezone
+from hashlib import sha256
+import datetime
+import random
 
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -182,7 +187,6 @@ def admin_content_upload(request):
                         'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
                     })
                 else:
-                    from .models import ShortQuestion
                     shorts_created = 0
                     for q in questions:
                         ShortQuestion.objects.create(
@@ -404,4 +408,122 @@ def short_test_view(request, topic_slug):
 def html_sitemap(request):
     subjects = Subject.objects.all().prefetch_related('chapters__topics')
     return render(request, 'pages/html_sitemap.html', {'subjects': subjects})
+
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+from .models import Subject, MCQ, ShortQuestion
+
+def is_admin(user):
+    return user.is_superuser or user.is_staff
+
+@user_passes_test(is_admin)
+def manage_content(request):
+    # Get filter parameters
+    q_type = request.GET.get('type')
+    subject = request.GET.get('subject')
+    grade = request.GET.get('grade')
+    
+    # Start with all questions
+    mcqs = MCQ.objects.all()
+    short_questions = ShortQuestion.objects.all()
+    
+    # Apply filters
+    if subject:
+        mcqs = mcqs.filter(topic__chapter__subject__slug=subject)
+        short_questions = short_questions.filter(topic__chapter__subject__slug=subject)
+    
+    if grade:
+        mcqs = mcqs.filter(topic__chapter__grade=grade)
+        short_questions = short_questions.filter(topic__chapter__grade=grade)
+    
+    # Combine or filter by type
+    if q_type == 'mcq':
+        questions = mcqs
+    elif q_type == 'short':
+        questions = short_questions
+    else:
+        # Combine both types if no specific type is selected
+        questions = list(mcqs) + list(short_questions)
+    
+    context = {
+        'questions': questions,
+        'subjects': Subject.objects.all(),
+        'grades': range(1, 13),  # Grades 1-12
+        'current_type': q_type,
+        'current_subject': subject,
+        'current_grade': grade,
+    }
+    
+    return render(request, 'admin_user/manage_content.html', context)
+
+def generate_jazzcash_form(request):
+    price = "500"  # PKR 500 as per your premium plan
+    bill_ref = f"BILL-{int(time.time())}"
+    
+    pp_Amount = price + "00"  # Amount in cents/paisa
+    pp_BillReference = bill_ref
+    pp_Description = "Safar Academy Premium Subscription"
+    pp_Language = "EN"
+    pp_MerchantID = settings.JAZZCASH_MERCHANT_ID
+    pp_Password = settings.JAZZCASH_PASSWORD
+    
+    # Get current date and time
+    pp_TxnDateTime = timezone.now().strftime('%Y%m%d%H%M%S')
+    
+    # Generate a unique transaction reference
+    pp_TxnRefNo = f"T{pp_TxnDateTime}{random.randint(1,10000)}"
+    
+    pp_Version = "1.1"
+    pp_ReturnURL = settings.JAZZCASH_RETURN_URL
+    
+    # Prepare string to generate hash
+    hash_string = (
+        f"{pp_Amount}|"
+        f"{pp_BillReference}|"
+        f"{pp_Description}|"
+        f"{pp_Language}|"
+        f"{pp_MerchantID}|"
+        f"{pp_Password}|"
+        f"{pp_ReturnURL}|"
+        f"{pp_TxnDateTime}|"
+        f"{pp_TxnRefNo}|"
+        f"{pp_Version}|"
+        f"{settings.JAZZCASH_HASH_KEY}"
+    )
+    
+    pp_SecureHash = sha256(hash_string.encode()).hexdigest()
+    
+    context = {
+        'pp_Amount': pp_Amount,
+        'pp_BillReference': pp_BillReference,
+        'pp_Description': pp_Description,
+        'pp_Language': pp_Language,
+        'pp_MerchantID': pp_MerchantID,
+        'pp_TxnDateTime': pp_TxnDateTime,
+        'pp_TxnRefNo': pp_TxnRefNo,
+        'pp_Version': pp_Version,
+        'pp_SecureHash': pp_SecureHash,
+        'pp_ReturnURL': pp_ReturnURL,
+    }
+    
+    return render(request, 'premium/jazzcash-form.html', context)
+
+def payment_callback(request):
+    # Handle the callback from JazzCash
+    if request.method == 'POST':
+        pp_ResponseCode = request.POST.get('pp_ResponseCode')
+        pp_ResponseMessage = request.POST.get('pp_ResponseMessage')
+        
+        if pp_ResponseCode == '000':
+            # Payment successful
+            # Activate user's premium subscription
+            user = request.user
+            # Add your subscription activation logic here
+            messages.success(request, "Payment successful! Your premium subscription is now active.")
+            return redirect('dashboard')
+        else:
+            messages.error(request, f"Payment failed: {pp_ResponseMessage}")
+            return redirect('premium')
+    
+    return HttpResponse("Invalid request", status=400)
 

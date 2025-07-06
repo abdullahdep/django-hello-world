@@ -4,3 +4,4 @@ django-allauth[socialaccount]
 django-environ
 whitenoise  
 requests
+python-dotenv

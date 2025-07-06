@@ -1,0 +1,89 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Manage Content</h1>
+        <a href="{% url 'admin_content_upload' %}" class="button button-primary">Upload New Content</a>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-card border border-border rounded-lg p-6 mb-6">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Question Type</label>
+                <select name="type" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2">
+                    <option value="">All Types</option>
+                    <option value="mcq" {% if current_type == 'mcq' %}selected{% endif %}>MCQ</option>
+                    <option value="short" {% if current_type == 'short' %}selected{% endif %}>Short Questions</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Subject</label>
+                <select name="subject" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2">
+                    <option value="">All Subjects</option>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.slug }}" {% if current_subject == subject.slug %}selected{% endif %}>
+                        {{ subject.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Grade</label>
+                <select name="grade" class="w-full h-10 rounded-md border border-input bg-transparent px-3 py-2">
+                    <option value="">All Grades</option>
+                    {% for grade in grades %}
+                    <option value="{{ grade }}" {% if current_grade == grade|stringformat:"i" %}selected{% endif %}>
+                        Grade {{ grade }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="button button-primary w-full">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Content Table -->
+    <div class="bg-card border border-border rounded-lg overflow-hidden">
+        <table class="w-full">
+            <thead>
+                <tr class="border-b border-border">
+                    <th class="px-6 py-4 text-left text-sm font-medium">Question</th>
+                    <th class="px-6 py-4 text-left text-sm font-medium">Type</th>
+                    <th class="px-6 py-4 text-left text-sm font-medium">Subject</th>
+                    <th class="px-6 py-4 text-left text-sm font-medium">Grade</th>
+                    <th class="px-6 py-4 text-left text-sm font-medium">Topic</th>
+                    <th class="px-6 py-4 text-right text-sm font-medium">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+                {% for question in questions %}
+                <tr>
+                    <td class="px-6 py-4 text-sm">{{ question.question_text|truncatechars:50 }}</td>
+                    <td class="px-6 py-4 text-sm">{{ question.get_type_display|default:"MCQ" }}</td>
+                    <td class="px-6 py-4 text-sm">{{ question.topic.chapter.subject.name }}</td>
+                    <td class="px-6 py-4 text-sm">Grade {{ question.topic.chapter.grade }}</td>
+                    <td class="px-6 py-4 text-sm">{{ question.topic.name }}</td>
+                    <td class="px-6 py-4 text-sm text-right">
+                        <div class="flex justify-end gap-2">
+                            <a href="#" class="button button-outline button-sm">Edit</a>
+                            <button class="button button-error button-sm">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-muted-foreground">
+                        No questions found. <a href="{% url 'admin_content_upload' %}" class="text-primary hover:underline">Upload some content</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

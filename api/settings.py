@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -194,4 +196,11 @@ ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+
+# JazzCash Configuration
+JAZZCASH_MERCHANT_ID = os.getenv('JAZZCASH_MERCHANT_ID')
+JAZZCASH_PASSWORD = os.getenv('JAZZCASH_PASSWORD')
+JAZZCASH_HASH_KEY = os.getenv('JAZZCASH_HASH_KEY')
+JAZZCASH_RETURN_URL = os.getenv('JAZZCASH_RETURN_URL')
+JAZZCASH_API_URL = os.getenv('JAZZCASH_API_URL')
 

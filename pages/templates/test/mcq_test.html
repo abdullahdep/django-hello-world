@@ -34,21 +34,35 @@
             </h3>
             <div class="space-y-3 mt-4">
                 {% for option in mcq.options %}
+                {% if forloop.first %}
                 <label class="flex items-center p-3 border rounded-md cursor-pointer transition-all hover:border-primary">
-                    <input type="radio" name="q{{ forloop.parentloop.counter }}" value="{{ option }}" class="mr-3" required>
+                    <input type="radio" name="q{{ forloop.parentloop.counter }}" value="A{{ option }}" class="mr-3" required>
+                    <span class="text-primary font-medium mr-2">A</span>
                     <span>{{ option }}</span>
                 </label>
+                {% else %}
+                {% with options_letters="BCDE" %}
+                <label class="flex items-center p-3 border rounded-md cursor-pointer transition-all hover:border-primary">
+                    <input type="radio" name="q{{ forloop.parentloop.counter }}" value="{{ options_letters|slice:forloop.counter0|last }}{{ option }}" class="mr-3" required>
+                    <span class="text-primary font-medium mr-2">{{ options_letters|slice:forloop.counter0|last }}</span>
+                    <span>{{ option }}</span>
+                </label>
+                {% endwith %}
+                {% endif %}
                 {% endfor %}
             </div>
             {% if checked %}
                 <div class="mt-2">
-                    {% if result.correct %}
-                        <span class="text-green-600 font-semibold">Correct!</span>
-                    {% else %}
-                        <span class="text-red-600 font-semibold">Incorrect. Correct answer: {{ mcq.correct_answer }}</span>
+                {% if mcq.correct_answer == mcq.selected_answer %}
+                    <div class="text-success">Correct Answer: {{ mcq.correct_answer }}</div>
+                {% else %}
+                    <div class="text-error">Incorrect! Your Answer: {{ mcq.selected_answer }}</div>
+                    <div class="text-error">Correct Answer: {{ mcq.correct_answer }}</div>
+                    {% if mcq.explanation %}
+                        <div class="text-xs text-muted-foreground mt-1">Explanation: {{ mcq.explanation }}</div>
                     {% endif %}
-                    {% if mcq.explanation %}<div class="text-xs text-muted-foreground mt-1">Explanation: {{ mcq.explanation }}</div>{% endif %}
                 </div>
+                {% endif %}
             {% endif %}
         </div>
         {% endfor %}
