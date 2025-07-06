@@ -17,6 +17,7 @@ from django.utils import timezone
 from hashlib import sha256
 import datetime
 import random
+import time  # Add this import
 
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -504,6 +505,7 @@ def generate_jazzcash_form(request):
         'pp_Version': pp_Version,
         'pp_SecureHash': pp_SecureHash,
         'pp_ReturnURL': pp_ReturnURL,
+        'JAZZCASH_API_URL': settings.JAZZCASH_API_URL,  # Add this to make API URL available in template
     }
     
     return render(request, 'premium/jazzcash-form.html', context)
