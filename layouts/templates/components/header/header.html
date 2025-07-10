@@ -19,14 +19,17 @@ background: linear-gradient(38deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 72%,
         font-style: bold;
     }
     .tilegrdient{
-       background: #833AB4;
-background: linear-gradient(192deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 30%, rgba(252, 176, 69, 1) 100%);
+       background: #97A3B4;
  }
     .gradient_effect{
-        background: #b49a3a;
-background: linear-gradient(198deg, rgba(180, 154, 58, 1) 0%, rgba(226, 75, 40, 1) 36%, rgba(253, 29, 29, 1) 57%, rgba(252, 108, 50, 1) 0%, rgba(252, 176, 69, 1) 100%);
+        background: hsl(217 33% 25%);
+        
   
 }
+    .gradient_effect:hover , .tilegrdient:hover{
+        scale: 1.05;
+            border: 2px solid hsl(26 100% 62%);
+        }
     .success{ color:hsl(142 71% 45%);
     }
   .grey-color{
@@ -134,27 +137,38 @@ body{
 
             <!-- Desktop Navigation -->
             <div class="hidden grey-color md:flex md:items-center md:space-x-8">
+                {% if user.is_staff %}
                 <a href="{% url 'subjects' %}" class="text-muted-foreground hover:text-foreground transition-colors py-2">
                     Subjects
                 </a>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="text-muted-foreground hover:text-foreground transition-colors py-2">
                         Dashboard
                     </a>
-                    {% if user.is_staff %}
-                        <a href="{% url 'admin_content_upload' %}" class="text-muted-foreground hover:text-foreground transition-colors py-2">
-                            Admin
-                        </a>
-                    {% endif %}
-                    {% if not user.profile.is_premium %}
-                     {% if not user.is_staff %}
+                    
+                    
+                     
+
+                    
+                {% endif %}
+
+                <li  class="flex items-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round"
+    class="lucide primary-font lucide-youtube h-5 w-5 mr-2 text-primary">
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-2C18.88 4 12 4 12 4s-6.88 0-8.59.42a2.78 2.78 0 0 0-1.95 2A29.94 29.94 0 0 0 1 12a29.94 29.94 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 2C5.12 20 12 20 12 20s6.88 0 8.59-.42a2.78 2.78 0 0 0 1.95-2A29.94 29.94 0 0 0 23 12a29.94 29.94 0 0 0-.46-5.58z"></path>
+    <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon>
+</svg>
+
+                        <a href="https://www.youtube.com/channel/UCO1frNWNU2Za3NHH7LyiotA">Safar Academy</a>
+                    </li>
+                    {% if not user.is_staff %}
                         <a href="{% url 'premium' %}" class="text-secondary font-medium hover:text-secondary/90 transition-colors py-2">
                             Upgrade
                         </a>
                     {% endif %}
-
-                    {% endif %}
-                {% endif %}
             </div>
 
             <div class="hidden md:flex md:items-center md:space-x-4">
