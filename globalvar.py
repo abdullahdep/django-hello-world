@@ -55,14 +55,6 @@ def global_variables(request):
                 'description': 'Dive into the world of life sciences, anatomy, and ecology.',
                 'anchor': 'https://www.safaracademy.com/subjects/biology'
             },
-            'History': {
-                'description': 'Explore the events that shaped the world throughout history.',
-                'anchor': 'https://www.safaracademy.com/subjects/history'
-            },
-            'Geography': {
-                'description': 'Learn about the world’s geography, maps, and earth sciences.',
-                'anchor': 'https://www.safaracademy.com/subjects/geography'
-            },
             'Computer Science': {
                 'description': 'Master programming, algorithms, and everything related to computers.',
                 'anchor': 'https://www.safaracademy.com/subjects/computer-science'
