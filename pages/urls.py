@@ -14,9 +14,9 @@ urlpatterns = [
     path('api/chapters/<str:subject_slug>/', views.get_chapters, name='get_chapters'),
     path('api/topics/<str:chapter_slug>/', views.get_topics, name='get_topics'),
     path('api/chapters/<str:subject_slug>/<int:grade>/', views.get_grade_chapters, name='get_grade_chapters'),
-    path('test/<str:topic_slug>/short/', views.short_test_view, name='short_test'),
-    path('test/<str:subject_slug>/mcq/', views.mcq_test_view, name='mcq_test'),
     path('sitemap/', views.html_sitemap, name='html_sitemap'),
     path('payment/process/', views.generate_jazzcash_form, name='process_payment'),
     path('payment/callback/', views.payment_callback, name='payment_callback'),
+    path('payment/jazzcash/ipn/', views.jazzcash_ipn, name='jazzcash_ipn'),
+
 ]

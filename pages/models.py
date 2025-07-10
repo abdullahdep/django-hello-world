@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.conf import settings
+
+from django.db import models
+from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)
@@ -102,3 +107,18 @@ class ShortQuestion(models.Model):
 #     selected_option = models.ForeignKey(MCQOption, on_delete=models.CASCADE, null=True, blank=True)
 #     uploaded_image = models.ImageField(upload_to='answers/', null=True, blank=True)
 #     is_correct = models.BooleanField(null=True, blank=True)
+
+class Transaction(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    transaction_ref = models.CharField(max_length=100, unique=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    is_completed = models.BooleanField(default=False)
+    bill_reference = models.CharField(max_length=100)
+    response_code = models.CharField(max_length=3, null=True, blank=True)
+    response_message = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.transaction_ref} - {self.status}"

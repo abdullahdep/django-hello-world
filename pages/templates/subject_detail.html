@@ -1,3 +1,5 @@
+<!-- selected subject page -->
+
 {% extends 'layouts/layouts.html' %}
 {% load static %}
 {% load custom_filters %}
@@ -26,10 +28,11 @@
         </div>
     </div>
 
-    {% if user.is_authenticated and not user.is_premium %}
+    {% if not user.is_premium %}
+    {% if not user.is_staff %}
         {% include 'premium/premium-banner.html' %}
     {% endif %}
-
+    {% endif %}
     <!-- Grade Selection -->
     <div class="mt-12 mb-16">
         <h2 class="text-2xl font-semibold mb-6">Select Your Grade</h2>

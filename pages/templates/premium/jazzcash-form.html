@@ -2,15 +2,21 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <form action="{{ JAZZCASH_API_URL }}" method="POST" id="myCCForm">
-        <input type="hidden" name="pp_Version" value="{{ pp_Version }}">
+    <form action="https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/" method="POST" id="myCCForm">
+        {% csrf_token %}
+        <input type="hidden" name="pp_Version" value="1.1">
         <input type="hidden" name="pp_TxnType" value="MWALLET">
-        <input type="hidden" name="pp_Language" value="{{ pp_Language }}">
+        <input type="hidden" name="pp_Language" value="EN">
         <input type="hidden" name="pp_MerchantID" value="{{ pp_MerchantID }}">
         <input type="hidden" name="pp_SubMerchantID" value="">
         <input type="hidden" name="pp_Password" value="{{ pp_Password }}">
         <input type="hidden" name="pp_BankID" value="TBANK">
         <input type="hidden" name="pp_ProductID" value="RETL">
+        <input type="hidden" name="pp_IsRegisteredCustomer" value="No">
+        <input type="hidden" name="pp_TokenizedCardNumber" value="">
+        <input type="hidden" name="pp_CustomerID" value="{{ request.user.id }}">
+        <input type="hidden" name="pp_CustomerEmail" value="{{ request.user.email }}">
+        <input type="hidden" name="pp_CustomerMobile" value="">
         <input type="hidden" name="pp_TxnRefNo" value="{{ pp_TxnRefNo }}">
         <input type="hidden" name="pp_Amount" value="{{ pp_Amount }}">
         <input type="hidden" name="pp_TxnCurrency" value="PKR">

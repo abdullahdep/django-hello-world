@@ -39,7 +39,23 @@ def global_variables(request):
                 'description': 'Learn the fundamentals of English language and literature.',
                 'anchor': 'login'
             },
+            'English II': {
+                'description': 'Learn the fundamentals of English language and literature.',
+                'anchor': 'login'
+            },
+            'Mr.Chips': {
+                'description': 'Mister Chips',
+                'anchor': 'login'
+            },
+             'General Maths': {
+                'description': 'Learn the fundamentals of English language and literature.',
+                'anchor': 'login'
+            },
             'Mathematics': {
+                'description': 'Study algebra, calculus, and more to excel in Mathematics.',
+                'anchor': 'https://www.safaracademy.com/subjects/mathematics'
+            },
+            'Statistics': {
                 'description': 'Study algebra, calculus, and more to excel in Mathematics.',
                 'anchor': 'https://www.safaracademy.com/subjects/mathematics'
             },
@@ -55,6 +71,10 @@ def global_variables(request):
                 'description': 'Dive into the world of life sciences, anatomy, and ecology.',
                 'anchor': 'https://www.safaracademy.com/subjects/biology'
             },
+            'General Science': {
+                'description': 'Explore the events that shaped the world throughout history.',
+                'anchor': 'https://www.safaracademy.com/subjects/history'
+            },
             'Computer Science': {
                 'description': 'Master programming, algorithms, and everything related to computers.',
                 'anchor': 'https://www.safaracademy.com/subjects/computer-science'
@@ -63,106 +83,779 @@ def global_variables(request):
 
         # Chapters Data (Detailed structure for each subject and grade)
         'chapters': {
+            'statistics': {
+                11:[
+    {
+        "name": "Introduction to Statistics",
+        "slug": "introduction-to-statistics",
+        "topics": [
+            "1.1 Introduction",
+            "1.2 Importance of Statistics in Various Disciplines",
+            "1.3 Variables",
+            "1.4 Descriptive and Inferential Statistics",
+            "1.5 Sources of Friday",
+            "Exercise 1"
+        ]
+    },
+    {
+        "name": "Representation of Data",
+        "slug": "representation-of-data",
+        "topics": [
+            "2.1 Introduction",
+            "2.2 Classification",
+            "2.3 Tabulation",
+            "2.4 Frequency Distribution",
+            "2.5 Cumulative Frequency Distribution",
+            "2.6 Graphic representation of Data",
+            "2.7 Bivariate Frequency Distribution",
+            "Exercise 2"
+        ]
+    },
+    {
+        "name": "Measure of Location",
+        "slug": "measure-of-location",
+        "topics": [
+            "3.1 Introduction",
+            "3.2 Arithmetic Mean and Weighted Mean",
+            "3.3 Geometric Mean",
+            "3.4 Harmonic Mean",
+            "3.5 Median",
+            "3.6 Quantiles",
+            "3.7 Mode",
+            "3.8 Selecting a Suitable Measure of Central Tendency",
+            "Exercise 3"
+        ]
+    },
+    {
+        "name": "Measure of Dispersion",
+        "slug": "measure-of-dispersion",
+        "topics": [
+            "4.1 Introduction",
+            "4.2 Co-efficient Of Variation and Other Relative Measures",
+            "4.3 Moments",
+            "4.4 Sheppard Correction for Grouping Error",
+            "4.5 Skewness",
+            "Exercise 4"
+        ]
+    },
+    {
+        "name": "Index Numbers",
+        "slug": "index-numbers",
+        "topics": [
+            "5.1 Introduction",
+            "5.2 Construction of Price Index Number",
+            "5.3 Unweighted Index Numbers",
+            "5.4 Weighted Index Number",
+            "5.5 Consumer Price Index (CPI) and Wholesale Price Index (WPI)"
+        ]
+    },
+    {
+        "name": "Probability",
+        "slug": "probability",
+        "topics": [
+            "6.1 Introduction",
+            "6.2 Permutations",
+            "6.3 Combinations",
+            "6.4 Probability"
+        ]
+    },
+    {
+        "name": "Random Variables",
+        "slug": "random-variables",
+        "topics": [
+            "7.1 Introduction",
+            "7.2 Random Numbers and Their Generation",
+            "7.3 Application of Random Numbers",
+            "7.4 Concept of Random Variables and Their Construction from Different Fields",
+            "7.5 Discrete and Continuous Random Variables"
+        ]
+    },
+    {
+        "name": "Probability Distributions",
+        "slug": "probability-distributions",
+        "topics": [
+            "8.1 Introduction",
+            "8.2 Probability Mass Function",
+            "8.3 Probability Density Function",
+            "8.4 Simple Univariate Discrete and Continuous Distributions",
+            "8.5 Drawing of Probability Mass Function and Probability Density Function",
+            "8.6 Expectation and Variance of the Simple Discrete Random Variable",
+            "8.9 Distribution Function",
+            "Exercise 8"
+        ]
+    },
+    {
+        "name": "Binomial and Hypergeometric Probability Distribution",
+        "slug": "binomial-and-hypergeometric-probability-distribution",
+        "topics": [
+            "9.1 Introduction",
+            "9.2 Binomial Probability Distribution",
+            "9.3 Hypergeometric Distribution and Hypergeometric Experiment",
+            "Exercise 9"
+        ]
+    }
+]
+,
+12:[
+    {
+        "name": "Normal Distribution",
+        "slug": "normal-distribution",
+        "topics": [
+            "10.1 Normal Distribution",
+            "10.2 Standard Normal Random Variable",
+            "EXERCISE 10.2"
+        ]
+    },
+    {
+        "name": "Sampling Techniques and Sampling Distribution",
+        "slug": "sampling-techniques-and-sampling-distribution",
+        "topics": [
+            "11.1 Population (OR UNIVERSE)",
+            "11.2 Sample",
+            "11.3 Sampling Design",
+            "11.4 Non-Probability (Non-Random) Sampling",
+            "11.5 Probability (Random) Sampling",
+            "11.6 Sample Random Sampling",
+            "11.7 Stratified Sampling",
+            "11.8 Errors",
+            "Exercise 11.1",
+            "11.9 Simple Random Sampling and Sampling Distribution",
+            "11.10 Sampling Distribution of a Statistics",
+            "11.11 Sampling Distributions from General Populations",
+            "11.12 Sampling Distribution of the Sample Mean",
+            "Exercise 11.2",
+            "11.13 Sampling Distribution of the Difference between Two Sample Means",
+            "Exercise 11.3",
+            "11.14 Sampling Distribution of Sample Proportion",
+            "11.15 Sampling Distribution of the Difference Between Two Sample Proportions",
+            "11.16 Other Sampling Distribution",
+            "11.17 Sampling Distribution of the Sample Variance",
+            "Exercise 11.4",
+            "Exercise 11.5"
+        ]
+    },
+    {
+        "name": "Estimation",
+        "slug": "estimation",
+        "topics": [
+            "12.1 Statistical Inference",
+            "12.2 Statistical Estimation",
+            "12.3 Point Estimation of a Parameter",
+            "12.4 Unbiasedness",
+            "12.5 Best Estimator",
+            "12.6 Pooled Estimators from Two Samples",
+            "Exercise 12.1",
+            "12.7 Interval Estimation",
+            "12.8 Confidence Interval for Population Mean",
+            "Exercise 12.2",
+            "12.9 Confidence Interval for Population Proportion of Successes",
+            "Exercise 12.3",
+            "12.10 Comparative Studies",
+            "12.11 Confidence Interval for Difference between Two Population Means",
+            "Exericse 12.14",
+            "12.12 Confidence Interval for Difference between Two Population Proportions",
+            "Exericse 12.15",
+            "Exericse 12.16"
+        ]
+    },
+    {
+        "name": "Hypothesis Testing",
+        "slug": "hypothesis-testing",
+        "topics": [
+            "13.1 The Elements of a Test of Hypothesis",
+            "Exericse 13.1",
+            "13.2 Tests of Hypothesis About a Population Mean",
+            "Exericse 13.2",
+            "13.3 Tests of Hypothesis About a Population Proportion",
+            "Exericse 13.3",
+            "13.4 Test of Hypothesis About the Difference Between Two Population Means (Independent Samples)",
+            "Exericse 13.4",
+            "13.5 Inference About the Difference Between Two Population Means (Dependent Samples)",
+            "Exericse 13.5",
+            "13.6 Test of Hypothesis About the Difference Between Two Population Proportions",
+            "Exercise 13.6"
+        ]
+    },
+    {
+        "name": "Simple Linear Regression and Correlation",
+        "slug": "simple-linear-regression-and-correlation",
+        "topics": [
+            "14.1 Relations between Variables",
+            "14.2 Regression Analysis",
+            "14.3 Curve Fitting",
+            "14.4 Simple Linear Regression",
+            "14.5 The Simple Linear Regression Model",
+            "Exercise 14.1",
+            "14.6 Simple Linear Correlation",
+            "14.7 Correlation Analysis",
+            "Exercise 14.2"
+        ]
+    },
+    {
+        "name": "Association",
+        "slug": "association",
+        "topics": [
+            "15.1 Multinomial Population",
+            "15.2 Attribute (Qualitative Variable)",
+            "15.3 Independence of Attributes",
+            "15.4 Association of Attributes (Correlation of Qualitative Variables)",
+            "Exercise 15.1",
+            "15.5 Two Dimensional Count Data: Contingency Table",
+            "15.6 Test for Statistical Independence",
+            "Exercise 15.2",
+            "15.7 Rank Correlation",
+            "Exercise 15.3",
+            "Exercise 15.4"
+        ]
+    },
+    {
+        "name": "Analysis of Time Series",
+        "slug": "analysis-of-time-series",
+        "topics": [
+            "16.1 Time Series",
+            "16.2 Components of a Time Series",
+            "16.3 Analysis of Time Series",
+            "16.4 Estimation of Secular Trend",
+            "Exercise 16.1",
+            "Exercise 16.2"
+        ]
+    },
+    {
+        "name": "Orientation of Computers",
+        "slug": "orientation-of-computers",
+        "topics": [
+            "17.1 Introduction to Computers",
+            "17.2 History of Computers",
+            "17.3 Types of Computer",
+            "17.4 Classification of Computers",
+            "17.5 Hardware and Software",
+            "17.6 Hardware Components of a Personal Computer",
+            "17.7 Input and Output Devices",
+            "17.8 System Software",
+            "17.9 Operating System",
+            "17.10 Application Software",
+            "17.11 Programming Languages",
+            "17.12 Language Processors and Translators",
+            "17.13 Basic Idea of Writing and Running a Computer Program",
+            "17.14 Number System",
+            "17.15 How Computers Represent Data",
+            "17.16 Binary System as a Foundation of Computer Programming",
+            "Exercise 17.1",
+            "Exercise 17.2"
+        ]
+    }
+]
+,
+            },
+            'general-science':{
+                9:[
+    {
+        "name": "Introduction to Role of Science",
+        "slug": "introduction-to-role-of-science",
+        "topics": [
+            "1.1 History of Science",
+            "1.2 Comcepts Of Science",
+            "1.3 Contribution of Muslims and Pakistani Scientists",
+            "1.4 Branches of Science",
+            "1.5 Role of Science and Technology in our Life"
+        ]
+    },
+    {
+        "name": "Our Life and Chemistry",
+        "slug": "our-life-and-chemistry",
+        "topics": [
+            "2.1 The Basic Building Element Life",
+            "2.2 Organic Chemistry",
+            "2.3 Water",
+            "2.4 Air",
+            "2.5 Importance Element for Life"
+        ]
+    },
+    {
+        "name": "Biochemistry and Biotechnology",
+        "slug": "biochemistry-and-biotechnology",
+        "topics": [
+            "3.1 Metabolism",
+            "3.2 Enzymes",
+            "3.3 Blood and its Functions",
+            "3.4 Genetic Engineering",
+            "3.5 The Role of Biotechnology in Betterment of Crops",
+            "3.6 Antibiotics and Vaccines",
+            "3.7 Recycling of Waste and Scarce Materials"
+        ]
+    },
+    {
+        "name": "Human Health",
+        "slug": "human-health",
+        "topics": [
+            "4.1 Food and its Major Components",
+            "4.2 Balanced Diet",
+            "4.3 Co-ordination and Integration in Body Functions",
+            "4.4 Exercise and Health",
+            "4.5 First Aid"
+        ]
+    },
+    {
+        "name": "Diseases, Cause and Prevention",
+        "slug": "diseases-cause-and-prevention",
+        "topics": [
+            "5.1 Disease Caused by Germs",
+            "5.2 Agents Spreading the Germs",
+            "5.3 Harmful Effects of Smoke and Smoking",
+            "5.4 Mental Diseases",
+            "5.5 Drugs and their Effects"
+        ]
+    },
+    {
+        "name": "Environment and Natural Resources",
+        "slug": "environment-and-natural-resources",
+        "topics": [
+            "6.1 Depletion of Ozone Layer",
+            "6.2 Environmental Pollution",
+            "6.3 Minerals and Fossils Fuels",
+            "6.4 Agriculture and Crops of Pakistan",
+            "6.5 Dairy and Poultry Farming",
+            "6.6 Wildlife and National Parks",
+            "6.7 Effects of Raising Population on Environment"
+        ]
+    }
+],
+10:[
+    {
+        "name": "Energy",
+        "slug": "energy",
+        "topics": [
+            "7.1 Work and Energy",
+            "7.2 Different Forms of Energy",
+            "7.3 Interconversion of Energy",
+            "7.4 Demand of Energy",
+            "7.5 Production of Electrical Energy",
+            "7.6 Measurement of Energy",
+            "7.7 Energy and Environment",
+            "7.8 Degradation of Environment",
+            "7.9 Nuclear Fuel Hazards",
+            "7.10 Conservation of Energy"
+        ]
+    },
+    {
+        "name": "Current Electricity",
+        "slug": "current-electricity",
+        "topics": [
+            "8.1 Electric Current",
+            "8.2 Conventional Current",
+            "8.3 Potential Difference",
+            "8.4 Ohm's Law",
+            "8.5 Resistance",
+            "8.6 Components of a Circuit",
+            "8.7 Direct and Alternating Current",
+            "8.8 Uses of D.C. and A.C.",
+            "8.9 Domestic Electric Supply",
+            "8.10 Measurement of Electric Supply",
+            "8.11 Danger of Electricity and Precautionary Measures",
+            "8.12 Measuring Instruments",
+            "8.13 Analogue and Digital Meters"
+        ]
+    },
+    {
+        "name": "Basic Electronics",
+        "slug": "basic-electronics",
+        "topics": [
+            "9.1 Semi-Conductors",
+            "9.2 Use of Semi-Conductor Diode",
+            "9.3 Radiowaves",
+            "9.4 Computer",
+            "9.5 Analogue/Digital Converters",
+            "9.6 Information Technology"
+        ]
+    },
+    {
+        "name": "Science and Technology",
+        "slug": "science-and-technology",
+        "topics": [
+            "10.1 Role of Science and Technology",
+            "10.2 Lasers",
+            "10.3 Fiber Optics",
+            "10.4 Satellites and Radars",
+            "10.5 Radioactivity",
+            "10.6 X-rays",
+            "10.7 Ultrasound",
+            "10.8 E.C.G. (Electrocardiogram)",
+            "10.9 E.E.G. (Electroencephalography)",
+            "10.10 MRI (Magnetic Resonance Imaging)",
+            "10.11 C.T. Scan (Computerized Tomograph Scan)",
+            "10.12 Angeography",
+            "10.13 Important Industries of Pakistan"
+        ]
+    },
+    {
+        "name": "Space and Nuclear Programme of Pakistan",
+        "slug": "space-and-nuclear-programme-of-pakistan",
+        "topics": [
+            "11.1 Impotance of Space Programme",
+            "11.2 Space Programme of Pakistan",
+            "11.3 Nuclear Power Programme of Pakistan"
+        ]
+    }
+]
+
+
+
+            },
             'mathematics': {
                 9: [
-                    {
-                        'name': 'Algebra and Functions',
-                        'slug': 'algebra-and-functions',
-                        'topics': [
-                            'Quadratic Equations',
-                            'Linear Equations in Two Variables',
-                            'Polynomials',
-                            'Coordinate Geometry'
-                        ]
-                    },
-                    {
-                        'name': 'Number Systems',
-                        'slug': 'number-systems',
-                        'topics': [
-                            'Real Numbers',
-                            'Irrational Numbers',
-                            'Rational Numbers',
-                            'Decimal Representation'
-                        ]
-                    },
-                    {
-                        'name': 'Geometry',
-                        'slug': 'geometry',
-                        'topics': [
-                            'Triangles and Congruence',
-                            'Circles',
-                            'Areas and Perimeters',
-                            'Surface Areas and Volumes'
-                        ]
-                    }
-                ],
+    {
+        "name": "Real Numbers",
+        "slug": "real-numbers",
+        "topics": ["1.1", "1.2", "1.3"]
+    },
+    {
+        "name": "Logarithms",
+        "slug": "logarithms",
+        "topics": ["2.1", "2.2", "2.3", "2.4"]
+    },
+    {
+        "name": "Set and Functions",
+        "slug": "set-and-functions",
+        "topics": ["3.1", "3.2", "3.3"]
+    },
+    {
+        "name": "Factoization and Algebric Manipulation",
+        "slug": "factoization-and-algebric-manipulation",
+        "topics": ["4.1", "4.2", "4.3", "4.4"]
+    },
+    {
+        "name": "Linear Equation and Inequalities",
+        "slug": "linear-equation-and-inequalities",
+        "topics": ["5.1", "5.2"]
+    },
+    {
+        "name": "Trigonometry",
+        "slug": "trigonometry",
+        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6"]
+    },
+    {
+        "name": "Coordinate Geometry",
+        "slug": "coordinate-geometry",
+        "topics": ["7.1", "7.2", "7.3"]
+    },
+    {
+        "name": "Logic",
+        "slug": "logic",
+        "topics": ["8.1"]
+    },
+    {
+        "name": "Similar Figures",
+        "slug": "similar-figures",
+        "topics": ["9.1", "9.2", "9.3", "9.4"]
+    },
+    {
+        "name": "Graphs of Function",
+        "slug": "graphs-of-function",
+        "topics": ["10.1", "10.2"]
+    },
+    {
+        "name": "Loci and Construction",
+        "slug": "loci-and-construction",
+        "topics": ["11.1", "11.2"]
+    },
+    {
+        "name": "Information Handling",
+        "slug": "information-handling",
+        "topics": ["12.1", "12.2"]
+    },
+    {
+        "name": "Probability",
+        "slug": "probability",
+        "topics": ["13.1", "13.2"]
+    }
+]
+,
                 10: [
-                    {
-                        'name': 'Trigonometry',
-                        'slug': 'trigonometry',
-                        'topics': [
-                            'Introduction to Trigonometry',
-                            'Trigonometric Ratios',
-                            'Heights and Distances',
-                            'Applications'
-                        ]
-                    },
-                    {
-                        'name': 'Statistics and Probability',
-                        'slug': 'statistics-and-probability',
-                        'topics': [
-                            'Mean, Median, Mode',
-                            'Probability Theory',
-                            'Data Handling',
-                            'Graphical Representation'
-                        ]
-                    }
-                ],
+    {
+        "name": "Quadratic Equations",
+        "slug": "quadratic-equations",
+        "topics": ["1.1", "1.2", "1.3", "1.4"]
+    },
+    {
+        "name": "Theory of Quadratic Equations",
+        "slug": "theory-of-quadratic-equations",
+        "topics": ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8"]
+    },
+    {
+        "name": "Variations",
+        "slug": "variations",
+        "topics": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]
+    },
+    {
+        "name": "Partial Fractions",
+        "slug": "partial-fractions",
+        "topics": ["4.1", "4.2", "4.3", "4.4"]
+    },
+    {
+        "name": "Sets and Functions",
+        "slug": "sets-and-functions",
+        "topics": ["5.1", "5.2", "5.3", "5.4", "5.5"]
+    },
+    {
+        "name": "Basic Statistics",
+        "slug": "basic-statistics",
+        "topics": ["6.1", "6.2", "6.3"]
+    },
+    {
+        "name": "Introduction to Trigonometry",
+        "slug": "introduction-to-trigonometry",
+        "topics": ["7.1", "7.2", "7.3", "7.4", "7.5"]
+    },
+    {
+        "name": "Projection of a Side of a Triangle",
+        "slug": "projection-of-a-side-of-a-triangle",
+        "topics": ["8.1", "8.2"]
+    },
+    {
+        "name": "Chords of a Circle",
+        "slug": "chords-of-a-circle",
+        "topics": ["9.1", "9.2"]
+    },
+    {
+        "name": "Tangent to a Circle",
+        "slug": "tangent-to-a-circle",
+        "topics": ["10.1", "10.2", "10.3"]
+    },
+    {
+        "name": "Chords and Arcs",
+        "slug": "chords-and-arcs",
+        "topics": ["11.1"]
+    },
+    {
+        "name": "Angle in a Segment of a Circle",
+        "slug": "angle-in-a-segment-of-a-circle",
+        "topics": ["12.1"]
+    },
+    {
+        "name": "Practical Geometry - Circles",
+        "slug": "practical-geometry-circles",
+        "topics": ["13.1", "13.2", "13.3"]
+    }
+]
+,
                 11: [
-                    {
-                        'name': 'Advanced Calculus',
-                        'slug': 'advanced-calculus',
-                        'topics': [
-                            'Limits and Derivatives',
-                            'Applications of Derivatives',
-                            'Integrals',
-                            'Differential Equations'
-                        ]
-                    },
-                    {
-                        'name': 'Complex Numbers',
-                        'slug': 'complex-numbers',
-                        'topics': [
-                            'Introduction to Complex Numbers',
-                            'Algebraic Properties',
-                            'Polar Form',
-                            'Applications in 2D Geometry'
-                        ]
-                    }
-                ],
+    {
+        "name": "Complex Numbers",
+        "slug": "complex-numbers",
+        "topics": ["1.1", "1.2", "1.3", "1.4", "1.5"]
+    },
+    {
+        "name": "Function and Graphs",
+        "slug": "function-and-graphs",
+        "topics": ["2.1", "2.2"]
+    },
+    {
+        "name": "Theory of Quadratic Function",
+        "slug": "theory-of-quadratic-function",
+        "topics": ["3.1", "3.2"]
+    },
+    {
+        "name": "Matrices and Determinants",
+        "slug": "matrices-and-determinants",
+        "topics": ["4.1", "4.2", "4.3"]
+    },
+    {
+        "name": "Partial Fractions",
+        "slug": "partial-fractions",
+        "topics": ["5.1", "5.2"]
+    },
+    {
+        "name": "Sequence and Series",
+        "slug": "sequence-and-series",
+        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11"]
+    },
+    {
+        "name": "Permutations and Combinations",
+        "slug": "permutations-and-combinations",
+        "topics": ["7.1", "7.2", "7.3", "7.4"]
+    },
+    {
+        "name": "Mathematical Inductions and Binomial Theorem",
+        "slug": "mathematical-inductions-and-binomial-theorem",
+        "topics": ["8.1", "8.2", "8.3", "8.4"]
+    },
+    {
+        "name": "Division of Polynomials",
+        "slug": "division-of-polynomials",
+        "topics": ["9.1", "9.2"]
+    },
+    {
+        "name": "Trigonometric Identities",
+        "slug": "trigonometric-identities",
+        "topics": ["10.1", "10.2", "10.3", "10.4"]
+    },
+    {
+        "name": "Trigonometric Functions and their Graphs",
+        "slug": "trigonometric-functions-and-their-graphs",
+        "topics": ["11.1", "11.2", "11.3"]
+    },
+    {
+        "name": "Limit and Continuity",
+        "slug": "limit-and-continuity",
+        "topics": ["12.1", "12.2", "12.3"]
+    },
+    {
+        "name": "Differentiation",
+        "slug": "differentiation",
+        "topics": ["13.1", "13.2", "13.3"]
+    },
+    {
+        "name": "Vectors in Space",
+        "slug": "vectors-in-space",
+        "topics": ["14.1", "14.2", "14.3", "14.4"]
+    }
+]
+,
                 12: [
-                    {
-                        'name': 'Linear Algebra',
-                        'slug': 'linear-algebra',
-                        'topics': [
-                            'Matrices and Determinants',
-                            'Vector Algebra',
-                            'Linear Programming',
-                            'Three Dimensional Geometry'
-                        ]
-                    },
-                    {
-                        'name': 'Advanced Integration',
-                        'slug': 'advanced-integration',
-                        'topics': [
-                            'Definite Integrals',
-                            'Applications in Physics',
-                            'Area Under Curves',
-                            'Differential Equations'
-                        ]
-                    }
-                ]
+    {
+        "name": "Functions and Limits",
+        "slug": "functions-and-limits",
+        "topics": ["1.1", "1.2", "1.3", "1.4", "1.5"]
+    },
+    {
+        "name": "Differentiation",
+        "slug": "differentiation",
+        "topics": ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8", "2.9", "2.10"]
+    },
+    {
+        "name": "Integration",
+        "slug": "integration",
+        "topics": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8"]
+    },
+    {
+        "name": "Introduction to Analytic Geometry",
+        "slug": "introduction-to-analytic-geometry",
+        "topics": ["4.1", "4.2", "4.3", "4.4", "4.5"]
+    },
+    {
+        "name": "Linear Inequalities and Linear Programming",
+        "slug": "linear-inequalities-and-linear-programming",
+        "topics": ["5.1", "5.2", "5.3"]
+    },
+    {
+        "name": "Conic Sections",
+        "slug": "conic-sections",
+        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9"]
+    },
+    {
+        "name": "Vectors",
+        "slug": "vectors",
+        "topics": ["7.1", "7.2", "7.3", "7.4", "7.5"]
+    }
+]
+
             },
+            'general-maths':{
+                9:[
+    {
+        "name": "Percentage, Ratio and Proportion",
+        "slug": "percentage-ratio-and-proportion",
+        "topics": ["1.1", "1.2", "1.3", "1.4", "1.5"]
+    },
+    {
+        "name": "Zakat, Ushr and Inheritance",
+        "slug": "zakat-ushr-and-inheritance",
+        "topics": ["2.1"]
+    },
+    {
+        "name": "Business Mathematics",
+        "slug": "business-mathematics",
+        "topics": ["3.1", "3.2", "3.3"]
+    },
+    {
+        "name": "Financial Mathematics",
+        "slug": "financial-mathematics",
+        "topics": ["4.1", "4.2", "4.3", "4.4", "4.5"]
+    },
+    {
+        "name": "Exponent and Logarithms",
+        "slug": "exponent-and-logarithms",
+        "topics": ["5.1", "5.2", "5.3"]
+    },
+    {
+        "name": "Trigonometry",
+        "slug": "trigonometry",
+        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5"]
+    },
+    {
+        "name": "Arithmetic and Geometric Sequences",
+        "slug": "arithmetic-and-geometric-sequences",
+        "topics": ["7.1", "7.2", "7.3", "7.4", "7.5"]
+    },
+    {
+        "name": "Sets and Functions",
+        "slug": "sets-and-functions",
+        "topics": ["8.1", "8.2"]
+    },
+    {
+        "name": "Linear Graphs",
+        "slug": "linear-graphs",
+        "topics": ["9.1", "9.2", "9.3"]
+    },
+    {
+        "name": "Basic Statistics",
+        "slug": "basic-statistics",
+        "topics": ["10.1", "10.2", "10.3", "10.4"]
+    }
+],
+10:[
+    {
+        "name": "Algebraic Formulas and Applications",
+        "slug": "algebraic-formulas-and-applications",
+        "topics": ["1.1", "1.2", "1.3"]
+    },
+    {
+        "name": "Factorization",
+        "slug": "factorization",
+        "topics": ["2.1", "2.2", "2.3", "2.4", "2.5"]
+    },
+    {
+        "name": "Algebraic Manipulation",
+        "slug": "algebraic-manipulation",
+        "topics": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6"]
+    },
+    {
+        "name": "Linear Equations and Inequations",
+        "slug": "linear-equations-and-inequations",
+        "topics": ["4.1", "4.2"]
+    },
+    {
+        "name": "Quadratic Equations",
+        "slug": "quadratic-equations",
+        "topics": ["5.1", "5.2", "5.3"]
+    },
+    {
+        "name": "Matrices and Determinants",
+        "slug": "matrices-and-determinants",
+        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6"]
+    },
+    {
+        "name": "Fundamentals of Geometry",
+        "slug": "fundamentals-of-geometry",
+        "topics": ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6"]
+    },
+    {
+        "name": "Practical Geometry",
+        "slug": "practical-geometry",
+        "topics": ["8.1"]
+    },
+    {
+        "name": "Areas and Volumes",
+        "slug": "areas-and-volumes",
+        "topics": ["9.1", "9.2", "9.3"]
+    },
+    {
+        "name": "Introduction of Coordinate Geometry",
+        "slug": "introduction-of-coordinate-geometry",
+        "topics": ["10.1"]
+    }
+]
+,            },
             'biology': {
                 9: [
                     {
@@ -706,7 +1399,182 @@ def global_variables(request):
 ]
             }
             ,
+            'mrchips':{
+                12:[
+    {
+        "name": "Chapter 1",
+        "slug": "chapter-1",
+        "topics": ["Chapter 1"]
+    },
+    {
+        "name": "Chapter 2",
+        "slug": "chapter-2",
+        "topics": ["Chapter 2"]
+    },
+    {
+        "name": "Chapter 3",
+        "slug": "chapter-3",
+        "topics": ["Chapter 3"]
+    },
+    {
+        "name": "Chapter 4",
+        "slug": "chapter-4",
+        "topics": ["Chapter 4"]
+    },
+    {
+        "name": "Chapter 5",
+        "slug": "chapter-5",
+        "topics": ["Chapter 5"]
+    },
+    {
+        "name": "Chapter 6",
+        "slug": "chapter-6",
+        "topics": ["Chapter 6"]
+    },
+    {
+        "name": "Chapter 7",
+        "slug": "chapter-7",
+        "topics": ["Chapter 7"]
+    },
+    {
+        "name": "Chapter 8",
+        "slug": "chapter-8",
+        "topics": ["Chapter 8"]
+    },
+    {
+        "name": "Chapter 9",
+        "slug": "chapter-9",
+        "topics": ["Chapter 9"]
+    },
+    {
+        "name": "Chapter 10",
+        "slug": "chapter-10",
+        "topics": ["Chapter 10"]
+    },
+    {
+        "name": "Chapter 11",
+        "slug": "chapter-11",
+        "topics": ["Chapter 11"]
+    },
+    {
+        "name": "Chapter 12",
+        "slug": "chapter-12",
+        "topics": ["Chapter 12"]
+    },
+    {
+        "name": "Chapter 13",
+        "slug": "chapter-13",
+        "topics": ["Chapter 13"]
+    },
+    {
+        "name": "Chapter 14",
+        "slug": "chapter-14",
+        "topics": ["Chapter 14"]
+    },
+    {
+        "name": "Chapter 15",
+        "slug": "chapter-15",
+        "topics": ["Chapter 15"]
+    },
+    {
+        "name": "Chapter 16",
+        "slug": "chapter-16",
+        "topics": ["Chapter 16"]
+    },
+    {
+        "name": "Chapter 17",
+        "slug": "chapter-17",
+        "topics": ["Chapter 17"]
+    },
+    {
+        "name": "Chapter 18",
+        "slug": "chapter-18",
+        "topics": ["Chapter 18"]
+    }
+]
+
+            },
             'english':{
+                9:[
+    {
+        "name": "The Saviour of Mankind",
+        "slug": "the-saviour-of-mankind",
+        "topics": [
+            "The Saviour of Mankind"
+        ]
+    },
+    {
+        "name": "Patriotism",
+        "slug": "patriotism",
+        "topics": [
+            "Patriotism"
+        ]
+    },
+    {
+        "name": "Daffodils (Poem)",
+        "slug": "daffodils-poem",
+        "topics": [
+            "Daffodils (Poem)"
+        ]
+    },
+    {
+        "name": "Hazrat Asma (RA)",
+        "slug": "hazrat-asma-ra",
+        "topics": [
+            "Hazrat Asma (RA)"
+        ]
+    },
+    {
+        "name": "Women Empowerment through Entrepreneurship",
+        "slug": "women-empowerment-through-entrepreneurship",
+        "topics": [
+            "Women Empowerment through Entrepreneurship"
+        ]
+    },
+    {
+        "name": "The Value of Time",
+        "slug": "the-value-of-time",
+        "topics": [
+            "The Value of Time"
+        ]
+    },
+    {
+        "name": "IF (Poem)",
+        "slug": "if-poem",
+        "topics": [
+            "IF (Poem)"
+        ]
+    },
+    {
+        "name": "The Impact of Globalisation on Culture and Economy",
+        "slug": "the-impact-of-globalisation-on-culture-and-economy",
+        "topics": [
+            "The Impact of Globalisation on Culture and Economy"
+        ]
+    },
+    {
+        "name": "Quality Education: A Key to Success",
+        "slug": "quality-education-a-key-to-success",
+        "topics": [
+            "Quality Education: A Key to Success"
+        ]
+    },
+    {
+        "name": "The Silent Predator and the Majestic Prey-Snow Leopard and Markhor",
+        "slug": "the-silent-predator-and-the-majestic-prey-snow-leopard-and-markhor",
+        "topics": [
+            "The Silent Predator and the Majestic Prey-Snow Leopard and Markhor"
+        ]
+    },
+    {
+        "name": "The Dear Departed (One-Act Play)",
+        "slug": "the-dear-departed-one-act-play",
+        "topics": [
+            "The Dear Departed (One-Act Play)"
+        ]
+    }
+]
+,
                 10:[
   {
     "name": "Hazrat Muhammad (SAW) an Embodiment of Justice",
@@ -850,6 +1718,91 @@ def global_variables(request):
 
             }
             ,
+            'english-ii':{
+                12:[
+    {
+        "name": "The Dying Sun",
+        "slug": "the-dying-sun",
+        "topics": ["The Dying Sun"]
+    },
+    {
+        "name": "Using the Scientific Method",
+        "slug": "using-the-scientific-method",
+        "topics": ["Using the Scientific Method"]
+    },
+    {
+        "name": "Why Boys Fail in College",
+        "slug": "why-boys-fail-in-college",
+        "topics": ["Why Boys Fail in College"]
+    },
+    {
+        "name": "End of Term",
+        "slug": "end-of-term",
+        "topics": ["End of Term"]
+    },
+    {
+        "name": "On Destroying Books",
+        "slug": "on-destroying-books",
+        "topics": ["On Destroying Books"]
+    },
+    {
+        "name": "The Man Who Was A Hospital",
+        "slug": "the-man-who-was-a-hospital",
+        "topics": ["The Man Who Was A Hospital"]
+    },
+    {
+        "name": "My Financial Career",
+        "slug": "my-financial-career",
+        "topics": ["My Financial Career"]
+    },
+    {
+        "name": "China's Way to Progress",
+        "slug": "chinas-way-to-progress",
+        "topics": ["China's Way to Progress"]
+    },
+    {
+        "name": "Hunger and Population Explosion",
+        "slug": "hunger-and-population-explosion",
+        "topics": ["Hunger and Population Explosion"]
+    },
+    {
+        "name": "The Jewel of the World",
+        "slug": "the-jewel-of-the-world",
+        "topics": ["The Jewel of the World"]
+    },
+    {
+        "name": "First Year at Harrow",
+        "slug": "first-year-at-harrow",
+        "topics": ["First Year at Harrow"]
+    },
+    {
+        "name": "Hitch-Hiking Across the Sahara",
+        "slug": "hitch-hiking-across-the-sahara",
+        "topics": ["Hitch-Hiking Across the Sahara"]
+    },
+    {
+        "name": "Sir Alexander Fleming",
+        "slug": "sir-alexander-fleming",
+        "topics": ["Sir Alexander Fleming"]
+    },
+    {
+        "name": "Louis Pasteur",
+        "slug": "louis-pasteur",
+        "topics": ["Louis Pasteur"]
+    },
+    {
+        "name": "Mustafa Kamal",
+        "slug": "mustafa-kamal",
+        "topics": ["Mustafa Kamal"]
+    },
+    {
+        "name": "A Dialogue",
+        "slug": "a-dialogue",
+        "topics": ["A Dialogue"]
+    }
+]
+
+            },
             'physics': {
                 9: [
                     {
@@ -3112,4 +4065,3 @@ def global_variables(request):
             
         }
     }
-

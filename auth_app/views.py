@@ -62,7 +62,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
-            return redirect('dashboard')
+            return redirect('/')
     else:
         initial_data = {'username':'', 'password':''}
         form = AuthenticationForm(initial=initial_data)
@@ -76,4 +76,40 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-# logorusr = 'login/sign'
+@login_required
+def profile_view(request):
+    # Get list of grades for the dropdown
+    grades = range(9, 13)  # Adjust range as needed
+    
+    context = {
+        'user': request.user,
+        'grades': grades,
+    }
+    return render(request, 'Profile/profile.html', context)
+
+@login_required
+def profile_update(request):
+    if request.method == 'POST':
+        try:
+            # Get or create profile
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            
+            # Update profile fields
+            profile.fullname = request.POST.get('fullname')
+            profile.email = request.POST.get('email')
+            profile.grade = request.POST.get('grade')
+            profile.save()
+            
+            # Update user email if it has changed
+            if request.user.email != request.POST.get('email'):
+                request.user.email = request.POST.get('email')
+                request.user.save()
+            
+            messages.success(request, 'Profile updated successfully!')
+            
+        except Exception as e:
+            messages.error(request, f'Error updating profile: {str(e)}')
+        
+        return redirect('profile')
+
+    return redirect('profile')

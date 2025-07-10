@@ -1,4 +1,4 @@
-<!--  chapter topics page  -->
+<!--   topics page  -->
 
 {% extends 'layouts/layouts.html' %}
 {% load static %}
@@ -6,6 +6,7 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Breadcrumb -->
+     
     <div class="mb-8">
         <div class="flex items-center text-sm text-muted-foreground mb-4">
             <a href="{% url 'subjects' %}" class="hover:text-foreground transition-colors">
@@ -63,8 +64,8 @@
 <div id="testOptionsModal" class="fixed blackboldfont inset-0 bg-black/50 hidden items-center justify-center z-50 ">
     <div class="bg-card p-6 rounded-lg shadow-xl max-w-md w-full mx-4 animate-fade-in gradient_effect">
         <h3 class="text-xl font-semibold mb-4" id="modalTopicTitle"></h3>
-        <div class="grid grid-cols-1 tilegrdient sm:grid-cols-2 gap-4 ">
-            <a href="#" id="mcqTestLink" class="flex  flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
+        <div class="grid grid-cols-1  sm:grid-cols-2 gap-4 ">
+            <a href="#" id="mcqTestLink" class="flex tilegrdient  flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 11h6"></path>
                     <rect width="18" height="18" x="3" y="3" rx="2"></rect>
@@ -72,7 +73,7 @@
                 <span class="font-medium">MCQ Test</span>
                 <span class="text-sm text-muted-foreground mt-1">Multiple Choice Questions</span>
             </a>
-            <a href="#" id="shortTestLink" class="flex flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
+            <a href="#" id="shortTestLink" class="flex tilegrdient flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
