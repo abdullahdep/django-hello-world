@@ -43,8 +43,8 @@ def process_mcq(text):
     
     for line in lines:
         if line.startswith('Q.'):
-            # If we have a previous question, save it
-            if current_question and len(current_question['options']) == 4:
+            # If we have a previous question, save it if it's complete
+            if current_question and len(current_question['options']) == 4 and current_question['correct_answer']:
                 questions.append(current_question)
             
             # Start a new question
@@ -55,9 +55,28 @@ def process_mcq(text):
                 'explanation': None
             }
             
-        elif current_question and line.startswith(('A)', 'B)', 'C)', 'D)')):
-            # Add option to current question
-            current_question['options'].append(line[2:].strip())
+        elif current_question and (line.startswith('A)') or line.startswith('A.')):
+            # Store option A
+            current_question['options'] = [''] * 4  # Initialize with empty strings
+            current_question['options'][0] = line[2:].strip() if line.startswith('A)') else line[3:].strip()
+            
+        elif current_question and (line.startswith('B)') or line.startswith('B.')):
+            # Store option B
+            if len(current_question['options']) < 4:
+                current_question['options'] = [''] * 4
+            current_question['options'][1] = line[2:].strip() if line.startswith('B)') else line[3:].strip()
+            
+        elif current_question and (line.startswith('C)') or line.startswith('C.')):
+            # Store option C
+            if len(current_question['options']) < 4:
+                current_question['options'] = [''] * 4
+            current_question['options'][2] = line[2:].strip() if line.startswith('C)') else line[3:].strip()
+            
+        elif current_question and (line.startswith('D)') or line.startswith('D.')):
+            # Store option D
+            if len(current_question['options']) < 4:
+                current_question['options'] = [''] * 4
+            current_question['options'][3] = line[2:].strip() if line.startswith('D)') else line[3:].strip()
             
         elif current_question and line.startswith('Answer :'):
             # Store the correct answer
@@ -69,19 +88,22 @@ def process_mcq(text):
             # Store the explanation
             current_question['explanation'] = line[12:].strip()  # Remove 'Explanation:' prefix
     
-    # Don't forget to add the last question
-    if current_question and len(current_question['options']) == 4:
+    # Don't forget to add the last question if it's complete
+    if current_question and len(current_question['options']) == 4 and current_question['correct_answer']:
         questions.append(current_question)
     
     # Validate all questions
     valid_questions = []
     for q in questions:
         if (len(q['options']) == 4 and 
+            all(opt.strip() for opt in q['options']) and  # All options must have content
             q['correct_answer'] in ['A', 'B', 'C', 'D'] and 
-            q['question'] and 
-            all(opt.strip() for opt in q['options'])):
+            q['question'].strip()):  # Question must have content
             valid_questions.append(q)
+        else:
+            logger.warning(f"Invalid question found: {q['question'][:50]}...")
     
+    logger.info(f"Processed {len(valid_questions)} valid MCQs out of {len(questions)} total questions")
     return valid_questions
 
 def process_short_question(text):
@@ -731,7 +753,6 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
         else:
             logger.warning(f"No topic found with name: {topic_name}")
             mcqs = []
-            # Get subject and create basic chapter info
             subject = Subject.objects.filter(slug=subject_slug).first()
             if not subject:
                 subject = Subject.objects.create(
@@ -743,6 +764,23 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
                 grade=int(grade),
                 slug=chapter_slug
             ).first()
+
+        submitted_answers = {}
+        score = 0
+        score_percentage = 0
+
+        # Handle form submission
+        if request.method == 'POST':
+            total_questions = len(mcqs)
+            for mcq in mcqs:
+                answer_key = f'q{mcq.id}'
+                user_answer = request.POST.get(answer_key)
+                submitted_answers[mcq.id] = user_answer
+                if user_answer == mcq.correct_answer:
+                    score += 1
+            
+            score_percentage = (score / total_questions * 100) if total_questions > 0 else 0
+            logger.info(f"Test submitted - Score: {score}/{total_questions} ({score_percentage}%)")
     
     except Exception as e:
         logger.error(f"Error in mcq_test view: {str(e)}")
@@ -752,8 +790,10 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
             defaults={'name': subject_slug.replace('-', ' ').title()}
         )[0]
         chapter = None
+        submitted_answers = {}
+        score = 0
+        score_percentage = 0
     
-    # Create the context with safe attribute access
     context = {
         'subject': {
             'slug': subject.slug,
@@ -772,7 +812,23 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
         },
         'mcqs': mcqs,
         'grade': grade,
-        'debug': True  # Always show debug info while troubleshooting
+        'debug': True,  # Always show debug info while troubleshooting
+        'submitted_answers': submitted_answers,
+        'score': score,
+        'score_percentage': round(score_percentage, 1),
+        'debug_data': {
+            'submitted_data': dict(request.POST) if request.method == 'POST' else None,
+            'raw_answers': submitted_answers,
+            'answer_details': [
+                {
+                    'question_id': str(mcq.id),  # Convert to string for consistency
+                    'question': mcq.question_text,
+                    'user_answer': submitted_answers.get(mcq.id),
+                    'correct_answer': mcq.correct_answer,
+                    'is_correct': submitted_answers.get(mcq.id) == mcq.correct_answer if mcq.id in submitted_answers else None
+                } for mcq in mcqs
+            ] if submitted_answers else []
+        }
     }
     
     return render(request, 'pages/mcq_test.html', context)

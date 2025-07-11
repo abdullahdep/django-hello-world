@@ -31,7 +31,7 @@
                  class="h-4 w-4 mx-2">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
-            <span>{{ topic }} - MCQ Test</span>
+            <span>{{ topic.name }} - MCQ Test</span>
         </div>
 
         <div class="animate-fade-in">
@@ -49,11 +49,90 @@
         <p>Chapter Slug: {{ chapter.slug }}</p>
         <p>Topic Name: {{ topic.name }}</p>
         <p>Topic Slug: {{ topic.slug }}</p>
-        <p>MCQs Count: {{ mcqs|length }}</p>
+        <p>MCQs Count Available in Database: {{ mcqs|length }}</p>
+        {% if submitted_answers %}
+        <h4 class="font-bold mt-4">Submitted Answers:</h4>
+        <div class="mt-2 space-y-4">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left">#</th>
+                            <th class="px-4 py-2 text-left">Question</th>
+                            <th class="px-4 py-2 text-left">Your Answer</th>
+                            <th class="px-4 py-2 text-left">Correct Answer</th>
+                            <th class="px-4 py-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detail in debug_data.answer_details %}
+                            <tr class="border-t">
+                                <td class="px-4 py-2">{{ forloop.counter }}</td>
+                                <td class="px-4 py-2">{{ detail.question|truncatechars:50 }}</td>
+                                <td class="px-4 py-2">
+                                    Option {{ detail.user_answer }}
+                                    {% with mcq=mcqs|get_mcq:detail.question_id %}
+                                        {% if detail.user_answer == 'A' %} - {{ mcq.option_a }}
+                                        {% elif detail.user_answer == 'B' %} - {{ mcq.option_b }}
+                                        {% elif detail.user_answer == 'C' %} - {{ mcq.option_c }}
+                                        {% elif detail.user_answer == 'D' %} - {{ mcq.option_d }}
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td class="px-4 py-2">
+                                    Option {{ detail.correct_answer }}
+                                    {% with mcq=mcqs|get_mcq:detail.question_id %}
+                                        {% if detail.correct_answer == 'A' %} - {{ mcq.option_a }}
+                                        {% elif detail.correct_answer == 'B' %} - {{ mcq.option_b }}
+                                        {% elif detail.correct_answer == 'C' %} - {{ mcq.option_c }}
+                                        {% elif detail.correct_answer == 'D' %} - {{ mcq.option_d }}
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td class="px-4 py-2">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            {% if detail.is_correct %}
+                                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span class="text-green-600 font-medium">Correct</span>
+                                                <span class="ml-2 text-green-600 text-sm">(+1 point)</span>
+                                            {% else %}
+                                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                                <span class="text-red-600 font-medium">Incorrect</span>
+                                                <span class="ml-2 text-red-600 text-sm">(0 points)</span>
+                                            {% endif %}
+                                        </div>
+                                        {% if not detail.is_correct %}
+                                            <div class="text-xs text-gray-500 italic">
+                                                Selected: Option {{ detail.user_answer }} ≠ Expected: Option {{ detail.correct_answer }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 space-y-2">
+                <h5 class="font-bold">Form Data:</h5>
+                <pre class="text-sm bg-gray-50 p-2 rounded">{{ debug_data.submitted_data|pprint }}</pre>
+                
+                <h5 class="font-bold mt-2">Processed Answers:</h5>
+                <pre class="text-sm bg-gray-50 p-2 rounded">{{ debug_data.raw_answers|pprint }}</pre>
+            </div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
     
-    <form id="mcqForm" class="space-y-8">
+    <form id="mcqForm" class="space-y-8" method="POST">
+        {% csrf_token %}
         {% for mcq in mcqs %}
         <div class="bg-card p-6 rounded-lg border animate-fade-in" style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
             <div class="mb-4">
@@ -62,19 +141,102 @@
             </div>
             
             <div class="space-y-3">
-                {% for option in mcq.get_options %}
-                <label class="flex items-center space-x-3 p-3 rounded-lg border bg-background hover:border-primary transition-all cursor-pointer">
-                    <input type="radio" name="q{{ mcq.id }}" value="{{ option }}" class="radio" required>
-                    <span>{{ option }}</span>
+                <!-- Option A -->
+                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'A' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'A' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                    <input type="radio" name="q{{ mcq.id }}" value="A" class="radio" required 
+                           {% if submitted_answers and submitted_answers|get_item:mcq.id == 'A' %}checked{% endif %}
+                           {% if submitted_answers %}disabled{% endif %}>
+                    <span>A. {{ mcq.option_a }}</span>
+                    {% if submitted_answers %}
+                        {% if mcq.correct_answer == 'A' %}
+                            <span class="ml-2 text-green-600">(Correct Answer)</span>
+                        {% elif submitted_answers|get_item:mcq.id == 'A' %}
+                            <span class="ml-2 text-red-600">(Your Answer - Incorrect)</span>
+                        {% endif %}
+                    {% endif %}
                 </label>
-                {% endfor %}
+
+                <!-- Option B -->
+                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'B' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'B' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                    <input type="radio" name="q{{ mcq.id }}" value="B" class="radio" required 
+                           {% if submitted_answers and submitted_answers|get_item:mcq.id == 'B' %}checked{% endif %}
+                           {% if submitted_answers %}disabled{% endif %}>
+                    <span>B. {{ mcq.option_b }}</span>
+                    {% if submitted_answers %}
+                        {% if mcq.correct_answer == 'B' %}
+                            <span class="ml-2 text-green-600">(Correct Answer)</span>
+                        {% elif submitted_answers|get_item:mcq.id == 'B' %}
+                            <span class="ml-2 text-red-600">(Your Answer - Incorrect)</span>
+                        {% endif %}
+                    {% endif %}
+                </label>
+
+                <!-- Option C -->
+                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'C' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'C' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                    <input type="radio" name="q{{ mcq.id }}" value="C" class="radio" required 
+                           {% if submitted_answers and submitted_answers|get_item:mcq.id == 'C' %}checked{% endif %}
+                           {% if submitted_answers %}disabled{% endif %}>
+                    <span>C. {{ mcq.option_c }}</span>
+                    {% if submitted_answers %}
+                        {% if mcq.correct_answer == 'C' %}
+                            <span class="ml-2 text-green-600">(Correct Answer)</span>
+                        {% elif submitted_answers|get_item:mcq.id == 'C' %}
+                            <span class="ml-2 text-red-600">(Your Answer - Incorrect)</span>
+                        {% endif %}
+                    {% endif %}
+                </label>
+
+                <!-- Option D -->
+                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'D' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'D' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                    <input type="radio" name="q{{ mcq.id }}" value="D" class="radio" required 
+                           {% if submitted_answers and submitted_answers|get_item:mcq.id == 'D' %}checked{% endif %}
+                           {% if submitted_answers %}disabled{% endif %}>
+                    <span>D. {{ mcq.option_d }}</span>
+                    {% if submitted_answers %}
+                        {% if mcq.correct_answer == 'D' %}
+                            <span class="ml-2 text-green-600">(Correct Answer)</span>
+                        {% elif submitted_answers|get_item:mcq.id == 'D' %}
+                            <span class="ml-2 text-red-600">(Your Answer - Incorrect)</span>
+                        {% endif %}
+                    {% endif %}
+                </label>
             </div>
 
-            {% if mcq.explanation %}
-            <div class="explanation mt-4 hidden">
+            {% if submitted_answers and mcq.explanation %}
+            <div class="explanation mt-4">
                 <div class="p-4 bg-primary/10 rounded-lg">
                     <h4 class="font-semibold mb-2">Explanation:</h4>
                     <p>{{ mcq.explanation }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if submitted_answers %}
+            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                <div class="space-y-2">
+                    {% with answer=submitted_answers|get_item:mcq.id %}
+                        {% if submitted_answers|get_item:mcq.id == mcq.correct_answer %}
+                            <p class="text-green-600 font-semibold">✓ Correct!</p>
+                        {% else %}
+                            <p class="text-red-600 font-semibold">✗ Incorrect</p>
+                        {% endif %}
+                        <p class="text-sm">
+                            <span class="font-medium">Your answer:</span> Option {{ answer }} - 
+                            {% if answer == 'A' %}{{ mcq.option_a }}
+                            {% elif answer == 'B' %}{{ mcq.option_b }}
+                            {% elif answer == 'C' %}{{ mcq.option_c }}
+                            {% elif answer == 'D' %}{{ mcq.option_d }}{% endif %}
+                        </p>
+                        {% if answer != mcq.correct_answer %}
+                            <p class="text-sm">
+                                <span class="font-medium">Correct answer:</span> Option {{ mcq.correct_answer }} - 
+                                {% if mcq.correct_answer == 'A' %}{{ mcq.option_a }}
+                                {% elif mcq.correct_answer == 'B' %}{{ mcq.option_b }}
+                                {% elif mcq.correct_answer == 'C' %}{{ mcq.option_c }}
+                                {% elif mcq.correct_answer == 'D' %}{{ mcq.option_d }}{% endif %}
+                            </p>
+                        {% endif %}
+                    {% endwith %}
                 </div>
             </div>
             {% endif %}
@@ -87,24 +249,22 @@
 
         {% if mcqs %}
         <div class="flex justify-end space-x-4">
-            <button type="button" onclick="showExplanations()" class="button button-outline">Show Explanations</button>
+            {% if not submitted_answers %}
             <button type="submit" class="button">Submit Answers</button>
+            {% else %}
+            <div class="text-lg font-semibold">
+                Score: {{ score }}/{{ mcqs|length }} ({{ score_percentage }}%)
+            </div>
+            <a href="{{ request.path }}" class="button">Try Again</a>
+            {% endif %}
         </div>
         {% endif %}
     </form>
 </div>
 
 <script>
-function showExplanations() {
-    document.querySelectorAll('.explanation').forEach(el => {
-        el.classList.remove('hidden');
-    });
-}
-
 document.getElementById('mcqForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Add your form submission logic here
-    // You can collect answers and show the results
+    // Form will be submitted normally since we added method="POST"
 });
 </script>
 {% endblock %}
