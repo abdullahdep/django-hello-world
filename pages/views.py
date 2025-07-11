@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import JsonResponse, HttpResponse
@@ -39,32 +38,51 @@ def process_mcq(text):
     questions = []
     current_question = None
     
-    for line in text.split('\n'):
-        line = line.strip()
-        if not line:
-            continue
-            
+    # Split the text into lines and remove empty lines
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    
+    for line in lines:
         if line.startswith('Q.'):
-            if current_question:
+            # If we have a previous question, save it
+            if current_question and len(current_question['options']) == 4:
                 questions.append(current_question)
+            
+            # Start a new question
             current_question = {
-                'type': 'mcq',
-                'question': line[2:].strip(),
+                'question': line[2:].strip(),  # Remove 'Q.' prefix
                 'options': [],
                 'correct_answer': None,
                 'explanation': None
             }
+            
         elif current_question and line.startswith(('A)', 'B)', 'C)', 'D)')):
+            # Add option to current question
             current_question['options'].append(line[2:].strip())
+            
         elif current_question and line.startswith('Answer :'):
-            current_question['correct_answer'] = line[8:].strip()
+            # Store the correct answer
+            answer = line[8:].strip()  # Remove 'Answer : ' prefix
+            if answer in ['A', 'B', 'C', 'D']:
+                current_question['correct_answer'] = answer
+            
         elif current_question and line.startswith('Explanation:'):
-            current_question['explanation'] = line[12:].strip()
+            # Store the explanation
+            current_question['explanation'] = line[12:].strip()  # Remove 'Explanation:' prefix
     
-    if current_question:
+    # Don't forget to add the last question
+    if current_question and len(current_question['options']) == 4:
         questions.append(current_question)
     
-    return questions
+    # Validate all questions
+    valid_questions = []
+    for q in questions:
+        if (len(q['options']) == 4 and 
+            q['correct_answer'] in ['A', 'B', 'C', 'D'] and 
+            q['question'] and 
+            all(opt.strip() for opt in q['options'])):
+            valid_questions.append(q)
+    
+    return valid_questions
 
 def process_short_question(text):
     """Process short answer format questions from txt file"""
@@ -102,6 +120,9 @@ def process_short_question(text):
 
 @user_passes_test(is_admin)
 def admin_content_upload(request):
+    import logging
+    logger = logging.getLogger(__name__)
+    
     global_data = global_variables(request)
     
     # Get subjects and grades from global data
@@ -127,6 +148,7 @@ def admin_content_upload(request):
     
     if request.method == 'POST':
         try:
+            # Get form data
             document = request.FILES.get('document')
             question_type = request.POST.get('question_type')
             subject_slug = request.POST.get('subject', '')
@@ -134,7 +156,12 @@ def admin_content_upload(request):
             chapter_slug = request.POST.get('chapter', '')
             topic_slug = request.POST.get('topic', '')
 
+            # Log received data
+            logger.info(f"Received upload request - Subject: {subject_slug}, Grade: {grade}, "
+                       f"Chapter: {chapter_slug}, Topic: {topic_slug}, Type: {question_type}")
+
             if not document:
+                logger.error("No document uploaded")
                 return render(request, 'admin_user/admin_user.html', 
                             {'error': 'Please select a file to upload', **context})
 
@@ -152,47 +179,58 @@ def admin_content_upload(request):
                     continue
 
             if content is None:
+                logger.error("Could not decode file with any supported encoding")
                 raise UnicodeDecodeError("Could not decode file with any supported encoding")
 
-
-            # Process and save MCQs or Short Questions
+            # Process the content
             if question_type == 'mcq':
                 questions = process_mcq(content)
+                logger.info(f"Processed {len(questions)} MCQ questions")
             else:
                 questions = process_short_question(content)
+                logger.info(f"Processed {len(questions)} Short questions")
 
             with transaction.atomic():
-                # Get or create subject
-                subject, _ = Subject.objects.get_or_create(
+                # Create or get the subject
+                subject_name = subject_slug.replace('-', ' ').title()
+                subject, subject_created = Subject.objects.get_or_create(
                     slug=subject_slug,
-                    defaults={'name': subject_slug.replace('-', ' ').title()}
+                    defaults={'name': subject_name}
                 )
-                # Get or create chapter
-                chapter, _ = Chapter.objects.get_or_create(
+                logger.info(f"Subject {'created' if subject_created else 'found'}: {subject.name}")
+
+                # Create or get the chapter
+                chapter_name = chapter_slug.replace('-', ' ').title()
+                chapter, chapter_created = Chapter.objects.get_or_create(
                     subject=subject,
                     slug=chapter_slug,
                     grade=int(grade),
-                    defaults={'name': chapter_slug.replace('-', ' ').title()}
+                    defaults={'name': chapter_name}
                 )
-                # Get or create topic
+                logger.info(f"Chapter {'created' if chapter_created else 'found'}: {chapter.name}")
+
+                # Create or get the topic
                 topic_name = topic_slug.replace('-', ' ').title()
-                topic, created = Topic.objects.get_or_create(
+                topic, topic_created = Topic.objects.get_or_create(
                     chapter=chapter,
                     slug=topic_slug,
                     defaults={'name': topic_name}
                 )
-                
-                # Log topic information
-                logger.info(f"Topic {'created' if created else 'found'}: name='{topic.name}', slug='{topic.slug}'")
-                if created:
-                    logger.info("New topic created")
+                logger.info(f"Topic {'created' if topic_created else 'found'}: {topic.name}")
 
                 if question_type == 'mcq':
                     mcqs_created = 0
-                    logger.info(f"Topic: {topic.name}, Slug: {topic.slug}")
-                    
                     for q in questions:
                         try:
+                            # Validate MCQ data
+                            if len(q['options']) != 4:
+                                logger.error(f"Invalid number of options for question: {q['question'][:50]}...")
+                                continue
+                                
+                            if q['correct_answer'] not in ['A', 'B', 'C', 'D']:
+                                logger.error(f"Invalid correct answer for question: {q['question'][:50]}...")
+                                continue
+
                             mcq = MCQ.objects.create(
                                 topic=topic,
                                 question_text=q['question'],
@@ -203,33 +241,41 @@ def admin_content_upload(request):
                                 correct_answer=q['correct_answer'],
                                 explanation=q.get('explanation')
                             )
-                            logger.info(f"Created MCQ: {mcq.id} for topic: {topic.slug}")
+                            logger.info(f"Created MCQ {mcq.id}: {mcq.question_text[:50]}...")
                             mcqs_created += 1
                         except Exception as e:
                             logger.error(f"Error creating MCQ: {str(e)}")
+                            logger.error(f"Question data: {q}")
                             raise
-                            
-                    context.update({
-                        'success': True,
-                        'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
-                    })
+
+                    message = f'Successfully uploaded and processed {mcqs_created} MCQ questions'
+                    logger.info(message)
+                    context.update({'success': True, 'message': message})
                 else:
                     shorts_created = 0
                     for q in questions:
-                        ShortQuestion.objects.create(
-                            topic=topic,
-                            question_text=q['question'],
-                            answer=q['answer'],
-                            marks=q.get('marks')
-                        )
-                        shorts_created += 1
-                    context.update({
-                        'success': True,
-                        'message': f'Successfully uploaded and processed {shorts_created} Short Questions'
-                    })
+                        try:
+                            short = ShortQuestion.objects.create(
+                                topic=topic,
+                                question_text=q['question'],
+                                answer=q['answer'],
+                                marks=q.get('marks')
+                            )
+                            logger.info(f"Created Short Question {short.id}: {short.question_text[:50]}...")
+                            shorts_created += 1
+                        except Exception as e:
+                            logger.error(f"Error creating Short Question: {str(e)}")
+                            logger.error(f"Question data: {q}")
+                            raise
+
+                    message = f'Successfully uploaded and processed {shorts_created} Short Questions'
+                    logger.info(message)
+                    context.update({'success': True, 'message': message})
 
         except Exception as e:
-            context['error'] = f'Error processing file: {str(e)}'
+            error_message = f'Error processing file: {str(e)}'
+            logger.error(error_message)
+            context['error'] = error_message
             return render(request, 'admin_user/admin_user.html', context)
 
     return render(request, 'admin_user/admin_user.html', context)
@@ -355,7 +401,7 @@ def chapter_detail(request, subject_slug, grade, chapter_slug):
     
     # Get chapter data for the specific grade
     chapters_data = global_data['chapters'].get(subject_slug.lower(), {})
-    grade_chapters = chapters_data.get(int(grade), [])  # Convert grade to int since it comes as string from URL
+    grade_chapters = chapters_data.get(int(grade), [])
     chapter = None
     
     # Find the chapter in the current grade
@@ -652,89 +698,81 @@ def jazzcash_ipn(request):
 
 @login_required
 def mcq_test(request, subject_slug, grade, chapter_slug, topic):
-    from django.db import connection
     import logging
     logger = logging.getLogger(__name__)
     
-    # Get global data
-    global_data = global_variables(request)
+    logger.info("Starting MCQ test view...")
     
-    # Get subject info
-    subject_name = subject_slug.replace('-', ' ').title()
-    subject = {
-        'slug': subject_slug,
-        'name': subject_name,
-        'grade': grade
-    }
-    
-    # Get chapter data
-    chapters_data = global_data['chapters'].get(subject_slug.lower(), {})
-    grade_chapters = chapters_data.get(int(grade), [])
-    chapter = next((ch for ch in grade_chapters if ch['slug'] == chapter_slug), None)
-    
-    # Debug information
-    logger.info(f"Looking for MCQs with: subject_slug={subject_slug}, grade={grade}, chapter_slug={chapter_slug}, topic={topic}")
-    
-    # First verify if the topic exists
-    topic_exists = Topic.objects.filter(
-        chapter__subject__slug=subject_slug,
-        chapter__grade=grade,
-        chapter__slug=chapter_slug,
-        slug=topic
-    ).exists()
-    
-    if not topic_exists:
-        logger.warning(f"Topic not found with: subject_slug={subject_slug}, grade={grade}, chapter_slug={chapter_slug}, topic={topic}")
-    
-    # Get MCQs from database using the topic relationship
-    # Convert topic to proper slug format
-    topic_slug = topic  # topic comes from URL already in slug format
-    
-    # Debug query parameters
-    logger.info(f"Query params: topic_slug={topic_slug}, topic_name={topic.replace('-', ' ')}")
-    
-    # Try to find MCQs
-    mcqs = MCQ.objects.filter(
-        topic__chapter__subject__slug=subject_slug,
-        topic__chapter__grade=int(grade),  # Ensure grade is integer
-        topic__chapter__slug=chapter_slug,
-        topic__slug=topic_slug
-    ).order_by('?')  # Random order
-    
-    # Debug the actual query
-    logger.info(f"SQL Query: {mcqs.query}")
-    
-    # If no MCQs found, try to find the topic first to verify it exists
-    if not mcqs.exists():
-        topic_obj = Topic.objects.filter(
-            chapter__subject__slug=subject_slug,
-            chapter__grade=int(grade),
-            chapter__slug=chapter_slug,
-            slug=topic_slug
-        ).first()
+    try:
+        # Step 1: Get topic by name (convert URL slug to proper name)
+        topic_name = topic.replace('-', ' ').title()
+        logger.info(f"Looking for topic with name: {topic_name}")
+        
+        # Try to find the topic
+        topic_obj = Topic.objects.filter(name=topic_name).first()
+        
         if topic_obj:
-            logger.info(f"Topic found: {topic_obj.name} (slug: {topic_obj.slug}) but no MCQs")
+            logger.info(f"Found topic: {topic_obj.name} (ID: {topic_obj.id})")
+            logger.info(f"Topic's chapter ID: {topic_obj.chapter.id}")
+            
+            # Step 2: Get MCQs using the topic's chapter_id
+            mcqs = MCQ.objects.filter(
+                topic__chapter_id=topic_obj.chapter.id,
+                topic__id=topic_obj.id
+            ).order_by('?')
+            
+            logger.info(f"SQL Query for MCQs: {mcqs.query}")
+            logger.info(f"Found {mcqs.count()} MCQs")
+            
+            # Get subject and chapter info for context
+            subject = topic_obj.chapter.subject
+            chapter = topic_obj.chapter
+            
         else:
-            logger.warning("Topic not found in database")
+            logger.warning(f"No topic found with name: {topic_name}")
+            mcqs = []
+            # Get subject and create basic chapter info
+            subject = Subject.objects.filter(slug=subject_slug).first()
+            if not subject:
+                subject = Subject.objects.create(
+                    name=subject_slug.replace('-', ' ').title(),
+                    slug=subject_slug
+                )
+            chapter = Chapter.objects.filter(
+                subject=subject,
+                grade=int(grade),
+                slug=chapter_slug
+            ).first()
     
-    # Log the query and count
-    logger.info(f"MCQs found: {mcqs.count()}")
-    logger.info(f"SQL Query: {mcqs.query}")
+    except Exception as e:
+        logger.error(f"Error in mcq_test view: {str(e)}")
+        mcqs = []
+        subject = Subject.objects.get_or_create(
+            slug=subject_slug,
+            defaults={'name': subject_slug.replace('-', ' ').title()}
+        )[0]
+        chapter = None
     
-    # Check if we have any MCQs
-    if not mcqs.exists():
-        logger.warning("No MCQs found for this topic")
-    
+    # Create the context with safe attribute access
     context = {
-        'subject': subject,
-        'chapter': chapter,
+        'subject': {
+            'slug': subject.slug,
+            'name': subject.name,
+            'grade': grade
+        },
+        'chapter': {
+            'slug': chapter.slug if chapter else chapter_slug,
+            'name': chapter.name if chapter else chapter_slug.replace('-', ' ').title()
+        },
         'topic': {
-            'name': topic.replace('-', ' ').title(),  # Display name
-            'slug': topic  # Original slug
+            'id': topic_obj.id if topic_obj else None,
+            'name': topic_obj.name if topic_obj else topic_name,
+            'slug': topic_obj.slug if topic_obj else topic,
+            'chapter_id': topic_obj.chapter.id if topic_obj else None
         },
         'mcqs': mcqs,
         'grade': grade,
-        'debug': settings.DEBUG,  # This will show debug info only in development
+        'debug': True  # Always show debug info while troubleshooting
     }
     
     return render(request, 'pages/mcq_test.html', context)
