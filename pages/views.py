@@ -12,7 +12,7 @@ import json
 import re
 import os
 from datetime import datetime
-from .models import Subject, Chapter, Topic, MCQ, ShortQuestion
+from .models import Subject, Chapter, Topic, MCQ, ShortQuestion, MCQTestScore
 from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
@@ -781,6 +781,39 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
             
             score_percentage = (score / total_questions * 100) if total_questions > 0 else 0
             logger.info(f"Test submitted - Score: {score}/{total_questions} ({score_percentage}%)")
+            
+            # Store the score in MCQTestScore
+            try:
+                # Create answer details dictionary
+                answer_details = {
+                    str(mcq.id): {
+                        'question': mcq.question_text,
+                        'user_answer': submitted_answers.get(mcq.id),
+                        'correct_answer': mcq.correct_answer,
+                        'is_correct': submitted_answers.get(mcq.id) == mcq.correct_answer,
+                        'options': {
+                            'A': mcq.option_a,
+                            'B': mcq.option_b,
+                            'C': mcq.option_c,
+                            'D': mcq.option_d
+                        }
+                    } for mcq in mcqs
+                }
+                
+                # Save to MCQTestScore
+                test_score = MCQTestScore.objects.create(
+                    user=request.user,
+                    subject=subject,
+                    chapter=chapter,
+                    topic=topic_obj,
+                    score=score,
+                    total_questions=total_questions,
+                    score_percentage=score_percentage,
+                    correct_answers=answer_details
+                )
+                logger.info(f"Score saved successfully for user {request.user.username} with ID {test_score.id}")
+            except Exception as e:
+                logger.error(f"Error saving score: {str(e)}")
     
     except Exception as e:
         logger.error(f"Error in mcq_test view: {str(e)}")

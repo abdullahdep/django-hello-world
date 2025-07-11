@@ -211,36 +211,7 @@
             </div>
             {% endif %}
 
-            {% if submitted_answers %}
-            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
-                <div class="space-y-2">
-                    {% with answer=submitted_answers|get_item:mcq.id %}
-                        {% if submitted_answers|get_item:mcq.id == mcq.correct_answer %}
-                            <p class="text-green-600 font-semibold">✓ Correct!</p>
-                        {% else %}
-                            <p class="text-red-600 font-semibold">✗ Incorrect</p>
-                        {% endif %}
-                        <p class="text-sm">
-                            <span class="font-medium">Your answer:</span> Option {{ answer }} - 
-                            {% if answer == 'A' %}{{ mcq.option_a }}
-                            {% elif answer == 'B' %}{{ mcq.option_b }}
-                            {% elif answer == 'C' %}{{ mcq.option_c }}
-                            {% elif answer == 'D' %}{{ mcq.option_d }}{% endif %}
-                        </p>
-                        {% if answer != mcq.correct_answer %}
-                            <p class="text-sm">
-                                <span class="font-medium">Correct answer:</span> Option {{ mcq.correct_answer }} - 
-                                {% if mcq.correct_answer == 'A' %}{{ mcq.option_a }}
-                                {% elif mcq.correct_answer == 'B' %}{{ mcq.option_b }}
-                                {% elif mcq.correct_answer == 'C' %}{{ mcq.option_c }}
-                                {% elif mcq.correct_answer == 'D' %}{{ mcq.option_d }}{% endif %}
-                            </p>
-                        {% endif %}
-                    {% endwith %}
-                </div>
-            </div>
-            {% endif %}
-        </div>
+                   </div>
         {% empty %}
         <div class="text-center py-12">
             <p class="text-muted-foreground">No MCQs available for this topic yet.</p>

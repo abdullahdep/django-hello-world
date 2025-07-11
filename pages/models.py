@@ -131,3 +131,22 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.transaction_ref} - {self.status}"
+
+
+
+class MCQTestScore(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mcq_scores')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    score = models.IntegerField()
+    total_questions = models.IntegerField()
+    score_percentage = models.FloatField()
+    correct_answers = models.JSONField()  # Store details of correct/incorrect answers
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.topic.name} - {self.score}/{self.total_questions} ({self.score_percentage}%)"
