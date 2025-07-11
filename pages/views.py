@@ -1,11 +1,14 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test, login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.core.files.storage import FileSystemStorage
 from globalvar import global_variables
 from django.conf import settings
 from django.contrib import messages
+from django.utils.text import slugify
+from django.db import transaction
 import json
 import re
 import os
@@ -172,26 +175,40 @@ def admin_content_upload(request):
                     defaults={'name': chapter_slug.replace('-', ' ').title()}
                 )
                 # Get or create topic
-                topic, _ = Topic.objects.get_or_create(
+                topic_name = topic_slug.replace('-', ' ').title()
+                topic, created = Topic.objects.get_or_create(
                     chapter=chapter,
                     slug=topic_slug,
-                    defaults={'name': topic_slug.replace('-', ' ').title()}
+                    defaults={'name': topic_name}
                 )
+                
+                # Log topic information
+                logger.info(f"Topic {'created' if created else 'found'}: name='{topic.name}', slug='{topic.slug}'")
+                if created:
+                    logger.info("New topic created")
 
                 if question_type == 'mcq':
                     mcqs_created = 0
+                    logger.info(f"Topic: {topic.name}, Slug: {topic.slug}")
+                    
                     for q in questions:
-                        MCQ.objects.create(
-                            topic=topic,
-                            question_text=q['question'],
-                            option_a=q['options'][0],
-                            option_b=q['options'][1],
-                            option_c=q['options'][2],
-                            option_d=q['options'][3],
-                            correct_answer=q['correct_answer'],
-                            explanation=q.get('explanation')
-                        )
-                        mcqs_created += 1
+                        try:
+                            mcq = MCQ.objects.create(
+                                topic=topic,
+                                question_text=q['question'],
+                                option_a=q['options'][0],
+                                option_b=q['options'][1],
+                                option_c=q['options'][2],
+                                option_d=q['options'][3],
+                                correct_answer=q['correct_answer'],
+                                explanation=q.get('explanation')
+                            )
+                            logger.info(f"Created MCQ: {mcq.id} for topic: {topic.slug}")
+                            mcqs_created += 1
+                        except Exception as e:
+                            logger.error(f"Error creating MCQ: {str(e)}")
+                            raise
+                            
                     context.update({
                         'success': True,
                         'message': f'Successfully uploaded and processed {mcqs_created} MCQ questions'
@@ -635,6 +652,10 @@ def jazzcash_ipn(request):
 
 @login_required
 def mcq_test(request, subject_slug, grade, chapter_slug, topic):
+    from django.db import connection
+    import logging
+    logger = logging.getLogger(__name__)
+    
     # Get global data
     global_data = global_variables(request)
     
@@ -651,20 +672,69 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
     grade_chapters = chapters_data.get(int(grade), [])
     chapter = next((ch for ch in grade_chapters if ch['slug'] == chapter_slug), None)
     
+    # Debug information
+    logger.info(f"Looking for MCQs with: subject_slug={subject_slug}, grade={grade}, chapter_slug={chapter_slug}, topic={topic}")
+    
+    # First verify if the topic exists
+    topic_exists = Topic.objects.filter(
+        chapter__subject__slug=subject_slug,
+        chapter__grade=grade,
+        chapter__slug=chapter_slug,
+        slug=topic
+    ).exists()
+    
+    if not topic_exists:
+        logger.warning(f"Topic not found with: subject_slug={subject_slug}, grade={grade}, chapter_slug={chapter_slug}, topic={topic}")
+    
     # Get MCQs from database using the topic relationship
+    # Convert topic to proper slug format
+    topic_slug = topic  # topic comes from URL already in slug format
+    
+    # Debug query parameters
+    logger.info(f"Query params: topic_slug={topic_slug}, topic_name={topic.replace('-', ' ')}")
+    
+    # Try to find MCQs
     mcqs = MCQ.objects.filter(
-        topic__chapter__subject__name__iexact=subject_name,
-        topic__chapter__grade=grade,
+        topic__chapter__subject__slug=subject_slug,
+        topic__chapter__grade=int(grade),  # Ensure grade is integer
         topic__chapter__slug=chapter_slug,
-        topic__name__iexact=topic.replace('-', ' ')
+        topic__slug=topic_slug
     ).order_by('?')  # Random order
+    
+    # Debug the actual query
+    logger.info(f"SQL Query: {mcqs.query}")
+    
+    # If no MCQs found, try to find the topic first to verify it exists
+    if not mcqs.exists():
+        topic_obj = Topic.objects.filter(
+            chapter__subject__slug=subject_slug,
+            chapter__grade=int(grade),
+            chapter__slug=chapter_slug,
+            slug=topic_slug
+        ).first()
+        if topic_obj:
+            logger.info(f"Topic found: {topic_obj.name} (slug: {topic_obj.slug}) but no MCQs")
+        else:
+            logger.warning("Topic not found in database")
+    
+    # Log the query and count
+    logger.info(f"MCQs found: {mcqs.count()}")
+    logger.info(f"SQL Query: {mcqs.query}")
+    
+    # Check if we have any MCQs
+    if not mcqs.exists():
+        logger.warning("No MCQs found for this topic")
     
     context = {
         'subject': subject,
         'chapter': chapter,
-        'topic': topic.replace('-', ' '),
+        'topic': {
+            'name': topic.replace('-', ' ').title(),  # Display name
+            'slug': topic  # Original slug
+        },
         'mcqs': mcqs,
         'grade': grade,
+        'debug': settings.DEBUG,  # This will show debug info only in development
     }
     
     return render(request, 'pages/mcq_test.html', context)
@@ -689,10 +759,10 @@ def short_questions_test(request, subject_slug, grade, chapter_slug, topic):
     
     # Get Short Questions from database using the topic relationship
     short_questions = ShortQuestion.objects.filter(
-        topic__chapter__subject__name__iexact=subject_name,
+        topic__chapter__subject__slug=subject_slug,
         topic__chapter__grade=grade,
         topic__chapter__slug=chapter_slug,
-        topic__name__iexact=topic.replace('-', ' ')
+        topic__slug=topic
     ).order_by('?')  # Random order
     
     context = {
