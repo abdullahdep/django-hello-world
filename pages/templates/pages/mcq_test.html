@@ -1,0 +1,98 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumb -->
+    <div class="mb-8">
+        <div class="flex items-center text-sm text-muted-foreground mb-4">
+            <a href="{% url 'subjects' %}" class="hover:text-foreground transition-colors">
+                Subjects
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                 class="h-4 w-4 mx-2">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+            <a href="{% url 'subject_detail' subject.slug %}" class="hover:text-foreground transition-colors">
+                {{ subject.name }}
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                 class="h-4 w-4 mx-2">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+            <a href="{% url 'chapter_detail' subject.slug grade chapter.slug %}" class="hover:text-foreground transition-colors">
+                {{ chapter.name }}
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                 class="h-4 w-4 mx-2">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+            <span>{{ topic }} - MCQ Test</span>
+        </div>
+
+        <div class="animate-fade-in">
+            <h1 class="text-3xl font-bold mb-4">MCQ Test: {{ topic }}</h1>
+            <p class="text-muted-foreground">Answer all questions to the best of your ability.</p>
+        </div>
+    </div>
+
+    <!-- MCQ Questions -->
+    <form id="mcqForm" class="space-y-8">
+        {% for mcq in mcqs %}
+        <div class="bg-card p-6 rounded-lg border animate-fade-in" style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
+            <div class="mb-4">
+                <h3 class="text-lg font-semibold mb-2">Question {{ forloop.counter }}</h3>
+                <p class="text-foreground">{{ mcq.question_text }}</p>
+            </div>
+            
+            <div class="space-y-3">
+                {% for option in mcq.get_options %}
+                <label class="flex items-center space-x-3 p-3 rounded-lg border bg-background hover:border-primary transition-all cursor-pointer">
+                    <input type="radio" name="q{{ mcq.id }}" value="{{ option }}" class="radio" required>
+                    <span>{{ option }}</span>
+                </label>
+                {% endfor %}
+            </div>
+
+            {% if mcq.explanation %}
+            <div class="explanation mt-4 hidden">
+                <div class="p-4 bg-primary/10 rounded-lg">
+                    <h4 class="font-semibold mb-2">Explanation:</h4>
+                    <p>{{ mcq.explanation }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="text-center py-12">
+            <p class="text-muted-foreground">No MCQs available for this topic yet.</p>
+        </div>
+        {% endfor %}
+
+        {% if mcqs %}
+        <div class="flex justify-end space-x-4">
+            <button type="button" onclick="showExplanations()" class="button button-outline">Show Explanations</button>
+            <button type="submit" class="button">Submit Answers</button>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<script>
+function showExplanations() {
+    document.querySelectorAll('.explanation').forEach(el => {
+        el.classList.remove('hidden');
+    });
+}
+
+document.getElementById('mcqForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Add your form submission logic here
+    // You can collect answers and show the results
+});
+</script>
+{% endblock %}

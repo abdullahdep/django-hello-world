@@ -33,7 +33,7 @@
                     <ul class="ml-4">
                     {% for chapter in subject.chapters.all %}
                         <li>
-                            <a href="{% url 'chapter_detail' subject.slug chapter.slug %}" class="text-foreground hover:underline">{{ chapter.name }}</a>
+                            <a href="{% url 'chapter_detail' subject.slug chapter.grade chapter.slug %}" class="text-foreground hover:underline">{{ chapter.name }}</a>
                             <ul class="ml-4">
                             {% for topic in chapter.topics.all %}
                                 <li>

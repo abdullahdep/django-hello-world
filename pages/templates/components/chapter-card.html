@@ -1,5 +1,5 @@
 <div class="animate-fade-in" style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
-    <a href="{% url 'chapter_detail' subject.slug chapter.slug %}">
+    <a href="{% url 'chapter_detail' subject.slug chapter.grade chapter.slug %}">
         <div class="border rounded-lg p-6 h-full hover:border-primary transition-all duration-300 bg-card group hover:shadow-lg">
             <!-- Card Header -->
             <div class="flex items-start space-x-4 mb-6">

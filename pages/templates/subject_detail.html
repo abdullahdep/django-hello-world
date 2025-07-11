@@ -108,7 +108,7 @@
             // Render chapters
             const chapterCards = chapters.map((chapter, index) => `
                 <div class="animate-fade-in card-behaviour" style="animation-delay: ${index * 0.1}s">
-                    <a href="/subject/{{ subject.slug }}/chapter/${chapter.slug}">
+                    <a href="/subject/{{ subject.slug }}/grade/${grade}/chapter/${chapter.slug}">
                         <div class="border rounded-lg p-6 h-full hover:border-primary transition-all duration-300 bg-card group hover:shadow-lg">
                             <!-- Chapter Header -->
                             <div class="flex items-start space-x-4 mb-6">

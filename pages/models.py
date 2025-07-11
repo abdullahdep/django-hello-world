@@ -57,6 +57,10 @@ class MCQ(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def get_options(self):
+        """Return a list of all options"""
+        return [self.option_a, self.option_b, self.option_c, self.option_d]
+
     def __str__(self):
         return f"MCQ: {self.question_text[:50]}..."
 

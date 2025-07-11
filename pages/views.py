@@ -325,7 +325,7 @@ def subject_detail(request, slug):
     }
     
     return render(request, 'subject_detail.html', context)
-def chapter_detail(request, subject_slug, chapter_slug):
+def chapter_detail(request, subject_slug, grade, chapter_slug):
     # Get global data
     global_data = global_variables(request)
     
@@ -336,23 +336,21 @@ def chapter_detail(request, subject_slug, chapter_slug):
         'name': subject_name,
     }
     
-    # Get chapter data
+    # Get chapter data for the specific grade
     chapters_data = global_data['chapters'].get(subject_slug.lower(), {})
+    grade_chapters = chapters_data.get(int(grade), [])  # Convert grade to int since it comes as string from URL
     chapter = None
     
-    # Find the chapter across all grades
-    for grade_chapters in chapters_data.values():
-        for ch in grade_chapters:
-            if ch['slug'] == chapter_slug:
-                chapter = ch
-                break
-        if chapter:
+    # Find the chapter in the current grade
+    for ch in grade_chapters:
+        if ch['slug'] == chapter_slug:
+            chapter = ch
             break
-    
+            
     context = {
         'subject': subject,
         'chapter': chapter,
-        'grade': chapter['grade'] if chapter and 'grade' in chapter else None,
+        'grade': grade  # Pass the grade to the template
     }
     
     return render(request, 'chapter_detail.html', context)
@@ -634,4 +632,76 @@ def jazzcash_ipn(request):
     except Exception as e:
         logger.error(f"Error processing IPN: {str(e)}")
         return HttpResponse("Error processing IPN", status=500)
+
+@login_required
+def mcq_test(request, subject_slug, grade, chapter_slug, topic):
+    # Get global data
+    global_data = global_variables(request)
+    
+    # Get subject info
+    subject_name = subject_slug.replace('-', ' ').title()
+    subject = {
+        'slug': subject_slug,
+        'name': subject_name,
+        'grade': grade
+    }
+    
+    # Get chapter data
+    chapters_data = global_data['chapters'].get(subject_slug.lower(), {})
+    grade_chapters = chapters_data.get(int(grade), [])
+    chapter = next((ch for ch in grade_chapters if ch['slug'] == chapter_slug), None)
+    
+    # Get MCQs from database using the topic relationship
+    mcqs = MCQ.objects.filter(
+        topic__chapter__subject__name__iexact=subject_name,
+        topic__chapter__grade=grade,
+        topic__chapter__slug=chapter_slug,
+        topic__name__iexact=topic.replace('-', ' ')
+    ).order_by('?')  # Random order
+    
+    context = {
+        'subject': subject,
+        'chapter': chapter,
+        'topic': topic.replace('-', ' '),
+        'mcqs': mcqs,
+        'grade': grade,
+    }
+    
+    return render(request, 'pages/mcq_test.html', context)
+
+@login_required
+def short_questions_test(request, subject_slug, grade, chapter_slug, topic):
+    # Get global data
+    global_data = global_variables(request)
+    
+    # Get subject info
+    subject_name = subject_slug.replace('-', ' ').title()
+    subject = {
+        'slug': subject_slug,
+        'name': subject_name,
+        'grade': grade
+    }
+    
+    # Get chapter data
+    chapters_data = global_data['chapters'].get(subject_slug.lower(), {})
+    grade_chapters = chapters_data.get(int(grade), [])
+    chapter = next((ch for ch in grade_chapters if ch['slug'] == chapter_slug), None)
+    
+    # Get Short Questions from database using the topic relationship
+    short_questions = ShortQuestion.objects.filter(
+        topic__chapter__subject__name__iexact=subject_name,
+        topic__chapter__grade=grade,
+        topic__chapter__slug=chapter_slug,
+        topic__name__iexact=topic.replace('-', ' ')
+    ).order_by('?')  # Random order
+    
+    context = {
+        'subject': subject,
+        'chapter': chapter,
+        'topic': topic.replace('-', ' '),
+        'questions': short_questions,
+        'grade': grade,
+    }
+    
+    return render(request, 'pages/short_questions_test.html', context)
 
