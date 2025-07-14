@@ -200,7 +200,7 @@
                         <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon>
                     </svg>
 
-                    <a href="https://www.youtube.com/channel/UCO1frNWNU2Za3NHH7LyiotA">Safar Academy</a>
+                    <a href="https://www.youtube.com/channel/UCO1frNWNU2Za3NHH7LyiotA"></a>
                 </li>
                 {% if not user.is_staff %}
                 <a href="{% url 'premium' %}"
@@ -215,15 +215,24 @@
                 <div class="flex items-center space-x-4">
                     <a href="{% url 'profile' %}"
                         class="text-muted-foreground grey-color hover:text-foreground transition-colors flex items-center">
-                        <i data-lucide="user" class="h-4 w-4 mr-2"></i>
-                        {{ user.username }}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-user h-4 w-4 mr-2">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg> {{ user.username }}
                     </a>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
                         <button type="submit"
                             class="text-muted-foreground grey-color hover:text-foreground transition-colors flex items-center px-3 py-2 text-sm rounded-md">
-                            <i data-lucide="log-out" class="h-4 w-4 mr-2"></i>
-                            Logout
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-log-out h-4 w-4 mr-2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" x2="9" y1="12" y2="12"></line>
+                            </svg> Logout
                         </button>
                     </form>
                 </div>
@@ -338,4 +347,20 @@
             }
         });
     });
+
+
+    // on click in mcqs optionn
+    function selectOption(input) {
+        const container = input.closest('[data-question]');
+        const allLabels = container.querySelectorAll('label');
+
+        // Reset all to default background
+        allLabels.forEach(label => {
+            label.classList.remove('bg-[hsl(26,100%,62%)]');
+        });
+
+        // Apply selected background to current label
+        const selectedLabel = input.closest('label');
+        selectedLabel.classList.add('bg-[hsl(26,100%,62%)]');
+    }
 </script>

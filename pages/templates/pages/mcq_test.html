@@ -3,6 +3,7 @@
 {% load custom_filters %}
 
 {% block content %}
+<div class="relative"></div>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Breadcrumb -->
     <div class="mb-8">
@@ -42,7 +43,14 @@
 
     <!-- MCQ Questions -->
     {% if debug %}
-    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+    <div class="bg-black-300 border border-yellow-400  px-4 py-3 rounded mb-6">
+       {% if not submitted_answers %}
+        <div> take your test and see results
+    </div>  
+        {% else %}
+    <div>Thats Yours PerFormance</div>
+        {% endif %}
+<div class="hidden">
         <h3 class="font-bold">Debug Information:</h3>
         <p>Subject Slug: {{ subject.slug }}</p>
         <p>Grade: {{ grade }}</p>
@@ -50,12 +58,14 @@
         <p>Topic Name: {{ topic.name }}</p>
         <p>Topic Slug: {{ topic.slug }}</p>
         <p>MCQs Count Available in Database: {{ mcqs|length }}</p>
+
+</div>
         {% if submitted_answers %}
         <h4 class="font-bold mt-4">Submitted Answers:</h4>
         <div class="mt-2 space-y-4">
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
-                    <thead class="bg-gray-100">
+                    <thead class="border border-[#D6D85D]  text-white">
                         <tr>
                             <th class="px-4 py-2 text-left">#</th>
                             <th class="px-4 py-2 text-left">Question</th>
@@ -64,9 +74,10 @@
                             <th class="px-4 py-2 text-left">Status</th>
                         </tr>
                     </thead>
+                   
                     <tbody>
                         {% for detail in debug_data.answer_details %}
-                            <tr class="border-t">
+                            <tr class="border-t border-primary transition-transform duration-200 {% if detail.is_correct %}bg-green-700{% else %}bg-red-700{% endif %}">
                                 <td class="px-4 py-2">{{ forloop.counter }}</td>
                                 <td class="px-4 py-2">{{ detail.question|truncatechars:50 }}</td>
                                 <td class="px-4 py-2">
@@ -93,22 +104,23 @@
                                     <div class="space-y-1">
                                         <div class="flex items-center gap-2">
                                             {% if detail.is_correct %}
-                                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-5 h-5  " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                 </svg>
-                                                <span class="text-green-600 font-medium">Correct</span>
-                                                <span class="ml-2 text-green-600 text-sm">(+1 point)</span>
+                                                <span class="text-[#D6D85D] font-medium">Correct</span>
+                                                <span class="ml-2 text-[#D6D85D] text-sm">(+1 point)</span>
                                             {% else %}
-                                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-5 h-5 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                 </svg>
-                                                <span class="text-red-600 font-medium">Incorrect</span>
-                                                <span class="ml-2 text-red-600 text-sm">(0 points)</span>
+                                                <span class=" font-medium">Incorrect</span>
+                                                <span class="ml-2  text-sm">(0 points)</span>
                                             {% endif %}
                                         </div>
                                         {% if not detail.is_correct %}
                                             <div class="text-xs text-gray-500 italic">
                                                 Selected: Option {{ detail.user_answer }} ≠ Expected: Option {{ detail.correct_answer }}
+                                              
                                             </div>
                                         {% endif %}
                                     </div>
@@ -119,7 +131,7 @@
                 </table>
             </div>
 
-            <div class="mt-4 space-y-2">
+            <div class="mt-4 space-y-2 hidden">
                 <h5 class="font-bold">Form Data:</h5>
                 <pre class="text-sm bg-gray-50 p-2 rounded">{{ debug_data.submitted_data|pprint }}</pre>
                 
@@ -130,7 +142,17 @@
         {% endif %}
     </div>
     {% endif %}
-    
+     {% if mcqs %}
+        <div class="flex justify-end space-x-4 mb-6">
+            {% if  submitted_answers %}
+           
+            <div class="text-lg font-semibold bg-[linear-gradient(70deg,_rgba(2,0,36,1)_0%,_rgba(126,42,18,1)_4%,_rgba(255,85,0,1)_41%,_rgba(248,83,1,1)_54%,_rgba(243,81,2,1)_65%,_rgba(126,42,18,1)_96%,_rgba(2,0,36,1)_100%)] text-white px-7 rounded-lg">
+                Score: {{ score }}/{{ mcqs|length }} ({{ score_percentage }}%)
+            </div>
+            <a href="{{ request.path }}" class="button bg-blue-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg">Try Again</a>
+            {% endif %}
+        </div>
+        {% endif %}
     <form id="mcqForm" class="space-y-8" method="POST">
         {% csrf_token %}
         {% for mcq in mcqs %}
@@ -140,9 +162,9 @@
                 <p class="text-foreground">{{ mcq.question_text }}</p>
             </div>
             
-            <div class="space-y-3">
+            <div data-question class="space-y-3">
                 <!-- Option A -->
-                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'A' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'A' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label onclick="selectOption(this)" class="flex items-center hover:scale-105 space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'A' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'A' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="A" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'A' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
@@ -157,22 +179,24 @@
                 </label>
 
                 <!-- Option B -->
-                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'B' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'B' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label onclick="selectOption(this)" class="flex items-center hover:scale-105  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'B' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'B' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="B" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'B' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
                     <span>B. {{ mcq.option_b }}</span>
                     {% if submitted_answers %}
                         {% if mcq.correct_answer == 'B' %}
-                            <span class="ml-2 text-green-600">(Correct Answer)</span>
+                            <span class="ml-2 text-green-900">(Correct Answer)</span>
                         {% elif submitted_answers|get_item:mcq.id == 'B' %}
                             <span class="ml-2 text-red-600">(Your Answer - Incorrect)</span>
                         {% endif %}
                     {% endif %}
                 </label>
+<script>
 
+</script>
                 <!-- Option C -->
-                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'C' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'C' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label  onclick="selectOption(this)" class="flex items-center hover:scale-105 active:bg-orange-700  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'C' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'C' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="C" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'C' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
@@ -187,7 +211,7 @@
                 </label>
 
                 <!-- Option D -->
-                <label class="flex items-center space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'D' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'D' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label onclick="selectOption(this)" class="flex  items-center hover:scale-105  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'D' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'D' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="D" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'D' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
@@ -202,7 +226,8 @@
                 </label>
             </div>
 
-            {% if submitted_answers and mcq.explanation %}
+    <div class="mt-4">
+                {% if submitted_answers and mcq.explanation %}
             <div class="explanation mt-4">
                 <div class="p-4 bg-primary/10 rounded-lg">
                     <h4 class="font-semibold mb-2">Explanation:</h4>
@@ -210,6 +235,7 @@
                 </div>
             </div>
             {% endif %}
+    </div>
 
                    </div>
         {% empty %}
@@ -218,18 +244,15 @@
         </div>
         {% endfor %}
 
-        {% if mcqs %}
-        <div class="flex justify-end space-x-4">
-            {% if not submitted_answers %}
-            <button type="submit" class="button">Submit Answers</button>
-            {% else %}
-            <div class="text-lg font-semibold">
-                Score: {{ score }}/{{ mcqs|length }} ({{ score_percentage }}%)
-            </div>
-            <a href="{{ request.path }}" class="button">Try Again</a>
-            {% endif %}
-        </div>
-        {% endif %}
+        {% if not submitted_answers %}
+ <!-- long page to show scroll -->
+  <button
+    type="submit"
+    class="sticky bottom-4 ml-auto w-fit bg-[hsl(26,100%,62%)] hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transform transition duration-300 hover:scale-105 z-50"
+  >
+    Submit Answers
+  </button>
+           {% endif %}
     </form>
 </div>
 
