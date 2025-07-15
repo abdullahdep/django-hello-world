@@ -26,6 +26,18 @@ import hashlib
 import logging
 from .models import Transaction  # Add this import at the top
 from decimal import Decimal  # Add this at the top with other imports
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+from .models import Subject, MCQ, ShortQuestion
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from .models import Subject, Chapter, Topic, ShortQuestion
+
+from PIL import Image
+import pytesseract
+import logging
+
+
 
 
 logger = logging.getLogger(__name__)
@@ -448,9 +460,6 @@ def html_sitemap(request):
     subjects = Subject.objects.all().prefetch_related('chapters__topics')
     return render(request, 'pages/html_sitemap.html', {'subjects': subjects})
 
-from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render
-from .models import Subject, MCQ, ShortQuestion
 
 def is_admin(user):
     return user.is_superuser or user.is_staff
@@ -867,13 +876,6 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
     return render(request, 'pages/mcq_test.html', context)
 
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from .models import Subject, Chapter, Topic, ShortQuestion
-
-from PIL import Image
-import pytesseract
-import logging
 
 # Optional: set path to tesseract if on Windows
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
