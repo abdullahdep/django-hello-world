@@ -1,0 +1,103 @@
+{% extends 'layouts/layouts.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold">Saved Content Overview</h1>
+    <div class="flex gap-3">
+      <a href="{% url 'subject_create' %}" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+ Add Subject</a>
+      <a href="{% url 'shortquestion_create' %}" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+ Add Short Question</a>
+      <a href="{% url 'mcq_create' %}" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">+ Add MCQ</a>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <form method="get" class="mb-6 flex gap-4 flex-wrap">
+  
+
+    <select name="grade" class="border rounded p-2">
+      <option value="">All Grades</option>
+      {% for g in 9|to_range:12 %}
+        <option value="{{ g }}" {% if g|stringformat:"s" == selected_grade %}selected{% endif %}>Grade {{ g }}</option>
+      {% endfor %}
+    </select>
+
+  <select name="subject" class="border rounded p-2">
+      <option value="">All Subjects</option>
+      {% for s in subjects %}
+        <option value="{{ s.slug }}" {% if s.slug == selected_subject %}selected{% endif %}>{{ s.name }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="topic" class="border rounded p-2">
+      <option value="">All Topics</option>
+      {% for t in topics %}
+        <option value="{{ t.id }}" {% if t.id|stringformat:"s" == selected_topic %}selected{% endif %}>{{ t.name }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Filter</button>
+  </form>
+
+  <form method="post" action="">
+    {% csrf_token %}
+
+    <!-- MCQs -->
+    <h2 class="text-xl font-semibold mb-3">Multiple Choice Questions</h2>
+    {% if mcqs %}
+      <ul class="mb-6 space-y-4">
+        {% for mcq in mcqs %}
+          <li class="p-4 border rounded shadow-sm bg-gray-50">
+            <input type="hidden" name="mcq_ids" value="{{ mcq.id }}">
+            <textarea name="mcq_{{ mcq.id }}_question_text" class="w-full font-semibold">{{ mcq.question_text }}</textarea>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <input name="mcq_{{ mcq.id }}_option_a" value="{{ mcq.option_a }}" class="border p-1 rounded" placeholder="Option A">
+              <input name="mcq_{{ mcq.id }}_option_b" value="{{ mcq.option_b }}" class="border p-1 rounded" placeholder="Option B">
+              <input name="mcq_{{ mcq.id }}_option_c" value="{{ mcq.option_c }}" class="border p-1 rounded" placeholder="Option C">
+              <input name="mcq_{{ mcq.id }}_option_d" value="{{ mcq.option_d }}" class="border p-1 rounded" placeholder="Option D">
+            </div>
+            <input name="mcq_{{ mcq.id }}_correct_answer" value="{{ mcq.correct_answer }}" class="border p-1 rounded w-full" placeholder="Correct Answer (A/B/C/D)">
+            <textarea name="mcq_{{ mcq.id }}_explanation" class="border rounded w-full" placeholder="Explanation">{{ mcq.explanation }}</textarea>
+            <div class="flex gap-2">
+              <button type="submit" name="action" value="edit_{{ mcq.id }}" class="text-blue-600 hover:underline">Update</button>
+              <button type="submit" name="action" value="delete_{{ mcq.id }}" class="text-red-600 hover:underline">Delete</button>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500 mb-6">No MCQs found.</p>
+    {% endif %}
+
+    <!-- Short Questions -->
+    <h2 class="text-xl font-semibold mb-3">Short Questions</h2>
+    {% if short_questions %}
+      <ul class="space-y-4">
+        {% for sq in short_questions %}
+          <li class="p-4 border rounded shadow-sm bg-gray-50">
+            <input type="hidden" name="short_ids" value="{{ sq.id }}">
+            <textarea name="short_{{ sq.id }}_question_text" class="w-full font-semibold">{{ sq.question_text }}</textarea>
+            <textarea name="short_{{ sq.id }}_answer" class="border rounded w-full">{{ sq.answer }}</textarea>
+            <input name="short_{{ sq.id }}_marks" value="{{ sq.marks }}" class="border p-1 rounded w-full" placeholder="Marks">
+            <div class="flex gap-2">
+              <button type="submit" name="action" value="edit_{{ sq.id }}" class="text-blue-600 hover:underline">Update</button>
+              <button type="submit" name="action" value="delete_{{ sq.id }}" class="text-red-600 hover:underline">Delete</button>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500">No short questions found.</p>
+    {% endif %}
+
+    <!-- Save All Button -->
+    <div class="mt-6">
+      <button type="submit" name="action" value="bulk_save" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+        ✅ Save All Changes
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

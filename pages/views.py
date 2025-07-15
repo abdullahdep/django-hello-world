@@ -970,3 +970,160 @@ def short_question_test(request, subject_slug, grade, chapter_slug, topic):
     }
 
     return render(request, 'pages/short_question_test.html', context)
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse
+from .models import Subject, Chapter, Topic, MCQ, ShortQuestion
+from .forms import SubjectForm, MCQForm, ShortQuestionForm
+
+
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
+
+@user_passes_test(is_admin)
+def saved_content_list(request):
+    subject_slug = request.GET.get("subject")
+    grade = request.GET.get("grade")
+    topic_id = request.GET.get("topic")
+
+    # Dropdown data
+    subjects = Subject.objects.all()
+    chapters = Chapter.objects.all()
+    topics = Topic.objects.all()
+
+    # Base queryset
+    mcqs = MCQ.objects.select_related("topic", "topic__chapter", "topic__chapter__subject")
+    shorts = ShortQuestion.objects.select_related("topic", "topic__chapter", "topic__chapter__subject")
+
+    # Filtering
+    if subject_slug:
+        mcqs = mcqs.filter(topic__chapter__subject__slug=subject_slug)
+        shorts = shorts.filter(topic__chapter__subject__slug=subject_slug)
+        chapters = chapters.filter(subject__slug=subject_slug)
+
+    if grade:
+        mcqs = mcqs.filter(topic__chapter__grade=grade)
+        shorts = shorts.filter(topic__chapter__grade=grade)
+        chapters = chapters.filter(grade=grade)
+
+    if topic_id:
+        mcqs = mcqs.filter(topic__id=topic_id)
+        shorts = shorts.filter(topic__id=topic_id)
+
+    # Handle POST
+    if request.method == "POST":
+        action = request.POST.get("action")
+        obj_type = request.POST.get("type")
+        obj_id = request.POST.get("id")
+
+        # ✅ Bulk save all changes
+        if action == "bulk_save":
+            # Update MCQs
+            mcq_ids = request.POST.getlist("mcq_ids")
+            for mid in mcq_ids:
+                try:
+                    mcq = MCQ.objects.get(id=mid)
+                    mcq.question_text = request.POST.get(f"mcq_{mid}_question_text", mcq.question_text)
+                    mcq.option_a = request.POST.get(f"mcq_{mid}_option_a", mcq.option_a)
+                    mcq.option_b = request.POST.get(f"mcq_{mid}_option_b", mcq.option_b)
+                    mcq.option_c = request.POST.get(f"mcq_{mid}_option_c", mcq.option_c)
+                    mcq.option_d = request.POST.get(f"mcq_{mid}_option_d", mcq.option_d)
+                    mcq.correct_answer = request.POST.get(f"mcq_{mid}_correct_answer", mcq.correct_answer)
+                    mcq.explanation = request.POST.get(f"mcq_{mid}_explanation", mcq.explanation)
+                    mcq.save()
+                except MCQ.DoesNotExist:
+                    pass
+
+            # Update Shorts
+            short_ids = request.POST.getlist("short_ids")
+            for sid in short_ids:
+                try:
+                    sq = ShortQuestion.objects.get(id=sid)
+                    sq.question_text = request.POST.get(f"short_{sid}_question_text", sq.question_text)
+                    sq.answer = request.POST.get(f"short_{sid}_answer", sq.answer)
+                    sq.marks = request.POST.get(f"short_{sid}_marks") or None
+                    sq.save()
+                except ShortQuestion.DoesNotExist:
+                    pass
+
+            return redirect(reverse("saved_content_list"))
+
+        # ✅ Handle single delete
+        elif action == "delete":
+            if obj_type == "mcq":
+                mcq = get_object_or_404(MCQ, id=obj_id)
+                mcq.delete()
+            elif obj_type == "short":
+                short = get_object_or_404(ShortQuestion, id=obj_id)
+                short.delete()
+            return redirect(reverse("saved_content_list"))
+
+        # ✅ Handle single update
+        elif action == "edit":
+            if obj_type == "mcq":
+                mcq = get_object_or_404(MCQ, id=obj_id)
+                mcq.question_text = request.POST.get("question_text")
+                mcq.option_a = request.POST.get("option_a")
+                mcq.option_b = request.POST.get("option_b")
+                mcq.option_c = request.POST.get("option_c")
+                mcq.option_d = request.POST.get("option_d")
+                mcq.correct_answer = request.POST.get("correct_answer")
+                mcq.explanation = request.POST.get("explanation")
+                mcq.save()
+            elif obj_type == "short":
+                short = get_object_or_404(ShortQuestion, id=obj_id)
+                short.question_text = request.POST.get("question_text")
+                short.answer = request.POST.get("answer")
+                short.marks = request.POST.get("marks") or None
+                short.save()
+            return redirect(reverse("saved_content_list"))
+
+    context = {
+        "subjects": subjects,
+        "chapters": chapters,
+        "topics": topics,
+        "selected_subject": subject_slug,
+        "selected_grade": grade,
+        "selected_topic": topic_id,
+        "mcqs": mcqs,
+        "short_questions": shorts,
+    }
+    return render(request, "admin_user/saved_content_list.html", context)
+
+
+@user_passes_test(is_admin)
+def subject_create(request):
+    if request.method == 'POST':
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('saved_content_list')
+    else:
+        form = SubjectForm()
+    return render(request, 'admin_user/form.html', {'form': form, 'title': 'Add Subject'})
+
+
+@user_passes_test(is_admin)
+def mcq_create(request):
+    if request.method == 'POST':
+        form = MCQForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('saved_content_list')
+    else:
+        form = MCQForm()
+    return render(request, 'admin_user/form.html', {'form': form, 'title': 'Add MCQ'})
+
+
+@user_passes_test(is_admin)
+def shortquestion_create(request):
+    if request.method == 'POST':
+        form = ShortQuestionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('saved_content_list')
+    else:
+        form = ShortQuestionForm()
+    return render(request, 'admin_user/form.html', {'form': form, 'title': 'Add Short Question'})

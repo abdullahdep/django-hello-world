@@ -39,3 +39,12 @@ def get_mcq(mcqs, mcq_id):
         return next(mcq for mcq in mcqs if mcq.id == mcq_id)
     except (ValueError, StopIteration, AttributeError):
         return None
+    
+
+
+from django import template
+register = template.Library()
+
+@register.filter
+def to_range(start, end):
+    return range(start, end + 1)
