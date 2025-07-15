@@ -5,3 +5,5 @@ django-environ
 whitenoise  
 requests
 python-dotenv
+pytesseract
+pillow

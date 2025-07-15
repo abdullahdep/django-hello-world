@@ -31,7 +31,7 @@
       {% endfor %}
     </select>
 
-    <select name="topic" class="border rounded p-2">
+    <select name="topic" class="border hidden rounded p-2">
       <option value="">All Topics</option>
       {% for t in topics %}
         <option value="{{ t.id }}" {% if t.id|stringformat:"s" == selected_topic %}selected{% endif %}>{{ t.name }}</option>
@@ -49,9 +49,9 @@
     {% if mcqs %}
       <ul class="mb-6 space-y-4">
         {% for mcq in mcqs %}
-          <li class="p-4 border rounded shadow-sm bg-gray-50">
+          <li class="p-4 border rounded shadow-sm bg-gray">
             <input type="hidden" name="mcq_ids" value="{{ mcq.id }}">
-            <textarea name="mcq_{{ mcq.id }}_question_text" class="w-full font-semibold">{{ mcq.question_text }}</textarea>
+            <textarea name="mcq_{{ mcq.id }}_question_text" class="w-full font-semibold">Q, {{ mcq.question_text }}</textarea>
             <div class="grid grid-cols-2 gap-2 text-sm">
               <input name="mcq_{{ mcq.id }}_option_a" value="{{ mcq.option_a }}" class="border p-1 rounded" placeholder="Option A">
               <input name="mcq_{{ mcq.id }}_option_b" value="{{ mcq.option_b }}" class="border p-1 rounded" placeholder="Option B">
@@ -76,9 +76,9 @@
     {% if short_questions %}
       <ul class="space-y-4">
         {% for sq in short_questions %}
-          <li class="p-4 border rounded shadow-sm bg-gray-50">
+          <li class="p-4 border rounded shadow-sm bg-gray">
             <input type="hidden" name="short_ids" value="{{ sq.id }}">
-            <textarea name="short_{{ sq.id }}_question_text" class="w-full font-semibold">{{ sq.question_text }}</textarea>
+            <textarea name="short_{{ sq.id }}_question_text" class="w-full font-semibold">Q,{{ sq.question_text }}</textarea>
             <textarea name="short_{{ sq.id }}_answer" class="border rounded w-full">{{ sq.answer }}</textarea>
             <input name="short_{{ sq.id }}_marks" value="{{ sq.marks }}" class="border p-1 rounded w-full" placeholder="Marks">
             <div class="flex gap-2">

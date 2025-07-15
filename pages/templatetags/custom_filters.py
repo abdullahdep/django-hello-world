@@ -1,50 +1,46 @@
+# pages/templatetags/custom_filters.py
+
 from django import template
+import pprint
 
 register = template.Library()
 
-@register.filter(name='multiply')
+@register.filter
 def multiply(value, arg):
-    """Multiplies the value by the argument"""
     try:
         return float(value) * float(arg)
     except (ValueError, TypeError):
-        return 0
+        return ''
 
 @register.filter(name='delay_calc')
 def delay_calc(counter):
     """Calculate animation delay based on loop counter"""
     return counter * 0.1
 
-
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
 
 @register.filter(name='pprint')
-def pprint(value):
+def pprint_filter(value):
     """Pretty prints a Python object"""
-    import pprint
     return pprint.pformat(value, indent=2)
 
 @register.filter(name='get_mcq')
 def get_mcq(mcqs, mcq_id):
     """Gets an MCQ from a queryset by ID"""
     try:
-        # Convert mcq_id to integer since it might be a string
         mcq_id = int(mcq_id)
-        # Try direct filter first for efficiency
         if hasattr(mcqs, 'filter'):
             return mcqs.filter(id=mcq_id).first()
-        # Fallback to iteration if it's a list/tuple
         return next(mcq for mcq in mcqs if mcq.id == mcq_id)
     except (ValueError, StopIteration, AttributeError):
         return None
-    
-
-
-from django import template
-register = template.Library()
 
 @register.filter
 def to_range(start, end):
-    return range(start, end + 1)
+    """Returns a range from start to end (inclusive)"""
+    try:
+        return range(int(start), int(end) + 1)
+    except (ValueError, TypeError):
+        return range(0)
