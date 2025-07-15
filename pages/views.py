@@ -867,22 +867,33 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
     return render(request, 'pages/mcq_test.html', context)
 
 
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from .models import Subject, Chapter, Topic, ShortQuestion
 
+from PIL import Image
+import pytesseract
+import logging
+
+# Optional: set path to tesseract if on Windows
+# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+def extract_text(image_file):
+    try:
+        image = Image.open(image_file)
+        return pytesseract.image_to_string(image).strip()
+    except Exception as e:
+        return f"[OCR Error: {str(e)}]"
+
 @login_required
 def short_question_test(request, subject_slug, grade, chapter_slug, topic):
-    import logging
     logger = logging.getLogger(__name__)
-    
     logger.info("Starting Short Question test view...")
 
     try:
         topic_name = topic.replace('-', ' ').title()
         topic_obj = Topic.objects.filter(name=topic_name).first()
-        
+
         if topic_obj:
             logger.info(f"Found topic: {topic_obj.name} (ID: {topic_obj.id})")
             short_questions = ShortQuestion.objects.filter(
@@ -905,16 +916,25 @@ def short_question_test(request, subject_slug, grade, chapter_slug, topic):
                 slug=chapter_slug
             ).first()
 
-        # Collect answers if POST request
         submitted_answers = {}
 
         if request.method == 'POST':
             for sq in short_questions:
                 answer_key = f'q{sq.id}'
-                user_answer = request.POST.get(answer_key, "").strip()
-                submitted_answers[sq.id] = user_answer
+                image_key = f'img_q{sq.id}'
 
-            logger.info(f"User submitted answers for {len(submitted_answers)} short questions")
+                user_answer = request.POST.get(answer_key, "").strip()
+                image_file = request.FILES.get(image_key)
+
+                # If answer is empty and image uploaded, use OCR
+                if not user_answer and image_file:
+                    ocr_text = extract_text(image_file)
+                    submitted_answers[sq.id] = ocr_text
+                    logger.info(f"OCR extracted for q{sq.id}: {ocr_text[:50]}...")
+                else:
+                    submitted_answers[sq.id] = user_answer
+
+            logger.info(f"User submitted answers for {len(submitted_answers)} questions.")
 
     except Exception as e:
         logger.error(f"Error in short_question_test view: {str(e)}")
