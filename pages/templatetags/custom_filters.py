@@ -15,10 +15,10 @@ def delay_calc(counter):
     """Calculate animation delay based on loop counter"""
     return counter * 0.1
 
-@register.filter(name='get_item')
+
+@register.filter
 def get_item(dictionary, key):
-    """Gets an item from a dictionary using key"""
-    return dictionary.get(str(key))  # Convert key to string to handle numeric IDs
+    return dictionary.get(key)
 
 @register.filter(name='pprint')
 def pprint(value):

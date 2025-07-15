@@ -1,0 +1,29 @@
+{% extends 'layouts/layouts.html' %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}  {# 👈 this line is required #}
+
+
+<h2>Short Questions for Topic: {{ topic.name }}</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  {% for question in short_questions %}
+    <div class="question-block">
+      <p><strong>Q{{ forloop.counter }}:</strong> {{ question.question_text }}</p>
+      {% if question.marks %}
+        <p><em>Marks: {{ question.marks }}</em></p>
+      {% endif %}
+      <textarea name="q{{ question.id }}" rows="4" cols="80" placeholder="Your Answer">{{ submitted_answers|get_item:question.id }}</textarea>
+    </div>
+    <hr>
+  {% empty %}
+    <p>No short questions found for this topic.</p>
+  {% endfor %}
+
+  {% if short_questions %}
+    <button type="submit" class="btn btn-primary mt-4">Submit Answers</button>
+  {% endif %}
+</form>
+{% endblock %}

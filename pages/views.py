@@ -866,39 +866,85 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
     
     return render(request, 'pages/mcq_test.html', context)
 
-@login_required
-def short_questions_test(request, subject_slug, grade, chapter_slug, topic):
-    # Get global data
-    global_data = global_variables(request)
-    
-    # Get subject info
-    subject_name = subject_slug.replace('-', ' ').title()
-    subject = {
-        'slug': subject_slug,
-        'name': subject_name,
-        'grade': grade
-    }
-    
-    # Get chapter data
-    chapters_data = global_data['chapters'].get(subject_slug.lower(), {})
-    grade_chapters = chapters_data.get(int(grade), [])
-    chapter = next((ch for ch in grade_chapters if ch['slug'] == chapter_slug), None)
-    
-    # Get Short Questions from database using the topic relationship
-    short_questions = ShortQuestion.objects.filter(
-        topic__chapter__subject__slug=subject_slug,
-        topic__chapter__grade=grade,
-        topic__chapter__slug=chapter_slug,
-        topic__slug=topic
-    ).order_by('?')  # Random order
-    
-    context = {
-        'subject': subject,
-        'chapter': chapter,
-        'topic': topic.replace('-', ' '),
-        'questions': short_questions,
-        'grade': grade,
-    }
-    
-    return render(request, 'pages/short_questions_test.html', context)
 
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from .models import Subject, Chapter, Topic, ShortQuestion
+
+@login_required
+def short_question_test(request, subject_slug, grade, chapter_slug, topic):
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    logger.info("Starting Short Question test view...")
+
+    try:
+        topic_name = topic.replace('-', ' ').title()
+        topic_obj = Topic.objects.filter(name=topic_name).first()
+        
+        if topic_obj:
+            logger.info(f"Found topic: {topic_obj.name} (ID: {topic_obj.id})")
+            short_questions = ShortQuestion.objects.filter(
+                topic__chapter_id=topic_obj.chapter.id,
+                topic__id=topic_obj.id
+            )
+            logger.info(f"Found {short_questions.count()} Short Questions")
+            subject = topic_obj.chapter.subject
+            chapter = topic_obj.chapter
+        else:
+            logger.warning(f"No topic found with name: {topic_name}")
+            short_questions = []
+            subject = Subject.objects.get_or_create(
+                slug=subject_slug,
+                defaults={'name': subject_slug.replace('-', ' ').title()}
+            )[0]
+            chapter = Chapter.objects.filter(
+                subject=subject,
+                grade=int(grade),
+                slug=chapter_slug
+            ).first()
+
+        # Collect answers if POST request
+        submitted_answers = {}
+
+        if request.method == 'POST':
+            for sq in short_questions:
+                answer_key = f'q{sq.id}'
+                user_answer = request.POST.get(answer_key, "").strip()
+                submitted_answers[sq.id] = user_answer
+
+            logger.info(f"User submitted answers for {len(submitted_answers)} short questions")
+
+    except Exception as e:
+        logger.error(f"Error in short_question_test view: {str(e)}")
+        short_questions = []
+        submitted_answers = {}
+        subject = Subject.objects.get_or_create(
+            slug=subject_slug,
+            defaults={'name': subject_slug.replace('-', ' ').title()}
+        )[0]
+        chapter = None
+
+    context = {
+        'subject': {
+            'slug': subject.slug,
+            'name': subject.name,
+            'grade': grade
+        },
+        'chapter': {
+            'slug': chapter.slug if chapter else chapter_slug,
+            'name': chapter.name if chapter else chapter_slug.replace('-', ' ').title()
+        },
+        'topic': {
+            'id': topic_obj.id if topic_obj else None,
+            'name': topic_obj.name if topic_obj else topic_name,
+            'slug': topic_obj.slug if topic_obj else topic,
+            'chapter_id': topic_obj.chapter.id if topic_obj else None
+        },
+        'short_questions': short_questions,
+        'submitted_answers': submitted_answers,
+        'debug': True
+    }
+
+    return render(request, 'pages/short_question_test.html', context)

@@ -21,6 +21,6 @@ urlpatterns = [
     path('subject/<str:subject_slug>/grade/<int:grade>/chapter/<str:chapter_slug>/<str:topic>/mcqstest/', 
          views.mcq_test, name='mcq_test'),
     path('subject/<str:subject_slug>/grade/<int:grade>/chapter/<str:chapter_slug>/<str:topic>/shortquestions/', 
-         views.short_questions_test, name='short_questions_test'),
+         views.short_question_test, name='short_question_test'),
 
 ]
