@@ -1,29 +1,46 @@
 {% extends 'layouts/layouts.html' %}
 {% block content %}
 {% load static %}
-{% load custom_filters %}  {# 👈 this line is required #}
+{% load custom_filters %}
 
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Short Questions for Topic: {{ topic.name }}</h2>
 
-<h2>Short Questions for Topic: {{ topic.name }}</h2>
+  <form method="post" class="space-y-6">
+    {% csrf_token %}
 
-<form method="post">
-  {% csrf_token %}
+    {% for question in short_questions %}
+      <div class="bg-white shadow rounded-xl p-6 border border-gray-200">
+        <p class="text-lg font-semibold text-gray-800 mb-2">
+          Q{{ forloop.counter }}: {{ question.question_text }}
+        </p>
 
-  {% for question in short_questions %}
-    <div class="question-block">
-      <p><strong>Q{{ forloop.counter }}:</strong> {{ question.question_text }}</p>
-      {% if question.marks %}
-        <p><em>Marks: {{ question.marks }}</em></p>
-      {% endif %}
-      <textarea name="q{{ question.id }}" rows="4" cols="80" placeholder="Your Answer">{{ submitted_answers|get_item:question.id }}</textarea>
-    </div>
-    <hr>
-  {% empty %}
-    <p>No short questions found for this topic.</p>
-  {% endfor %}
+        {% if question.marks %}
+          <p class="text-sm text-gray-500 mb-4">Marks: {{ question.marks }}</p>
+        {% endif %}
 
-  {% if short_questions %}
-    <button type="submit" class="btn btn-primary mt-4">Submit Answers</button>
-  {% endif %}
-</form>
+        <textarea
+          name="q{{ question.id }}"
+          rows="4"
+          placeholder="Your Answer"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        >{{ submitted_answers|get_item:question.id }}</textarea>
+      </div>
+    {% empty %}
+      <p class="text-gray-500">No short questions found for this topic.</p>
+    {% endfor %}
+
+    {% if short_questions %}
+      <div class="flex justify-end">
+        <button
+          type="submit"
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Submit Answers
+        </button>
+      </div>
+    {% endif %}
+  </form>
+</div>
+
 {% endblock %}
