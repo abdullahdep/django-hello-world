@@ -17,6 +17,7 @@
 {% endif %}
 <!-- student dashboard -->
 {% if user.is_authenticated and not user.is_staff %}
+{% include 'index/subject show.html' %}
 
 {% include 'index/student_dashboard.html' %}
 {% endif %}
