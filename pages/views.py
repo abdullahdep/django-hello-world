@@ -1127,3 +1127,5 @@ def shortquestion_create(request):
     else:
         form = ShortQuestionForm()
     return render(request, 'admin_user/form.html', {'form': form, 'title': 'Add Short Question'})
+
+

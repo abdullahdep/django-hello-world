@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Progress Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .circular-progress {
+            transform: rotate(-90deg);
+        }
+        .progress-circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hover-scale {
+            transition: transform 0.2s ease-in-out;
+        }
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50 p-6">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <!-- Header -->
+            <div class="space-y-2 fade-in">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900">Learning Progress Dashboard</h1>
+                <p class="text-lg text-gray-600">
+                    Track your academic progress across subjects, grades, chapters, and topics
+                </p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 fade-in">
+                <!-- Total Subjects Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4 flex items-center justify-between space-y-0 pb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Total Subjects</h3>
+                        <i data-lucide="book-open" class="h-4 w-4 text-blue-500"></i>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="text-2xl font-bold text-gray-900">5</div>
+                        <p class="text-xs text-gray-500">Active courses</p>
+                    </div>
+                </div>
+
+                <!-- Average Score Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4 flex items-center justify-between space-y-0 pb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Average Score</h3>
+                        <i data-lucide="trending-up" class="h-4 w-4 text-green-500"></i>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="text-2xl font-bold text-gray-900">79%</div>
+                        <p class="text-xs text-gray-500">Overall performance</p>
+                    </div>
+                </div>
+
+                <!-- Completed Tasks Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4 flex items-center justify-between space-y-0 pb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Completed</h3>
+                        <i data-lucide="check-circle" class="h-4 w-4 text-purple-500"></i>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="text-2xl font-bold text-gray-900">127</div>
+                        <p class="text-xs text-gray-500">Tasks finished</p>
+                    </div>
+                </div>
+
+                <!-- Current Grade Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4 flex items-center justify-between space-y-0 pb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Current Grade</h3>
+                        <i data-lucide="graduation-cap" class="h-4 w-4 text-indigo-500"></i>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="text-2xl font-bold text-gray-900">10th</div>
+                        <p class="text-xs text-gray-500">Academic year</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Charts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                <!-- Mathematics -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="brain" class="h-5 w-5 text-orange-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Mathematics</h3>
+                                    <p class="text-xs text-gray-500">Subject</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#f97316" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="85"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">85%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Algebra & Geometry</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-orange-500 h-1 rounded-full transition-all duration-500" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Science -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="flask-conical" class="h-5 w-5 text-cyan-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Science</h3>
+                                    <p class="text-xs text-gray-500">Subject</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#06b6d4" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="72"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">72%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Physics & Chemistry</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-cyan-500 h-1 rounded-full transition-all duration-500" style="width: 72%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grade 10 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="graduation-cap" class="h-5 w-5 text-slate-700"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Grade 10</h3>
+                                    <p class="text-xs text-gray-500">Grade</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#334155" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="78"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">78%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Current Academic Year</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-slate-700 h-1 rounded-full transition-all duration-500" style="width: 78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- English Literature -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="book-open" class="h-5 w-5 text-yellow-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">English Literature</h3>
+                                    <p class="text-xs text-gray-500">Subject</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#eab308" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="91"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">91%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Reading & Writing</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-yellow-500 h-1 rounded-full transition-all duration-500" style="width: 91%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 5: Calculus -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="target" class="h-5 w-5 text-red-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Chapter 5: Calculus</h3>
+                                    <p class="text-xs text-gray-500">Chapter</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#ef4444" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="65"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">65%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Derivatives & Integrals</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-red-500 h-1 rounded-full transition-all duration-500" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overall Progress -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="trending-up" class="h-5 w-5 text-green-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Overall Progress</h3>
+                                    <p class="text-xs text-gray-500">Overall</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#10b981" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="79"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">79%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">All Subjects Combined</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-green-500 h-1 rounded-full transition-all duration-500" style="width: 79%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="scroll" class="h-5 w-5 text-amber-600"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">History</h3>
+                                    <p class="text-xs text-gray-500">Subject</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#d97706" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="88"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">88%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">World Wars & Modern Era</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-amber-600 h-1 rounded-full transition-all duration-500" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Goals -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="calendar" class="h-5 w-5 text-purple-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Weekly Goals</h3>
+                                    <p class="text-xs text-gray-500">Topic</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#8b5cf6" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="45"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">45%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">This Week's Targets</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-purple-500 h-1 rounded-full transition-all duration-500" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assignments -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="clipboard-check" class="h-5 w-5 text-emerald-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Assignments</h3>
+                                    <p class="text-xs text-gray-500">Topic</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#10b981" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="93"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">93%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Completed Tasks</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-emerald-500 h-1 rounded-full transition-all duration-500" style="width: 93%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exam Preparation -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover-scale fade-in">
+                    <div class="p-4 pb-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="file-text" class="h-5 w-5 text-rose-500"></i>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-900">Exam Preparation</h3>
+                                    <p class="text-xs text-gray-500">Topic</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex flex-col items-center space-y-4">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg width="100" height="100" class="circular-progress">
+                                <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent" opacity="0.2"/>
+                                <circle cx="50" cy="50" r="42" stroke="#f43f5e" stroke-width="6" fill="transparent" 
+                                        stroke-linecap="round" class="progress-circle" data-progress="67"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold">67%</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Midterm Readiness</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-rose-500 h-1 rounded-full transition-all duration-500" style="width: 67%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 fade-in">
+                <!-- Subjects Summary -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Subjects</h3>
+                        <p class="text-sm text-gray-500">Academic subjects progress</p>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Mathematics</span>
+                                <span class="text-sm font-medium text-gray-900">85%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Science</span>
+                                <span class="text-sm font-medium text-gray-900">72%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">English Literature</span>
+                                <span class="text-sm font-medium text-gray-900">91%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">History</span>
+                                <span class="text-sm font-medium text-gray-900">88%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Summary -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Progress</h3>
+                        <p class="text-sm text-gray-500">Current progress</p>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Weekly Goals</span>
+                                <span class="text-sm font-medium text-gray-900">45%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Assignments</span>
+                                <span class="text-sm font-medium text-gray-900">93%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Exam Preparation</span>
+                                <span class="text-sm font-medium text-gray-900">67%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapters Summary -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Chapters</h3>
+                        <p class="text-sm text-gray-500">Chapter completion status</p>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Chapter 5: Calculus</span>
+                                <span class="text-sm font-medium text-gray-900">65%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Chapter 3: Literature</span>
+                                <span class="text-sm font-medium text-gray-900">91%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Chapter 7: History</span>
+                                <span class="text-sm font-medium text-gray-900">88%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overall Summary -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover-scale">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Overall</h3>
+                        <p class="text-sm text-gray-500">Combined performance</p>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Overall Progress</span>
+                                <span class="text-sm font-medium text-gray-900">79%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Grade 10</span>
+                                <span class="text-sm font-medium text-gray-900">78%</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-700">Academic Year</span>
+                                <span class="text-sm font-medium text-gray-900">82%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Animate circular progress on load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const circles = document.querySelectorAll('.progress-circle');
+                circles.forEach((circle, index) => {
+                    const progress = circle.getAttribute('data-progress');
+                    const radius = circle.r.baseVal.value;
+                    const circumference = radius * 2 * Math.PI;
+                    const offset = circumference - (progress / 100) * circumference;
+                    
+                    circle.style.strokeDasharray = circumference;
+                    circle.style.strokeDashoffset = circumference;
+                    
+                    // Stagger the animations
+                    setTimeout(() => {
+                        circle.style.strokeDashoffset = offset;
+                    }, index * 100);
+                });
+            }, 200);
+        });
+
+        // Add click handlers for interactive elements
+        document.querySelectorAll('.hover-scale').forEach(card => {
+            card.addEventListener('click', function() {
+                // Add a subtle pulse effect on click
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 100);
+                }, 100);
+            });
+        });
+
+        // Add progress update functionality (demo)
+        function updateProgress(cardIndex, newProgress) {
+            const cards = document.querySelectorAll('.progress-circle');
+            if (cards[cardIndex]) {
+                const circle = cards[cardIndex];
+                const radius = circle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+                const offset = circumference - (newProgress / 100) * circumference;
+                
+                circle.style.strokeDashoffset = offset;
+                circle.setAttribute('data-progress', newProgress);
+                
+                // Update percentage text
+                const percentageText = circle.closest('.bg-white').querySelector('.text-xl.font-bold');
+                if (percentageText) {
+                    percentageText.textContent = newProgress + '%';
+                }
+                
+                // Update progress bar
+                const progressBar = circle.closest('.bg-white').querySelector('.h-1.rounded-full:not(.bg-gray-200)');
+                if (progressBar) {
+                    progressBar.style.width = newProgress + '%';
+                }
+            }
+        }
+
+        // Demo: Update some progress values after 3 seconds
+        setTimeout(() => {
+            updateProgress(0, 90); // Mathematics
+            updateProgress(4, 70); // Calculus
+            updateProgress(7, 55); // Weekly Goals
+        }, 3000);
+    </script>
+</body>
+</html>
