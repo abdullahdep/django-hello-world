@@ -1,4 +1,3 @@
-
 <div>
     <!-- Hero Section -->
     <section
@@ -18,7 +17,13 @@
                             {% if user.is_authenticated %}
                             <a href="{% url 'dashboard' %}"
                                 class="inline-flex primary items-center justify-center px-6 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors">
-                                Go to Dashboard <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-5 w-5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                                Go to Dashboard <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-arrow-right ml-2 h-5 w-5">
+                                    <path d="M5 12h14"></path>
+                                    <path d="m12 5 7 7-7 7"></path>
+                                </svg>
                             </a>
                             {% else %}
                             <a href="{% url 'register' %}"
@@ -106,13 +111,146 @@
         </div>
     </section>
     <!-- Featured Subjects Section -->
-  
+
+  <section class="dark-section py-16 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
+                <p class="text-muted-foreground grey-color max-w-2xl mx-auto">
+                    Explore our comprehensive study materials across a wide range of subjects
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for subject in featured_subjects %}
+                <div class="animate-fade-in">
+                    <a href="{% url 'subject_detail' subject.slug %}"
+                        class="block p-6 bg-card rounded-lg border border-border hover:border-primary transition-all">
+                        <div class="flex items-start">
+                            <div class="h-10 w-10 bg-accent rounded-lg flex items-center justify-center mr-4">
+                                <i data-lucide="graduation-cap" class="h-5 w-5 text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">{{ subject.name }}</h3>
+                                <p class="text-muted-foreground text-sm">
+                                    Comprehensive materials for grade 9-12
+                                </p>
+                                <div class="mt-4 flex items-center text-primary">
+                                    <span class="text-sm font-medium">Explore</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            </div>
+            <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                {% for subject_name, subject_info in subjects.items %}
+                <!-- here name is key and info is value
+        s:{a:{e:f,g:t}} 
+        s root value 
+        a root key 
+        a key of {e:f,g:t}
+        subjects.items is values of s
+        a is value of s but key of  {e:f,g:t}
+        so a is the key bcz we define 
+
+        -->
+                <!-- Include the subject card template, passing the variables directly -->
+                {% include 'components/subject_card.html' %}
+                {% endfor %}
+            </div>
+            <div class="text-center mt-12">
+                <a href="{% url 'subjects' %}"
+                    class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
+                    View All Subjects<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-4 w-4">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+  <section class=" hidden dark-section py-16 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
+                <p class="text-muted-foreground grey-color max-w-2xl mx-auto">
+                    Explore our comprehensive study materials across a wide range of subjects
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for subject in featured_subjects %}
+                <div class="animate-fade-in">
+                    <a href="{% url 'subject_detail' subject.slug %}"
+                        class="block p-6 bg-card rounded-lg border border-border hover:border-primary transition-all">
+                        <div class="flex items-start">
+                            <div class="h-10 w-10 bg-accent rounded-lg flex items-center justify-center mr-4">
+                                <i data-lucide="graduation-cap" class="h-5 w-5 text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">{{ subject.name }}</h3>
+                                <p class="text-muted-foreground text-sm">
+                                    Comprehensive materials for grade 9-12
+                                </p>
+                                <div class="mt-4 flex items-center text-primary">
+                                    <span class="text-sm font-medium">Explore</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            </div>
+            <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                {% for subject_name, subject_info in subjects.items %}
+                <!-- here name is key and info is value
+        s:{a:{e:f,g:t}} 
+        s root value 
+        a root key 
+        a key of {e:f,g:t}
+        subjects.items is values of s
+        a is value of s but key of  {e:f,g:t}
+        so a is the key bcz we define 
+
+        -->
+                <!-- Include the subject card template, passing the variables directly -->
+                {% include 'components/subject_card.html' %}
+                {% endfor %}
+            </div>
+            <div class="text-center mt-12">
+                <a href="{% url 'subjects' %}"
+                    class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
+                    View All Subjects<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-4 w-4">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
     <!-- Features Section -->
     <section class=" shade-background py-16 bg-card">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold mb-4">Why Choose Safar Academy?</h2>
-                <p class="text-muted-foreground grey-color max-w-2xl mx-auto">We provide innovative learning solutions designed to
+                <p class="text-muted-foreground grey-color max-w-2xl mx-auto">We provide innovative learning solutions
+                    designed to
                     help students excel</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -126,19 +264,21 @@
                             <path d="M22 6V3h-6c-2.2 0-4 1.8-4 4v14c0-1.7 1.3-3 3-3h7v-2.3"></path>
                         </svg></div>
                     <h3 class="text-xl font-semibold mb-3">Comprehensive Content</h3>
-                    <p class="text-muted-foreground grey-color">Thousands of MCQs and short questions covering all subjects and
+                    <p class="text-muted-foreground grey-color">Thousands of MCQs and short questions covering all
+                        subjects and
                         topics</p>
                 </div>
                 <div class="flex flex-col  items-center text-center" style="opacity: 1; transform: none;">
-                    <div class="h-16 color1 w-16 bg-secondary/10 rounded-full flex items-center justify-center mb-6"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    <div class="h-16 color1 w-16 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-award h-8 w-8 text-secondary">
                             <circle cx="12" cy="8" r="6"></circle>
                             <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
                         </svg></div>
                     <h3 class="text-xl font-semibold mb-3">Expert-Curated</h3>
-                    <p class="text-muted-foreground grey-color">Materials designed by experienced educators aligned with curriculum
+                    <p class="text-muted-foreground grey-color">Materials designed by experienced educators aligned with
+                        curriculum
                     </p>
                 </div>
                 <div class="flex flex-col items-center text-center" style="opacity: 1; transform: none;">
@@ -152,11 +292,12 @@
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg></div>
                     <h3 class="text-xl font-semibold mb-3">Personalized Learning</h3>
-                    <p class="text-muted-foreground grey-color">Track your progress and receive recommendations for improvement</p>
+                    <p class="text-muted-foreground grey-color">Track your progress and receive recommendations for
+                        improvement</p>
                 </div>
                 <div class="flex flex-col items-center text-center" style="opacity: 1; transform: none;">
-                    <div class="h-16 color1 w-16 bg-secondary/10 rounded-full flex items-center justify-center mb-6"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    <div class="h-16 color1 w-16 bg-secondary/10 rounded-full flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-star h-8 w-8 text-secondary">
                             <polygon
@@ -164,7 +305,8 @@
                             </polygon>
                         </svg></div>
                     <h3 class="text-xl font-semibold mb-3">AI-Powered Feedback</h3>
-                    <p class="text-muted-foreground grey-color">Receive instant feedback on your answers to improve understanding
+                    <p class="text-muted-foreground grey-color">Receive instant feedback on your answers to improve
+                        understanding
                     </p>
                 </div>
             </div>

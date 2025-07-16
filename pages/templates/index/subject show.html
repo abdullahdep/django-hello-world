@@ -1,42 +1,43 @@
-  <section class="dark-section py-16 bg-background">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
-                <p class="text-muted-foreground grey-color max-w-2xl mx-auto">
-                    Explore our comprehensive study materials across a wide range of subjects
-                </p>
-            </div>
+<section class="dark-section py-16 bg-background">
+    <a href="#dashboard" class="cursor-pointer px-3 bg-orange-500 py-3 border-gray-200 rounded-lg "> Dashboard</a>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
+            <p class="text-muted-foreground grey-color max-w-2xl mx-auto">
+                Explore our comprehensive study materials across a wide range of subjects
+            </p>
+        </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for subject in featured_subjects %}
-                <div class="animate-fade-in">
-                    <a href="{% url 'subject_detail' subject.slug %}"
-                        class="block p-6 bg-card rounded-lg border border-border hover:border-primary transition-all">
-                        <div class="flex items-start">
-                            <div class="h-10 w-10 bg-accent rounded-lg flex items-center justify-center mr-4">
-                                <i data-lucide="graduation-cap" class="h-5 w-5 text-primary"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-lg mb-2">{{ subject.name }}</h3>
-                                <p class="text-muted-foreground text-sm">
-                                    Comprehensive materials for grade 9-12
-                                </p>
-                                <div class="mt-4 flex items-center text-primary">
-                                    <span class="text-sm font-medium">Explore</span>
-                                    <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
-                                </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for subject in featured_subjects %}
+            <div class="animate-fade-in">
+                <a href="{% url 'subject_detail' subject.slug %}"
+                    class="block p-6 bg-card rounded-lg border border-border hover:border-primary transition-all">
+                    <div class="flex items-start">
+                        <div class="h-10 w-10 bg-accent rounded-lg flex items-center justify-center mr-4">
+                            <i data-lucide="graduation-cap" class="h-5 w-5 text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2">{{ subject.name }}</h3>
+                            <p class="text-muted-foreground text-sm">
+                                Comprehensive materials for grade 9-12
+                            </p>
+                            <div class="mt-4 flex items-center text-primary">
+                                <span class="text-sm font-medium">Explore</span>
+                                <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
                             </div>
                         </div>
-                    </a>
-                </div>
-                {% endfor %}
+                    </div>
+                </a>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% endfor %}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            </div>
-            <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-                {% for subject_name, subject_info in subjects.items %}
-                <!-- here name is key and info is value
+        </div>
+        <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {% for subject_name, subject_info in subjects.items %}
+            <!-- here name is key and info is value
         s:{a:{e:f,g:t}} 
         s root value 
         a root key 
@@ -46,62 +47,62 @@
         so a is the key bcz we define 
 
         -->
-                <!-- Include the subject card template, passing the variables directly -->
-                {% include 'components/subject_card.html' %}
-                {% endfor %}
-            </div>
-            <div class="text-center mt-12">
-                <a href="{% url 'subjects' %}"
-                    class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
-                    View All Subjects<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-4 w-4">
-                        <path d="M5 12h14"></path>
-                        <path d="m12 5 7 7-7 7"></path>
-                    </svg>
-                </a>
-            </div>
+            <!-- Include the subject card template, passing the variables directly -->
+            {% include 'components/subject_card.html' %}
+            {% endfor %}
         </div>
-    </section>
-  <section class=" hidden dark-section py-16 bg-background">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
-                <p class="text-muted-foreground grey-color max-w-2xl mx-auto">
-                    Explore our comprehensive study materials across a wide range of subjects
-                </p>
-            </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'subjects' %}"
+                class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
+                View All Subjects<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-arrow-right ml-2 h-4 w-4">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+<section class=" hidden dark-section py-16 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
+            <p class="text-muted-foreground grey-color max-w-2xl mx-auto">
+                Explore our comprehensive study materials across a wide range of subjects
+            </p>
+        </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for subject in featured_subjects %}
-                <div class="animate-fade-in">
-                    <a href="{% url 'subject_detail' subject.slug %}"
-                        class="block p-6 bg-card rounded-lg border border-border hover:border-primary transition-all">
-                        <div class="flex items-start">
-                            <div class="h-10 w-10 bg-accent rounded-lg flex items-center justify-center mr-4">
-                                <i data-lucide="graduation-cap" class="h-5 w-5 text-primary"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-lg mb-2">{{ subject.name }}</h3>
-                                <p class="text-muted-foreground text-sm">
-                                    Comprehensive materials for grade 9-12
-                                </p>
-                                <div class="mt-4 flex items-center text-primary">
-                                    <span class="text-sm font-medium">Explore</span>
-                                    <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
-                                </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for subject in featured_subjects %}
+            <div class="animate-fade-in">
+                <a href="{% url 'subject_detail' subject.slug %}"
+                    class="block p-6 bg-card rounded-lg border border-border hover:border-primary transition-all">
+                    <div class="flex items-start">
+                        <div class="h-10 w-10 bg-accent rounded-lg flex items-center justify-center mr-4">
+                            <i data-lucide="graduation-cap" class="h-5 w-5 text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2">{{ subject.name }}</h3>
+                            <p class="text-muted-foreground text-sm">
+                                Comprehensive materials for grade 9-12
+                            </p>
+                            <div class="mt-4 flex items-center text-primary">
+                                <span class="text-sm font-medium">Explore</span>
+                                <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
                             </div>
                         </div>
-                    </a>
-                </div>
-                {% endfor %}
+                    </div>
+                </a>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% endfor %}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            </div>
-            <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-                {% for subject_name, subject_info in subjects.items %}
-                <!-- here name is key and info is value
+        </div>
+        <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {% for subject_name, subject_info in subjects.items %}
+            <!-- here name is key and info is value
         s:{a:{e:f,g:t}} 
         s root value 
         a root key 
@@ -111,20 +112,23 @@
         so a is the key bcz we define 
 
         -->
-                <!-- Include the subject card template, passing the variables directly -->
-                {% include 'components/subject_card.html' %}
-                {% endfor %}
-            </div>
-            <div class="text-center mt-12">
-                <a href="{% url 'subjects' %}"
-                    class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
-                    View All Subjects<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-4 w-4">
-                        <path d="M5 12h14"></path>
-                        <path d="m12 5 7 7-7 7"></path>
-                    </svg>
-                </a>
-            </div>
+            <!-- Include the subject card template, passing the variables directly -->
+            {% include 'components/subject_card.html' %}
+            {% endfor %}
         </div>
-    </section>
+        <div class=" text-center mt-12">
+            <a href="{% url 'subjects' %}"
+                class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
+                View All Subjects<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-arrow-right ml-2 h-4 w-4">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+</div>
