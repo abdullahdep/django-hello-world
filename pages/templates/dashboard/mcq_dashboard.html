@@ -1,0 +1,37 @@
+<!-- templates/dashboard/mcq_dashboard.html -->
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">MCQ Test Dashboard</h1>
+
+{% for data in subject_data %}
+<div class="border p-4 mb-6 shadow-lg rounded">
+    <h2 class="text-xl font-semibold text-indigo-700">{{ data.subject.name }}</h2>
+    <p class="text-sm text-gray-500">{{ data.total_attempts }} attempts | Average Score: {{ data.average_score }}%</p>
+
+    {% if data.scores %}
+    <table class="table-auto w-full mt-3 border">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2 border">Topic</th>
+                <th class="px-4 py-2 border">Score</th>
+                <th class="px-4 py-2 border">Percentage</th>
+                <th class="px-4 py-2 border">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for score in data.scores %}
+            <tr>
+                <td class="px-4 py-2 border">{{ score.topic.name }}</td>
+                <td class="px-4 py-2 border">{{ score.score }}/{{ score.total_questions }}</td>
+                <td class="px-4 py-2 border">{{ score.score_percentage }}%</td>
+                <td class="px-4 py-2 border">{{ score.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-sm text-gray-400 mt-2">No attempts yet.</p>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

@@ -1129,3 +1129,33 @@ def shortquestion_create(request):
     return render(request, 'admin_user/form.html', {'form': form, 'title': 'Add Short Question'})
 
 
+# views.py
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import MCQTestScore, Subject
+
+@login_required
+def mcq_dashboard(request):
+    user = request.user
+    subjects = Subject.objects.all()
+
+    subject_data = []
+    for subject in subjects:
+        scores = MCQTestScore.objects.filter(user=user, subject=subject).order_by('-created_at')
+        if scores.exists():
+            total_attempts = scores.count()
+            average_score = sum(score.score_percentage for score in scores) / total_attempts
+        else:
+            total_attempts = 0
+            average_score = 0
+
+        subject_data.append({
+            'subject': subject,
+            'scores': scores,
+            'average_score': round(average_score, 2),
+            'total_attempts': total_attempts
+        })
+
+    return render(request, 'dashboard/mcq_dashboard.html', {
+        'subject_data': subject_data
+    })
