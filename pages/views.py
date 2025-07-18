@@ -1145,6 +1145,7 @@ def mcq_dashboard(request):
         if scores.exists():
             total_attempts = scores.count()
             average_score = sum(score.score_percentage for score in scores) / total_attempts
+            
         else:
             total_attempts = 0
             average_score = 0
@@ -1155,7 +1156,12 @@ def mcq_dashboard(request):
             'average_score': round(average_score, 2),
             'total_attempts': total_attempts
         })
+        
 
     return render(request, 'dashboard/mcq_dashboard.html', {
         'subject_data': subject_data
     })
+
+
+    
+    
