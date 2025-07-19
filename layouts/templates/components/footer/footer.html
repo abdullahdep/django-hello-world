@@ -23,14 +23,19 @@
                             Subjects
                         </a>
                     </li>
+                                        {% if user.is_staff and user.is_authenticated %}
+
                     <li>
                         <a href="{% url 'dashboard' %}"
                             class="text-muted-foreground grey-color hover:text-foreground transition-colors">
                             Dashboard
                         </a>
                     </li>
+                                        {% endif %}
+
                     {% if not user.profile.is_premium %}
                     {% if not user.is_staff %}
+                    
                     <li class="hidden">
                         <a href="{% url 'premium' %}"
                             class="text-muted-foreground grey-color hover:text-foreground transition-colors">
@@ -129,3 +134,4 @@
         </div>
     </div>
 </footer>
+

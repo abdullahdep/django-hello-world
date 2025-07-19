@@ -36,15 +36,7 @@ def global_variables(request):
         # Subjects Data (Now a dictionary of subjects with descriptions and links)
         'subjects': {
             'English': {
-                'description': 'Learn the fundamentals of English language and literature.',
-                'anchor': 'login'
-            },
-            'English II': {
-                'description': 'Learn the fundamentals of English language and literature.',
-                'anchor': 'login'
-            },
-            'Mr.Chips': {
-                'description': 'Mister Chips',
+                'description': ' Learn the fundamentals of English language and literature.',
                 'anchor': 'login'
             },
              'General Maths': {
@@ -1401,96 +1393,7 @@ def global_variables(request):
             ,
             'mrchips':{
                 12:[
-    {
-        "name": "Chapter 1",
-        "slug": "chapter-1",
-        "topics": ["Chapter 1"]
-    },
-    {
-        "name": "Chapter 2",
-        "slug": "chapter-2",
-        "topics": ["Chapter 2"]
-    },
-    {
-        "name": "Chapter 3",
-        "slug": "chapter-3",
-        "topics": ["Chapter 3"]
-    },
-    {
-        "name": "Chapter 4",
-        "slug": "chapter-4",
-        "topics": ["Chapter 4"]
-    },
-    {
-        "name": "Chapter 5",
-        "slug": "chapter-5",
-        "topics": ["Chapter 5"]
-    },
-    {
-        "name": "Chapter 6",
-        "slug": "chapter-6",
-        "topics": ["Chapter 6"]
-    },
-    {
-        "name": "Chapter 7",
-        "slug": "chapter-7",
-        "topics": ["Chapter 7"]
-    },
-    {
-        "name": "Chapter 8",
-        "slug": "chapter-8",
-        "topics": ["Chapter 8"]
-    },
-    {
-        "name": "Chapter 9",
-        "slug": "chapter-9",
-        "topics": ["Chapter 9"]
-    },
-    {
-        "name": "Chapter 10",
-        "slug": "chapter-10",
-        "topics": ["Chapter 10"]
-    },
-    {
-        "name": "Chapter 11",
-        "slug": "chapter-11",
-        "topics": ["Chapter 11"]
-    },
-    {
-        "name": "Chapter 12",
-        "slug": "chapter-12",
-        "topics": ["Chapter 12"]
-    },
-    {
-        "name": "Chapter 13",
-        "slug": "chapter-13",
-        "topics": ["Chapter 13"]
-    },
-    {
-        "name": "Chapter 14",
-        "slug": "chapter-14",
-        "topics": ["Chapter 14"]
-    },
-    {
-        "name": "Chapter 15",
-        "slug": "chapter-15",
-        "topics": ["Chapter 15"]
-    },
-    {
-        "name": "Chapter 16",
-        "slug": "chapter-16",
-        "topics": ["Chapter 16"]
-    },
-    {
-        "name": "Chapter 17",
-        "slug": "chapter-17",
-        "topics": ["Chapter 17"]
-    },
-    {
-        "name": "Chapter 18",
-        "slug": "chapter-18",
-        "topics": ["Chapter 18"]
-    }
+   
 ]
 
             },
@@ -1576,6 +1479,7 @@ def global_variables(request):
 ]
 ,
                 10:[
+
   {
     "name": "Hazrat Muhammad (SAW) an Embodiment of Justice",
     "slug": "Hazrat Muhammad (SAW) an Embodiment of Justice",
@@ -1714,14 +1618,10 @@ def global_variables(request):
     "slug": "chapter-14-the-end-of-the-beginning",
     "topics": ["The End of the Beginning"]
   }
-]
+,
 
-            }
-            ,
-            'english-ii':{
-                12:[
-    {
-        "name": "The Dying Sun",
+ {
+        "name": "<p id=\"#englishii\" >The Dying Sun</p>",
         "slug": "the-dying-sun",
         "topics": ["The Dying Sun"]
     },
@@ -1800,6 +1700,105 @@ def global_variables(request):
         "slug": "a-dialogue",
         "topics": ["A Dialogue"]
     }
+    ,
+     {
+        "name": "Chapter 1",
+        "slug": "chapter-1",
+        "topics": ["Chapter 1"]
+    },
+    {
+        "name": "Chapter 2",
+        "slug": "chapter-2",
+        "topics": ["Chapter 2"]
+    },
+    {
+        "name": "Chapter 3",
+        "slug": "chapter-3",
+        "topics": ["Chapter 3"]
+    },
+    {
+        "name": "Chapter 4",
+        "slug": "chapter-4",
+        "topics": ["Chapter 4"]
+    },
+    {
+        "name": "Chapter 5",
+        "slug": "chapter-5",
+        "topics": ["Chapter 5"]
+    },
+    {
+        "name": "Chapter 6",
+        "slug": "chapter-6",
+        "topics": ["Chapter 6"]
+    },
+    {
+        "name": "Chapter 7",
+        "slug": "chapter-7",
+        "topics": ["Chapter 7"]
+    },
+    {
+        "name": "Chapter 8",
+        "slug": "chapter-8",
+        "topics": ["Chapter 8"]
+    },
+    {
+        "name": "Chapter 9",
+        "slug": "chapter-9",
+        "topics": ["Chapter 9"]
+    },
+    {
+        "name": "Chapter 10",
+        "slug": "chapter-10",
+        "topics": ["Chapter 10"]
+    },
+    {
+        "name": "Chapter 11",
+        "slug": "chapter-11",
+        "topics": ["Chapter 11"]
+    },
+    {
+        "name": "Chapter 12",
+        "slug": "chapter-12",
+        "topics": ["Chapter 12"]
+    },
+    {
+        "name": "Chapter 13",
+        "slug": "chapter-13",
+        "topics": ["Chapter 13"]
+    },
+    {
+        "name": "Chapter 14",
+        "slug": "chapter-14",
+        "topics": ["Chapter 14"]
+    },
+    {
+        "name": "Chapter 15",
+        "slug": "chapter-15",
+        "topics": ["Chapter 15"]
+    },
+    {
+        "name": "Chapter 16",
+        "slug": "chapter-16",
+        "topics": ["Chapter 16"]
+    },
+    {
+        "name": "Chapter 17",
+        "slug": "chapter-17",
+        "topics": ["Chapter 17"]
+    },
+    {
+        "name": "Chapter 18",
+        "slug": "chapter-18",
+        "topics": ["Chapter 18"]
+    }
+
+]
+
+            }
+            ,
+            'english-ii':{
+                12:[
+   
 ]
 
             },
