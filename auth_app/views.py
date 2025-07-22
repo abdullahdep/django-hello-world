@@ -7,6 +7,8 @@ from .models import Profile
 from .middlewares import auth, guest
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from pages.models import Subject , MCQTestScore
+
 
 # Create your views here.
 
@@ -70,7 +72,29 @@ def login_view(request):
 
 @login_required(login_url='login')
 def dashboard_view(request):
-    return render(request, 'dashboard.html')
+    user = request.user
+    subjects = Subject.objects.all()
+
+    subject_data = []
+    for subject in subjects:
+        scores = MCQTestScore.objects.filter(user=user, subject=subject).order_by('-created_at')
+        if scores.exists():
+            total_attempts = scores.count()
+            average_score = sum(score.score_percentage for score in scores) / total_attempts
+            
+        else:
+            total_attempts = 0
+            average_score = 0
+
+        subject_data.append({
+            'subject': subject,
+            'scores': scores,
+            'average_score': round(average_score, 2),
+            'total_attempts': total_attempts
+        })
+        
+
+    return render(request, 'dashboard.html' , {'subject_data': subject_data})
 
 def logout_view(request):
     logout(request)

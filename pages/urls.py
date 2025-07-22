@@ -36,7 +36,7 @@ urlpatterns = [
      path('mcq/add/', views.mcq_create, name='mcq_create'),
      path('shortquestion/add/', views.shortquestion_create, name='shortquestion_create'),
      path('sitemap/', views.html_sitemap, name='html_sitemap'),
-         path('mcq/', views.mcq_dashboard, name='mcq_dashboard'),
+     #     path('mcq/', views.mcq_dashboard, name='mcq_dashboard'),
 
 
 

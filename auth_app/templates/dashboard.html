@@ -2,4 +2,200 @@
 
 {% block content %}
 
+<!-- Tailwind + Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div id="dashboard" class="min-h-screen bg-gray-900 p-6">
+  <div class="max-w-7xl mx-auto space-y-10">
+
+    <!-- Page Header -->
+    <div class="space-y-2">
+      <h1 class="text-4xl font-bold tracking-tight text-white">Your Progress</h1>
+      <p class="text-lg text-gray-400">
+        Track your academic progress across subjects, grades, chapters, and topics.
+      </p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards-wrapper group grid grid-cols-2 md:grid-cols-4 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-300 p-6 hover:scale-[1.03] transition-transform">
+        <div class="flex items-center justify-between pb-2">
+          <h3 class="text-sm font-semibold text-gray-800">Total Subjects (Grade)</h3>
+          <i data-lucide="book-open" class="h-5 w-5 text-blue-500"></i>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-gray-900">5</div>
+          <p class="text-xs text-gray-500">Active courses</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-300 p-6 hover:scale-[1.03] transition-transform">
+        <div class="flex items-center justify-between pb-2">
+          <h3 class="text-sm font-semibold text-gray-800">Average Score</h3>
+          <i data-lucide="bar-chart-3" class="h-5 w-5 text-green-500"></i>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-gray-900">5</div>
+          <p class="text-xs text-gray-500">Overall performance</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-300 p-6 hover:scale-[1.03] transition-transform">
+        <div class="flex items-center justify-between pb-2">
+          <h3 class="text-sm font-semibold text-gray-800">Completed</h3>
+          <i data-lucide="check-circle" class="h-5 w-5 text-indigo-500"></i>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-gray-900">5</div>
+          <p class="text-xs text-gray-500">Tasks finished</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-300 p-6 hover:scale-[1.03] transition-transform">
+        <div class="flex items-center justify-between pb-2">
+          <h3 class="text-sm font-semibold text-gray-800">Current Grade</h3>
+          <i data-lucide="graduation-cap" class="h-5 w-5 text-purple-500"></i>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-gray-900">5</div>
+          <p class="text-xs text-gray-500">Academic year</p>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="toggleSubjectCards()" 
+        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded shadow transition mb-4">
+  MCQs Results
+</button>
+<button onclick="toggleSubjectCards()" 
+        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded shadow transition mb-4">
+  Short questions Results
+</button>
+
+
+    <!-- Subject Data Cards (Shown on Hover) -->
+<div id="subjectCards" class="hidden transition-opacity duration-500 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+      {% for data in subject_data %}
+      <div class="relative bg-white rounded-2xl shadow-md p-4 group hover:shadow-xl transition-all">
+
+        <!-- Subject Header -->
+        <div class="flex items-center space-x-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-flask-conical h-5 w-5 text-cyan-600">
+            <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path>
+            <path d="M6.453 15h11.094"></path>
+            <path d="M8.5 2h7"></path>
+          </svg>
+          <div>
+            <h3 class="text-sm font-semibold text-gray-800">{{ data.subject.name }}</h3>
+            <p class="text-xs text-gray-500">{{ data.total_attempts }} attempts</p>
+          </div>
+        </div>
+
+        <!-- Circular Progress -->
+        <div class="relative flex justify-center mb-4">
+          <svg width="100" height="100" class="circular-progress">
+            <circle cx="50" cy="50" r="42" stroke="#e5e7eb" stroke-width="6" fill="transparent"></circle>
+            <circle cx="50" cy="50" r="42" stroke="#06b6d4" stroke-width="6" fill="transparent" stroke-linecap="round"
+              class="progress-circle" data-progress="{{ data.average_score }}">
+            </circle>
+          </svg>
+          <div class="absolute top-9 text-xl font-semibold text-cyan-600">
+            {{ data.average_score }}%
+          </div>
+        </div>
+
+        <!-- Subject Description -->
+        <div class="text-center w-[70%] mx-auto">
+          <p class="text-xs text-gray-500">{{ data.subject.description }}</p>
+          <div class="mt-2 w-full bg-gray-200 rounded-full h-1">
+            <div class="bg-cyan-500 h-1 rounded-full transition-all duration-500"
+              style="width: {{ data.average_score }}%"></div>
+          </div>
+        </div>
+
+        <!-- Show Scores Button + Dropdown -->
+        <div class="text-center mt-4 relative z-50">
+          <button onclick="toggleDetails(this)"
+            class="flex items-center justify-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium">
+            <span>Show Scores</span>
+            <span class="material-icons bg-gray-100 p-1 rounded-full transition-transform duration-300">
+              arrow_drop_down
+            </span>
+          </button>
+
+          <!-- Floating Dropdown -->
+          <div class="score-details hidden absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 z-40 w-80 bg-gray-900 border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+            {% if data.scores %}
+            <table class="table-auto w-full text-xs border-collapse">
+              <thead class="bg-orange-500 text-white sticky top-0">
+                <tr>
+                  <th class="px-2 py-1 border">Topic</th>
+                  <th class="px-2 py-1 border">Score</th>
+                  <th class="px-2 py-1 border">%</th>
+                  <th class="px-2 py-1 border">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for score in data.scores %}
+                <tr>
+                  <td class="px-2 py-1 border">{{ score.topic.name }}</td>
+                  <td class="px-2 py-1 border">{{ score.score }}/{{ score.total_questions }}</td>
+                  <td class="px-2 py-1 border">{{ score.score_percentage }}%</td>
+                  <td class="px-2 py-1 border">{{ score.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <p class="text-xs text-gray-400 p-2">No attempts yet.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const circles = document.querySelectorAll('.progress-circle');
+    circles.forEach(circle => {
+      const radius = circle.r.baseVal.value;
+      const circumference = 2 * Math.PI * radius;
+      const progress = parseFloat(circle.dataset.progress) || 0;
+      const offset = circumference - (progress / 100 * circumference);
+      circle.style.strokeDasharray = `${circumference}`;
+      circle.style.strokeDashoffset = offset;
+    });
+  });
+
+  function toggleDetails(button) {
+    const details = button.nextElementSibling;
+    const icon = button.querySelector('.material-icons');
+    const span = button.querySelector('span');
+    details.classList.toggle('hidden');
+    icon.classList.toggle('rotate-180');
+    span.textContent = details.classList.contains('hidden') ? 'Show Scores' : 'Hide Scores';
+  }
+
+
+  
+</script>
+<script>
+  function toggleSubjectCards() {
+    const block = document.getElementById('subjectCards');
+    block.classList.toggle('hidden');
+  }
+</script>
+
+
 {% endblock %}
