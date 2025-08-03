@@ -29,8 +29,6 @@ class Chapter(models.Model):
     class Meta:
         unique_together = ['subject', 'slug']
 
-    def __str__(self):
-        return f"{self.subject.name} - {self.name} (Grade {self.grade})"
 
 class Topic(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='topics')

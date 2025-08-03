@@ -966,6 +966,7 @@ def short_question_test(request, subject_slug, grade, chapter_slug, topic):
         },
         'short_questions': short_questions,
         'submitted_answers': submitted_answers,
+        'total_marks': sum(q.marks if q.marks is not None else 2 for q in short_questions),
         'debug': True
     }
 

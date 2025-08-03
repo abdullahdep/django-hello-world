@@ -4,6 +4,99 @@
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+
+<!-- Summary Stats -->
+<input type="hidden" id="subject-id" value="{{ subject.id }}">
+<input type="hidden" id="chapter-id" value="{{ topic.chapter_id }}">
+
+<div class="bg-white shadow rounded-xl p-6 border border-gray-200 mb-6">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4">Test Summary</h3>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <p class="text-sm text-gray-600">Total Questions</p>
+      <p class="text-2xl font-bold text-gray-800">{{ short_questions|length }}</p>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <p class="text-sm text-gray-600">Total Marks</p>
+      <p id="total-marks" class="text-2xl font-bold text-gray-800">{{ total_marks }}</p>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <p class="text-sm text-gray-600">Marks Obtained</p>
+      <p id="marks-obtained" class="text-2xl font-bold text-orange-500">0</p>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <p class="text-sm text-gray-600">Percentage</p>
+      <p id="percentage" class="text-2xl font-bold text-green-500">0%</p>
+    </div>
+  </div>
+  <div class="mt-4 flex justify-end">
+    <button
+      onclick="saveTestResults()"
+      id="save-results"
+      class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+      disabled
+    >
+      Save Results
+    </button>
+  </div>
+</div>
+<script>
+  async function checkAnswer(questionId, answer) {
+    const feedbackContainer = document.getElementById(`feedback-q${questionId}`);
+    const scoreElement = document.getElementById(`score-q${questionId}`);
+    const feedbackText = document.getElementById(`feedback-text-q${questionId}`);
+    const keyPointsList = document.getElementById(`key-points-q${questionId}`);
+    
+    try {
+      const response = await fetch('/api/check-answer/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({
+          question_id: questionId,
+          answer: answer
+        })
+      });
+      
+      const data = await response.json();
+      
+      // Update the feedback UI
+      const score = data.score;
+      const totalMarks = data.total_marks;
+      scoreElement.textContent = `${score}/${totalMarks} marks`;
+      feedbackText.textContent = data.feedback;
+      
+      // Update score color based on performance
+      const percentage = (score / totalMarks) * 100;
+      if (percentage >= 80) {
+        scoreElement.className = 'text-lg font-bold text-green-500';
+      } else if (percentage >= 60) {
+        scoreElement.className = 'text-lg font-bold text-orange-500';
+      } else {
+        scoreElement.className = 'text-lg font-bold text-red-500';
+      }
+
+      // Update total marks summary
+      updateTotalMarks();
+      
+      // Clear and update key points
+      keyPointsList.innerHTML = '';
+      data.key_points.forEach(point => {
+        const li = document.createElement('li');
+        li.textContent = point;
+        keyPointsList.appendChild(li);
+      });
+      
+      // Show the feedback container with a fade-in animation
+      feedbackContainer.classList.remove('hidden');
+      feedbackContainer.classList.add('animate-fade-in');
+    } catch (error) {
+      console.error('Error checking answer:', error);
+    }
+  }
+</script>
 <script>
   function createTextDisplayArea(containerId, extractedText, questionId) {
     const container = document.getElementById(containerId);
@@ -34,6 +127,105 @@
     wrapper.appendChild(copyBtn);
     wrapper.appendChild(pasteBtn);
     container.appendChild(wrapper);
+  }
+
+  function updateTotalMarks() {
+    let totalMarks = 0;
+    let marksObtained = 0;
+    
+    // Get all score elements
+    const scoreElements = document.querySelectorAll('[id^="score-q"]');
+    
+    scoreElements.forEach(scoreElement => {
+      const scoreText = scoreElement.textContent;
+      if (scoreText !== '-') {
+        const [score, total] = scoreText.split('/');
+        totalMarks += parseInt(total);
+        marksObtained += parseFloat(score);
+      }
+    });
+    
+    // Update summary stats
+    document.getElementById('total-marks').textContent = totalMarks;
+    document.getElementById('marks-obtained').textContent = marksObtained.toFixed(1);
+    const percentage = totalMarks > 0 ? (marksObtained / totalMarks * 100).toFixed(1) : 0;
+    document.getElementById('percentage').textContent = `${percentage}%`;
+    
+    // Update percentage color and save button
+    const percentageElement = document.getElementById('percentage');
+    const saveButton = document.getElementById('save-results');
+    
+    if (percentage >= 80) {
+      percentageElement.className = 'text-2xl font-bold text-green-500';
+    } else if (percentage >= 60) {
+      percentageElement.className = 'text-2xl font-bold text-orange-500';
+    } else {
+      percentageElement.className = 'text-2xl font-bold text-red-500';
+    }
+    
+    // Enable save button if we have any score
+    if (marksObtained > 0) {
+      saveButton.disabled = false;
+    }
+  }
+
+  // Calculate initial total marks when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    // Get the initial total marks from the display
+    const initialTotal = parseFloat(document.getElementById('total-marks').textContent) || 0;
+    
+    // If we have a valid total, update marks-obtained and percentage
+    if (initialTotal > 0) {
+      document.getElementById('total-marks').textContent = initialTotal.toString();
+      updateTotalMarks();
+    }
+  });
+
+  async function saveTestResults() {
+    const saveButton = document.getElementById('save-results');
+    saveButton.disabled = true;
+    saveButton.textContent = 'Saving...';
+
+    try {
+      const marksObtained = parseFloat(document.getElementById('marks-obtained').textContent);
+      const totalMarks = parseFloat(document.getElementById('total-marks').textContent);
+      const percentage = parseFloat(document.getElementById('percentage').textContent);
+
+      const response = await fetch('/api/save-test-results/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({
+          subject_id: document.getElementById('subject-id').value,
+          chapter_id: document.getElementById('chapter-id').value,
+          total_marks: totalMarks,
+          marks_obtained: marksObtained,
+          percentage: percentage,
+          is_completed: true
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        saveButton.className = 'bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 hover:scale-105';
+        saveButton.textContent = 'Saved Successfully!';
+        
+        // Optionally redirect to results page after a delay
+        setTimeout(() => {
+          window.location.href = '/dashboard/';
+        }, 2000);
+      } else {
+        throw new Error(data.error || 'Failed to save results');
+      }
+    } catch (error) {
+      console.error('Error saving results:', error);
+      saveButton.className = 'bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 hover:scale-105';
+      saveButton.textContent = 'Error Saving';
+      saveButton.disabled = false;
+    }
   }
 
   async function extractTextFromImages(inputElem, containerId, questionId) {
@@ -136,7 +328,26 @@
           rows="4"
           placeholder="Your Answer"
           class="w-full mt-4 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all"
+          onblur="checkAnswer('{{ question.id }}', this.value)"
         >{{ submitted_answers|get_item:question.id }}</textarea>
+
+        <!-- Feedback Container -->
+        <div id="feedback-q{{ question.id }}" class="mt-4 hidden">
+          <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-lg font-semibold text-gray-800">AI Feedback</h4>
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-600">Score:</span>
+                <span id="score-q{{ question.id }}" class="text-lg font-bold text-orange-500">-</span>
+              </div>
+            </div>
+            <p id="feedback-text-q{{ question.id }}" class="text-gray-600 text-sm mb-3"></p>
+            <div class="space-y-1">
+              <h5 class="text-sm font-semibold text-gray-700">Key Points:</h5>
+              <ul id="key-points-q{{ question.id }}" class="list-disc list-inside text-sm text-gray-600"></ul>
+            </div>
+          </div>
+        </div>
       </div>
     {% empty %}
       <p class="text-gray-500">No short questions found for this topic.</p>
@@ -148,7 +359,7 @@
           type="submit"
           class="sticky bottom-4 ml-auto w-fit bg-[hsl(26,100%,62%)] hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transform transition duration-300 hover:scale-105 z-50"
         >
-          Submit Answers
+          Save Results
         </button>
       </div>
     {% endif %}

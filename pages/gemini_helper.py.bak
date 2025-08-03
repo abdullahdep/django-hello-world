@@ -1,0 +1,228 @@
+import requests
+import json
+import logging
+from django.conf import settings
+
+logger = logging.getLogger(__name__)
+
+GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+
+def init_gemini():
+    """Initialize by validating API key"""
+    if not hasattr(settings, 'GEMINI_API_KEY') or not settings.GEMINI_API_KEY:
+        logger.error("GEMINI_API_KEY not found in settings")
+        raise ValueError("GEMINI_API_KEY is not configured")
+    return settings.GEMINI_API_KEY
+
+def check_answer(api_key, question, correct_answer, student_answer, total_marks):
+    """Check student answer using Gemini 2.0 Flash API"""
+    try:
+        headers = {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': api_key
+        }
+        
+        # Build the prompt text
+        # Remove unused instruction_text
+        # Format prompt with clear instructions
+        prompt = f"""You are an academic evaluator. Compare the student's answer with the correct answer and respond strictly in valid JSON format.
+
+EVALUATION CRITERIA:
+- Content accuracy
+- Completeness
+- Key points covered
+
+QUESTION: {question}
+CORRECT ANSWER: {correct_answer}
+STUDENT ANSWER: {student_answer}
+TOTAL MARKS: {total_marks}
+
+YOUR RESPONSE MUST BE VALID JSON:
+{{
+    "score": <number between 0 and {total_marks}>,
+    "feedback": "your evaluation feedback",
+    "key_points": ["point1", "point2"],
+    "total_marks": {total_marks}
+}}"""
+
+        payload = {
+            "contents": [{
+                "parts": [{
+                    "text": prompt
+                }]
+            }],
+            "generationConfig": {
+                "temperature": 0.1,
+                "topP": 0.8,
+                "topK": 40,
+                "maxOutputTokens": 1024
+            }
+        }
+        
+from django.conf import settings
+
+logger = logging.getLogger(__name__)
+
+GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+
+def init_gemini():
+    """Initialize by validating API key"""
+    if not hasattr(settings, 'GEMINI_API_KEY') or not settings.GEMINI_API_KEY:
+        logger.error("GEMINI_API_KEY not found in settings")
+        raise ValueError("GEMINI_API_KEY is not configured")
+    return settings.GEMINI_API_KEY
+
+def check_answer(api_key, question, correct_answer, student_answer, total_marks):
+    """Check student answer using Gemini 2.0 Flash API"""
+    try:
+        headers = {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': api_key
+        }
+        
+        prompt = {
+            "contents": [{
+                "parts": [{
+                    "text": "Format response as JSON only. " + \
+                           f"Question: {question}\n" + \
+                           f"Correct Answer: {correct_answer}\n" + \
+                           f"Student Answer: {student_answer}\n" + \
+                           f"Max Marks: {total_marks}\n\n" + \
+                           "Return this JSON structure:\n" + \
+                           "{\n" + \
+                           f'  \"score\": (0-{total_marks}),\n' + \
+                           '  \"feedback\": \"evaluation\",\n' + \
+                           '  \"key_points\": [\"point1\", \"point2\"],\n' + \
+                           f'  \"total_marks\": {total_marks}\n' + \
+                           "}"
+                }]
+            }],
+            "generationConfig": {
+                "temperature": 0.1,
+                "topP": 0.8,
+                "topK": 40,
+                "maxOutputTokens": 1024
+            }
+        }
+        
+        # Format prompt for better parsing
+        prompt = """You are an academic evaluator. Compare the student\'s answer with the correct answer and respond strictly in valid JSON format.
+
+EVALUATION CRITERIA:
+- Content accuracy
+- Completeness
+- Key points covered
+
+QUESTION: {{question}}
+CORRECT ANSWER: {{answer}}
+STUDENT ANSWER: {{student}}
+TOTAL MARKS: {{marks}}
+
+YOUR RESPONSE MUST BE VALID JSON:
+{
+  "score": (number between 0 and {{marks}}),
+  "feedback": "your feedback here",
+  "key_points": ["point 1", "point 2"],
+  "total_marks": {{marks}}
+}""".format(
+            question=question,
+            answer=correct_answer,
+            student=student_answer,
+            marks=total_marks
+        )
+        Task: Evaluate the student's answer against the correct answer.
+
+        Question: {question}
+        Model Answer: {correct_answer}
+        Student's Answer: {student_answer}
+        Maximum Marks: {total_marks}
+
+        Instructions:
+        1. Compare the student's answer with the model answer
+        2. Award marks out of {total_marks} based on accuracy and completeness
+        3. Provide constructive feedback
+        4. List key points covered and missed
+
+        Respond ONLY in this JSON format:
+        {{
+            "score": <number 0-{total_marks}>,
+            "feedback": "<clear, constructive feedback>",
+            "key_points": ["point1", "point2", ...],
+            "total_marks": {total_marks}
+        }}"""
+
+        payload = {
+            "contents": [{
+                "parts": [{
+                    "text": prompt
+                }]
+            }],
+            "generationConfig": {
+                "temperature": 0.3,
+                "topP": 0.8,
+                "topK": 40,
+                "maxOutputTokens": 1024
+            }
+        }
+
+        # Make API request with timeout
+        response = requests.post(
+            GEMINI_API_ENDPOINT,
+            headers=headers,
+            json=payload,
+            timeout=15
+        )
+        
+        if response.status_code == 200:
+            try:
+                data = response.json()
+                if 'candidates' in data and data['candidates']:
+                    text = data['candidates'][0]['content']['parts'][0]['text'].strip()
+                    logger.debug(f"Raw AI response: {text}")
+                    
+                    # Extract JSON from the response
+                    start_idx = text.find('{')
+                    end_idx = text.rfind('}') + 1
+                    if start_idx >= 0 and end_idx > start_idx:
+                        json_str = text[start_idx:end_idx]
+                        try:
+                            result = json.loads(json_str)
+                            # Validate fields
+                            result['score'] = min(max(0, float(result.get('score', 0))), total_marks)
+                            result['feedback'] = str(result.get('feedback', 'No feedback available'))
+                            result['key_points'] = result.get('key_points', ['No key points available'])
+                            result['total_marks'] = total_marks
+                            return json.dumps(result)
+                    except (json.JSONDecodeError, ValueError) as e:
+                        logger.error(f"Failed to parse AI response: {str(e)}")
+                else:
+                    logger.error("No valid response from Gemini API")
+            except Exception as e:
+                logger.error(f"Error processing API response: {str(e)}")
+        else:
+            logger.error(f"API request failed with status code: {response.status_code}")
+            
+        # Return error response if any step fails
+        return json.dumps({
+            'score': 0,
+            'feedback': 'System Error: Failed to evaluate answer. Please try again.',
+            'key_points': ['Evaluation system temporarily unavailable'],
+            'total_marks': total_marks
+        })
+        
+    except requests.Timeout:
+        logger.error("Request timed out")
+        return json.dumps({
+            'score': 0,
+            'feedback': 'System Error: Request timed out. Please try again.',
+            'key_points': ['Timeout occurred'],
+            'total_marks': total_marks
+        })
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+        return json.dumps({
+            'score': 0,
+            'feedback': 'System Error: An unexpected error occurred. Please try again.',
+            'key_points': ['System error occurred'],
+            'total_marks': total_marks
+        })
