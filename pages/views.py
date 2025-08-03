@@ -1130,3 +1130,65 @@ def shortquestion_create(request):
     return render(request, 'admin_user/form.html', {'form': form, 'title': 'Add Short Question'})
 
 
+from django.shortcuts import render, redirect
+from .models import Subject, Chapter, Topic, ShortQuestion
+from django.contrib import messages
+
+def admin_upload_content(request):
+    if request.method == 'POST':
+        question_type = request.POST.get('question_type')
+        subject_slug = request.POST.get('subject')
+        grade = request.POST.get('grade')
+        chapter_slug = request.POST.get('chapter')
+        topic_slug = request.POST.get('topic')
+        file = request.FILES.get('document')
+
+        if not (question_type and subject_slug and grade and chapter_slug and topic_slug and file):
+            messages.error(request, "All fields are required.")
+            return redirect(request.path)
+
+        # Get related objects
+        try:
+            subject = Subject.objects.get(slug=subject_slug)
+            chapter = Chapter.objects.get(slug=chapter_slug, subject=subject, grade=grade)
+            topic = Topic.objects.get(slug=topic_slug, chapter=chapter)
+        except (Subject.DoesNotExist, Chapter.DoesNotExist, Topic.DoesNotExist):
+            messages.error(request, "Invalid subject/chapter/topic selection.")
+            return redirect(request.path)
+
+        if question_type == "short":
+            # Read and parse the file
+            content = file.read().decode('utf-8')
+            questions = content.split('\n\n')  # Assuming blank line between questions
+            for q in questions:
+                if not q.strip():
+                    continue
+                lines = q.strip().split('\n')
+                question_text = ""
+                marks = 0
+                answer = ""
+                for line in lines:
+                    if line.startswith("Q."):
+                        question_text = line[2:].strip()
+                        if '(' in question_text and 'marks' in question_text:
+                            # Extract marks
+                            import re
+                            m = re.search(r'\((\d+)\s*marks?\)', question_text)
+                            if m:
+                                marks = int(m.group(1))
+                                question_text = re.sub(r'\(\d+\s*marks?\)', '', question_text).strip()
+                    elif line.startswith("Answer:"):
+                        answer = line[len("Answer:"):].strip()
+                if question_text and answer:
+                    ShortQuestion.objects.create(
+                        topic=topic,
+                        question=question_text,
+                        marks=marks,
+                        answer=answer
+                    )
+            messages.success(request, "Short questions uploaded successfully.")
+            return redirect(request.path)
+
+    # ...existing code to render the form...
+
+

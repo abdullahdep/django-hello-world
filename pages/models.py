@@ -29,6 +29,24 @@ class Chapter(models.Model):
     class Meta:
         unique_together = ['subject', 'slug']
 
+class TestResult(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    total_marks = models.IntegerField()
+    marks_obtained = models.FloatField()
+    percentage = models.FloatField()
+    date_taken = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.subject.name} - {self.percentage}%"
+
+    class Meta:
+        ordering = ['-date_taken']
+
+    def __str__(self):
+        return f"{self.subject.name} - {self.name} (Grade {self.grade})"
 
 class Topic(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='topics')
