@@ -7,6 +7,7 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Breadcrumb -->
      
+     
     <div class="mb-8">
         <div class="flex items-center text-sm text-muted-foreground mb-4">
             <a href="{% url 'subjects' %}" class="hover:text-foreground transition-colors">
@@ -14,7 +15,7 @@
             </a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="h-4 w-4 mx-2">
+                 class="h-4 w-4 mx-2 text-orange-500">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
             <a href="{% url 'subject_detail' subject.slug %}" class="hover:text-foreground transition-colors">
@@ -22,31 +23,31 @@
             </a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="h-4 w-4 mx-2">
+                 class="h-4 w-4 mx-2 text-orange-500">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
-            <span>{{ chapter.name }}</span>
+            <span class="text-gray-600">{{ chapter.name }}</span>
         </div>
 
         <div class="animate-fade-in">
-            <h1 class="text-3xl font-bold mb-4">{{ chapter.name }}</h1>
+            <h1 class="text-3xl font-bold mb-[-13px] mt-3">{{ chapter.name }}</h1>
         </div>
     </div>
 
     <!-- Chapter Content -->
     {% if chapter %}
     <div class="mt-8">
-        <h2 class="text-xl font-semibold mb-4">Topics Covered</h2>
+        <h2 class="text-xl scale-105 ml-3 mb-6 lg:ml-8 font-semibold mb-4">Topics Covered</h2>
         <div class="space-y-3">
             {% for topic in chapter.topics %}
             <div class="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" 
                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-                     stroke-linejoin="round" class="h-4 w-4 text-primary mr-3">
+                     stroke-linejoin="round" class="h-4 w-4 text-orange-500 text-primary mr-3">
                     <path d="M9 11h6"/>
                     <rect width="18" height="18" x="3" y="3" rx="2"/>
                 </svg>
-                <a href="#" onclick="showTestOptions('{{ topic }}')" class="hover:text-primary transition-colors">
+                <a href="#" onclick="showTestOptions('{{ topic }}')" class="hover:scale-105  transition-colors">
                     {{ topic }}
                 </a>
             </div>
@@ -61,31 +62,35 @@
 </div>
 
 <!-- Add Modal for Test Options -->
-<div id="testOptionsModal" class="fixed blackboldfont inset-0 bg-black/50 hidden items-center justify-center z-50 ">
-    <div class="bg-card p-6 rounded-lg shadow-xl max-w-md w-full mx-4 animate-fade-in gradient_effect">
-        <h3 class="text-xl font-semibold mb-4" id="modalTopicTitle"></h3>
-        <div class="grid grid-cols-1  sm:grid-cols-2 gap-4 ">
-            <a href="#" id="mcqTestLink" class="flex tilegrdient  flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 11h6"></path>
-                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                </svg>
-                <span class="font-medium">MCQ Test</span>
-                <span class="text-sm text-muted-foreground mt-1">Multiple Choice Questions</span>
-            </a>
-            <a href="#" id="shortTestLink" class="flex tilegrdient flex-col items-center p-4 border rounded-lg hover:border-primary transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>
-                <span class="font-medium">Short Test</span>
-                <span class="text-sm text-muted-foreground mt-1">Written Answers</span>
-            </a>
-        </div>
-        <div class="flex justify-end mt-6">
-            <button onclick="hideTestOptions()" class="button button-outline">Close</button>
-        </div>
+<div id="testOptionsModal" class="fixed blackboldfont inset-0 bg-gray-200/70 hidden items-center justify-center z-50">
+  <div class="bg-gray-900 p-6 rounded-lg shadow-xl max-w-md w-full mx-4 animate-fade-in border-2 border-orange-500">
+    <h3 class="text-xl font-semibold mb-4 text-white-500" id="modalTopicTitle"></h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <a href="#" id="mcqTestLink" 
+         class="flex bg-gray-800 flex-col items-center p-4 border border-transparent rounded-lg hover:bg-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 11h6"></path>
+          <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+        </svg>
+        <span class="font-medium">MCQ Test</span>
+        <span class="text-sm mt-1 text-muted-foreground">Multiple Choice Questions</span>
+      </a>
+      <a href="#" id="shortTestLink" 
+         class="flex bg-gray-800 flex-col items-center p-4 border border-transparent rounded-lg hover:bg-orange-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        <span class="font-medium">Short Test</span>
+        <span class="text-sm mt-1 text-muted-foreground">Written Answers</span>
+      </a>
     </div>
+    <div class="flex justify-end mt-6">
+      <button onclick="hideTestOptions()" class="button button-outline text-orange-500 border-orange-500 hover:bg-orange-500 hover:text-white transition-colors">
+        Close
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>

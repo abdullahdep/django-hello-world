@@ -13,7 +13,7 @@
             </a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="h-4 w-4 mx-2">
+                 class="h-4 w-4 mx-2 text-orange-500">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
             <a href="{% url 'subject_detail' subject.slug %}" class="hover:text-foreground transition-colors">
@@ -21,31 +21,39 @@
             </a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="h-4 w-4 mx-2">
+                 class="h-4 w-4 mx-2 text-orange-500">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
             <a href="{% url 'chapter_detail' subject.slug grade chapter.slug %}" class="hover:text-foreground transition-colors">
-                {{ chapter.name }}
+                {{ chapter.name }} - MCQ Test
             </a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="h-4 w-4 mx-2">
+                 class=" hidden w-4 mx-2 text-orange-500">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
-            <span>{{ topic.name }} - MCQ Test</span>
+            <span class="hidden">{{ topic.name }} - MCQ Test</span>
         </div>
 
         <div class="animate-fade-in">
-            <h1 class="text-3xl font-bold mb-4">MCQ Test: {{ topic.name }}</h1>
-            <p class="text-muted-foreground">Answer all questions to the best of your ability.</p>
+            <h1 class="text-3xl font-bold mb-4">MCQ Test: <span class="scale-50">{{ topic.name }}</span></h1>
+            <p class="text-muted-foreground ">Answer all questions to the best of your ability.</p>
+        </div>
+    </div>
+
+    <!-- Time Remaining Timer -->
+    <div class="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border border-orange-200 z-50">
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Time Remaining</h3>
+            <div id="timer" class="text-2xl font-bold text-orange-600">--:--</div>
         </div>
     </div>
 
     <!-- MCQ Questions -->
     {% if debug %}
-    <div class="bg-black-300 border border-yellow-400  px-4 py-3 rounded mb-6">
+    <div class="hidden bg-black-300 border border-yellow-400  px-4 py-3 rounded mb-6">
        {% if not submitted_answers %}
-        <div> take your test and see results
+        <div class=""> take your test and see results
     </div>  
         {% else %}
     <div>Thats Yours PerFormance</div>
@@ -77,7 +85,7 @@
                    
                     <tbody>
                         {% for detail in debug_data.answer_details %}
-                            <tr class="border-t border-primary transition-transform duration-200 {% if detail.is_correct %}bg-green-700{% else %}bg-red-700{% endif %}">
+                            <tr class="border-t border-primary transition-transform duration-200 {% if detail.is_correct %}bg-[rgb(81, 233, 35)]{% else %}bg-red-700{% endif %}">
                                 <td class="px-4 py-2">{{ forloop.counter }}</td>
                                 <td class="px-4 py-2">{{ detail.question|truncatechars:50 }}</td>
                                 <td class="px-4 py-2">
@@ -146,7 +154,7 @@
         <div class="flex justify-end space-x-4 mb-6">
             {% if  submitted_answers %}
            
-            <div class="text-lg font-semibold bg-[linear-gradient(70deg,_rgba(2,0,36,1)_0%,_rgba(126,42,18,1)_4%,_rgba(255,85,0,1)_41%,_rgba(248,83,1,1)_54%,_rgba(243,81,2,1)_65%,_rgba(126,42,18,1)_96%,_rgba(2,0,36,1)_100%)] text-white px-7 rounded-lg">
+            <div class="text-lg font-semibold bg-orange-500 text-white px-7 rounded-lg">
                 Score: {{ score }}/{{ mcqs|length }} ({{ score_percentage }}%)
             </div>
             <a href="{{ request.path }}" class="button bg-blue-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg">Try Again</a>
@@ -164,22 +172,22 @@
             
             <div data-question class="space-y-3">
                 <!-- Option A -->
-                <label onclick="selectOption(this)" class="flex items-center hover:scale-105 space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'A' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'A' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label onclick="selectOption(this)"  class="flex items-center hover:scale-105 space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'A' %}bg-green-500{% elif submitted_answers|get_item:mcq.id == 'A' %}bg-red-500{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="A" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'A' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
                     <span>A. {{ mcq.option_a }}</span>
                     {% if submitted_answers %}
                         {% if mcq.correct_answer == 'A' %}
-                            <span class="ml-2 text-green-600">(Correct Answer)</span>
+                            <span class="ml-2 text-green-900">(Correct Answer)</span>
                         {% elif submitted_answers|get_item:mcq.id == 'A' %}
-                            <span class="ml-2 text-red-600">(Your Answer - Incorrect)</span>
+                            <span class="ml-2 text-red-900">(Your Answer - Incorrect)</span>
                         {% endif %}
                     {% endif %}
                 </label>
 
                 <!-- Option B -->
-                <label onclick="selectOption(this)" class="flex items-center hover:scale-105  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'B' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'B' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label onclick="selectOption(this)" class="flex items-center hover:scale-105  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'B' %}bg-green-500{% elif submitted_answers|get_item:mcq.id == 'B' %}bg-red-500{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="B" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'B' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
@@ -196,7 +204,7 @@
 
 </script>
                 <!-- Option C -->
-                <label  onclick="selectOption(this)" class="flex items-center hover:scale-105 active:bg-orange-700  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'C' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'C' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label  onclick="selectOption(this)" class="flex items-center hover:scale-105 active:bg-orange-700  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'C' %}bg-green-500{% elif submitted_answers|get_item:mcq.id == 'C' %}bg-red-500{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="C" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'C' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
@@ -211,7 +219,7 @@
                 </label>
 
                 <!-- Option D -->
-                <label onclick="selectOption(this)" class="flex  items-center hover:scale-105  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'D' %}bg-green-100{% elif submitted_answers|get_item:mcq.id == 'D' %}bg-red-100{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
+                <label onclick="selectOption(this)" class="flex  items-center hover:scale-105  space-x-3 p-3 rounded-lg border {% if submitted_answers %}{% if mcq.correct_answer == 'D' %}bg-green-500{% elif submitted_answers|get_item:mcq.id == 'D' %}bg-red-500{% else %}bg-background{% endif %}{% else %}bg-background hover:border-primary{% endif %} transition-all cursor-pointer">
                     <input type="radio" name="q{{ mcq.id }}" value="D" class="radio" required 
                            {% if submitted_answers and submitted_answers|get_item:mcq.id == 'D' %}checked{% endif %}
                            {% if submitted_answers %}disabled{% endif %}>
@@ -257,8 +265,37 @@
 </div>
 
 <script>
-document.getElementById('mcqForm').addEventListener('submit', function(e) {
-    // Form will be submitted normally since we added method="POST"
-});
+    // Timer functionality
+    const TIMER_MINUTES = {{ timer_minutes|default:1 }}; // Get from context or default to 30 minutes
+    let timeLeft = TIMER_MINUTES * 60; // Convert to seconds
+    const timerDisplay = document.getElementById('timer');
+    const mcqForm = document.getElementById('mcqForm');
+
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 300) { // Last 5 minutes
+            timerDisplay.classList.add('text-red-600', 'animate-pulse');
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Time's Up!";
+            // Auto submit the form
+            mcqForm.submit();
+        }
+        timeLeft--;
+    }
+
+    // Start the timer
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    // Handle form submission
+    mcqForm.addEventListener('submit', function() {
+        clearInterval(timerInterval);
+    });
 </script>
 {% endblock %}

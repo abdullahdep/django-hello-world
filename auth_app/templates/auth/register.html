@@ -183,7 +183,7 @@
                 <div class="form-group">
                     <label class="form-label" for="grade">Grade</label>
                     <select name="grade" id="grade" 
-                            class="form-control  primary-font {% if form.grade.errors %}is-invalid{% endif %}" required>
+                            class="form-control  primary-font  {% if form.grade.errors %}is-invalid{% endif %}" required>
                         <option value="" class="">Select your grade</option>
                         {% for i in grades %}
                         <option class=''  value="{{ i }}" {% if form.grade.value == i %}selected{% endif %}>Grade {{ i }}</option>

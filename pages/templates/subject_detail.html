@@ -7,22 +7,31 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Breadcrumb -->
+    
     <div class="mb-8">
-        <div class="flex items-center text-sm text-muted-foreground mb-4">
-            <a href="{% url 'subjects' %}" class="hover:text-foreground transition-colors">
-                Subjects
-            </a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                 class="h-4 w-4 mx-2">
-                <polyline points="9 18 15 12 9 6" />
-            </svg>
-            <span>{{ subject.name }}</span>
-        </div>
+        <div class="flex items-center text-sm mb-4">
+  <!-- Inactive link: dull gray, changes to active gray on hover -->
+  <a href="{% url 'subjects' %}" class="">
+    Subjects
+  </a>
+
+  <!-- SVG arrow icon: orange -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+       class="h-4 w-4 mx-2 text-orange-500">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+
+  <!-- Current page text: active gray -->
+  <span class="text-gray-600">
+    {{ subject.name }}
+  </span>
+</div>
+
 
         <div class="animate-fade-in">
             <h1 class="text-3xl font-bold mb-4">{{ subject.name }}</h1>
-            <p class="text-lg text-muted-foreground max-w-3xl">
+            <p class="text-lg text-gray-500 leading-relaxed max-w-3xl">
                 {{ subject.description }}
             </p>
         </div>
@@ -34,12 +43,12 @@
     {% endif %}
     {% endif %}
     <!-- Grade Selection -->
-    <div class="mt-12 mb-16">
+    <div class="mt-[-20px] mb-16">
         <h2 class="text-2xl font-semibold mb-6">Select Your Grade</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 " >
             {% for grade in grades %}
         
-            <button onclick="selectGrade({{ grade }})" class="block card-behaviour animate-fade-in w-full text-left" 
+            <button onclick="selectGrade({{ grade }})" style="border:1px solid hsl(0deg 0% 100%) " class="block card-behaviour hover:scale-90 animate-fade-in w-full text-left" 
                style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
                 <div class="w-full p-6 rounded-lg border transition-all duration-300 
                     {% if selected_grade == grade %}
@@ -52,14 +61,14 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
                                  stroke-linejoin="round" 
-                                 class="h-6 w-6 {% if selected_grade == grade %}text-primary{% else %}text-muted-foreground{% endif %}"
+                                 class="h-6 w-6 primary-font {% if selected_grade == grade %}text-primary{% else %}text-muted-foreground{% endif %}"
                                  id="grade-icon-{{ grade }}">
                                 <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
                                 <path d="M6 12v5c3 3 9 3 12 0v-5"/>
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold mb-2">Grade {{ grade }}</h3>
-                        <p class="text-sm text-muted-foreground">
+                        <p class="text-sm leading-relaxed text-gray-500 text-muted-foreground">
                             {{ subject.name }} curriculum for grade {{ grade }}
                         </p>
                     </div>
@@ -112,7 +121,7 @@
                         <div class="border rounded-lg p-6 h-full hover:border-primary transition-all duration-300 bg-card group hover:shadow-lg">
                             <!-- Chapter Header -->
                             <div class="flex items-start space-x-4 mb-6">
-                                <div class="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div class="h-12 w-12 bg-primary/10 primary rounded-full flex items-center justify-center flex-shrink-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
                                          stroke-linejoin="round" class="h-6 w-6 text-primary">
@@ -147,7 +156,7 @@
                             </div>
 
                             <!-- Card Footer -->
-                            <div class="pt-4 border-t mt-auto">
+                            <div class="pt-4 border-t primary-font mt-auto">
                                 <div class="inline-flex items-center text-primary text-sm font-medium">
                                     Explore Chapter
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" 

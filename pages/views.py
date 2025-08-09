@@ -1192,3 +1192,20 @@ def admin_upload_content(request):
     # ...existing code to render the form...
 
 
+# In your views.py
+
+def mcq_test_view(request, subject_slug, grade, chapter_slug, topic_slug):
+    # ... existing code ...
+    context = {
+        # ... existing context ...
+        'timer_minutes': 1,  # Adjust this value as needed
+    }
+    return render(request, 'pages/mcq_test.html', context)
+
+def short_question_test_view(request, subject_slug, grade, chapter_slug, topic_slug):
+    # ... existing code ...
+    context = {
+        # ... existing context ...
+        'timer_minutes': 45,  # Adjust this value as needed
+    }
+    return render(request, 'pages/short_question_test.html', context)
