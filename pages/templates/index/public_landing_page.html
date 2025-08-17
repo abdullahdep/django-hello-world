@@ -16,32 +16,33 @@
                         <div class="flex flex-wrap gap-4">
                             {% if user.is_authenticated %}
                             <a href="{% url 'dashboard' %}"
-                                class="inline-flex primary items-center justify-center px-6 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors">
-                                Go to Dashboard <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-arrow-right ml-2 h-5 w-5">
+                                class="inline-flex primary items-center justify-center px-6 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors transform hover:scale-105 transition-transform duration-300">
+                                Go to Dashboard
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-5 w-5">
                                     <path d="M5 12h14"></path>
                                     <path d="m12 5 7 7-7 7"></path>
                                 </svg>
                             </a>
                             {% else %}
                             <a href="{% url 'register' %}"
-                                class="inline-flex primary items-center justify-center px-6 py-3 text-white rounded-md text-lg font-medium ">
-                                Get Started <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-arrow-right ml-2 h-5 w-5">
+                                class="inline-flex primary items-center justify-center px-6 py-3 text-white rounded-md text-lg font-medium bg-primary hover:bg-primary/90 transition-colors transform hover:scale-105 transition-transform duration-300">
+                                Get Started
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-5 w-5">
                                     <path d="M5 12h14"></path>
                                     <path d="m12 5 7 7-7 7"></path>
                                 </svg>
                             </a>
                             <a href="{% url 'login' %}"
-                                class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors">
+                                class="inline-flex items-center justify-center px-6 py-3 border border-input bg-background text-foreground rounded-md text-lg font-medium hover:bg-accent transition-colors transform hover:scale-105 transition-transform duration-300">
                                 Login
                             </a>
                             {% endif %}
                         </div>
+
                     </div>
                 </div>
                 <div class="md:w-1/2 w-full px-4 md:px-0">
@@ -112,7 +113,7 @@
     </section>
     <!-- Featured Subjects Section -->
 
-  <section class="dark-section py-16 bg-background font">
+    <section class="dark-section py-16 bg-background font">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold mb-4 font">Featured Subjects</h2>
@@ -177,7 +178,7 @@
             </div>
         </div>
     </section>
-  <section class=" hidden dark-section py-16 bg-background">
+    <section class=" hidden dark-section py-16 bg-background">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold mb-4">Featured Subjects</h2>
@@ -275,7 +276,8 @@
                             class="lucide lucide-award h-8 w-8 text-secondary">
                             <circle cx="12" cy="8" r="6"></circle>
                             <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
-                        </svg></div>
+                        </svg>
+                    </div>
                     <h3 class="text-xl font-semibold mb-3">Expert-Curated</h3>
                     <p class="text-muted-foreground grey-color">Materials designed by experienced educators aligned with
                         curriculum
@@ -303,7 +305,8 @@
                             <polygon
                                 points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
                             </polygon>
-                        </svg></div>
+                        </svg>
+                    </div>
                     <h3 class="text-xl font-semibold mb-3">AI-Powered Feedback</h3>
                     <p class="text-muted-foreground grey-color">Receive instant feedback on your answers to improve
                         understanding
@@ -335,7 +338,7 @@
                     {% endif %}
                     {% else %}
                     <a href="{% url 'register' %}"
-                        class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors">
+                        class="inline-flex bg-orange-500 items-center justify-center px-6 py-3 bg-primary text-white rounded-md text-lg font-medium hover:bg-primary/90 transition-colors">
                         Get Started Free <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
                     </a>
                     <a href="{% url 'login' %}"
