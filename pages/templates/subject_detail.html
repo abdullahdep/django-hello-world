@@ -47,7 +47,8 @@
         <h2 class="text-2xl font-semibold mb-6">Select Your Grade</h2>
         <div class="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 " >
             {% for grade in grades %}
-        
+        {% if subject.name|not_in:"General Maths,General Science" or grade <= 10 %}
+
             <button onclick="selectGrade({{ grade }})" style="border:1px solid hsl(0deg 0% 100%) " class="block card-behaviour hover:scale-90 animate-fade-in w-full text-left" 
                style="animation-delay: {{ forloop.counter0|multiply:0.1 }}s">
                 <div class="w-full p-6 rounded-lg border transition-all duration-300 
