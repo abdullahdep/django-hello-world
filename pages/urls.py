@@ -17,7 +17,8 @@ urlpatterns = [
      path('api/chapters/<str:subject_slug>/', views.get_chapters, name='get_chapters'),
      path('api/topics/<str:chapter_slug>/', views.get_topics, name='get_topics'),
      path('api/chapters/<str:subject_slug>/<int:grade>/', views.get_grade_chapters, name='get_grade_chapters'),
-     path('api/save-test-results/', api_views.save_test_results, name='save_test_results'),
+     path("api/save-test-results/", views.save_test_results, name="save_test_results"),
+
 
      # Tests
      path('subject/<str:subject_slug>/grade/<int:grade>/chapter/<str:chapter_slug>/<str:topic>/mcqstest/', 

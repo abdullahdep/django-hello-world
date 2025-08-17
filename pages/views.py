@@ -1209,3 +1209,32 @@ def short_question_test_view(request, subject_slug, grade, chapter_slug, topic_s
         'timer_minutes': 45,  # Adjust this value as needed
     }
     return render(request, 'pages/short_question_test.html', context)
+
+
+    import json
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import TestResult, Subject, Chapter
+
+@login_required
+def save_test_results(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        subject = Subject.objects.get(id=data["subject_id"])
+        chapter = Chapter.objects.get(id=data["chapter_id"])
+
+        TestResult.objects.create(
+            user=request.user,
+            subject=subject,
+            chapter=chapter,
+            total_questions=data.get("total_questions", 0),
+            total_marks=data["total_marks"],
+            marks_obtained=data["marks_obtained"],
+            percentage=data["percentage"],
+            is_completed=data.get("is_completed", True)
+        )
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
