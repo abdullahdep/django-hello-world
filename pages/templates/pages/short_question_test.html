@@ -286,7 +286,7 @@
 
     {% for question in short_questions %}
       <div class="bg-[hsl(26deg_24.04%_94.17%_/_10%)] shadow rounded-xl p-6 border border-gray-200
-            hover:scale-110 transform transition-transform duration-500 ease-in-out hover:scale-110 transition delay-100  bg-[hsl(26deg_24.04%_94.17%_/_10%)] shadow rounded-xl p-6 border border-gray-200">
+             bg-[hsl(26deg_24.04%_94.17%_/_10%)] shadow rounded-xl p-6 border border-gray-200">
         <p class="text-lg font-semibold text-white-800 mb-2">
           Q{{ forloop.counter }}: {{ question.question_text }}
         </p>
@@ -299,7 +299,7 @@
        <label class="flex items-center gap-3 cursor-pointer">
   <!-- Camera Icon SVG -->
   <svg xmlns="http://www.w3.org/2000/svg" class="  
-            hover:scale-105 transform transition-transform duration-500 ease-in-out h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
       d="M3 7h2l2-3h10l2 3h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
     <circle cx="12" cy="13" r="4" />
@@ -330,7 +330,7 @@
           rows="4"
           placeholder="Your Answer"
           class="bg-[hsl(26deg_24.04%_94.17%_/_10%)] shadow rounded-xl p-6 border border-gray-200
-            hover:scale-105 transform transition-transform duration-500 ease-in-out w-full mt-4 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all"
+            w-full mt-4 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all"
           onblur="checkAnswer('{{ question.id }}', this.value)"
         >{{ submitted_answers|get_item:question.id }}</textarea>
 
