@@ -205,3 +205,11 @@ JAZZCASH_HASH_KEY = os.getenv('JAZZCASH_HASH_KEY')
 JAZZCASH_RETURN_URL = os.getenv('JAZZCASH_RETURN_URL')
 JAZZCASH_API_URL = os.getenv('JAZZCASH_API_URL')
 
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'abdullah8j03@gmail.com'
+EMAIL_HOST_PASSWORD = 'cirsexvkrxewtzoh'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'abdullah8j03@gmail.com'
