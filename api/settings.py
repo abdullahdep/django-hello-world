@@ -21,6 +21,7 @@ pymysql.install_as_MySQLdb()
 
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-cs-cd7c8f6a-5f35-447e-8b5c-3bb29a3403dd.cs-asia-southeast1-fork.cloudshell.dev',
+      'https://ccon-prod-westeurope-aci-02.servicebus.windows.net',
 ]
 
 from environ import Env
