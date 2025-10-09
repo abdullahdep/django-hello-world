@@ -1,11 +1,12 @@
 import requests
 import json
 import logging
+import time
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+GEMINI_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
 def init_gemini():
     """Initialize by validating API key"""
@@ -24,6 +25,9 @@ def check_answer(api_key, question, correct_answer, student_answer, total_marks)
             'key_points': ['Answer is required'],
             'total_marks': total_marks
         })
+
+    max_retries = 3
+    backoff_factor = 2
 
     try:
         headers = {
@@ -51,20 +55,34 @@ Student:{student_answer}"""
             }
         }
 
-        # Make API request with timeout
-        response = requests.post(
-            GEMINI_API_ENDPOINT,
-            headers=headers,
-            json=payload,
-            timeout=15
-        )
-        
-        if response.status_code == 200:
-            data = response.json()
-            if 'candidates' in data and data['candidates']:
-                text = data['candidates'][0]['content']['parts'][0]['text'].strip()
-                logger.debug(f"Raw AI response: {text}")
-                
+        for attempt in range(max_retries):
+            # Make API request with timeout
+            response = requests.post(
+                GEMINI_API_ENDPOINT,
+                headers=headers,
+                json=payload,
+                timeout=15
+            )
+
+            # If rate limited, wait and retry
+            if response.status_code == 429:
+                wait_time = backoff_factor ** attempt
+                logger.warning(f"Rate limit exceeded. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+                continue
+
+            # If successful, process the response
+            if response.status_code == 200:
+                data = response.json()
+                if 'candidates' in data and data['candidates']:
+                    text = data['candidates'][0]['content']['parts'][0]['text'].strip()
+                    logger.debug(f"Raw AI response: {text}")
+
+                    # The rest of your successful response processing...
+                    # ... (This part remains the same)
+
+
+
                 # Extract score from response
                 try:
                     # Remove any non-numeric characters except decimal point
@@ -98,16 +116,20 @@ Student:{student_answer}"""
                 except (ValueError, TypeError) as e:
                     logger.error(f"Error extracting score: {str(e)}")
                     raise ValueError(f"Failed to extract score from AI response: {str(e)}")
-        else:
-            error_msg = f"API request failed with status {response.status_code}"
-            if response.text:
-                try:
-                    error_details = response.json()
-                    error_msg += f": {json.dumps(error_details)}"
-                except json.JSONDecodeError:
-                    error_msg += f": {response.text}"
-            logger.error(error_msg)
-            raise ValueError(error_msg)
+
+            # If another error occurred, break the loop and raise an exception
+            else:
+                error_msg = f"API request failed with status {response.status_code}"
+                if response.text:
+                    try:
+                        error_details = response.json()
+                        error_msg += f": {json.dumps(error_details)}"
+                    except json.JSONDecodeError:
+                        error_msg += f": {response.text}"
+                logger.error(error_msg)
+                raise ValueError(error_msg)
+
+
     except requests.RequestException as e:
         error_msg = f"Network error occurred: {str(e)}"
         logger.error(error_msg)

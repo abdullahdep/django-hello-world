@@ -121,7 +121,7 @@ WSGI_APPLICATION = 'api.wsgi.app'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
-GEMINI_API_KEY= 'AIzaSyBVp8eqWiyZxbvqefvUpSMuCANBxFKIaSk'
+GEMINI_API_KEY= 'AIzaSyBUEbVOKyYy9NTxjFwqQSZUoo_ET3UyFng'
 
 DATABASES = {
     'default': {
