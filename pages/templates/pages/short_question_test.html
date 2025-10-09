@@ -40,6 +40,14 @@
   </div>
 </div>
 
+<!-- Time Remaining Timer (moved after summary) -->
+<div class="bg-white p-4 rounded-lg shadow-lg border border-orange-200 mb-6">
+    <div class="text-center">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Time Remaining</h3>
+        <div id="timer" class="text-2xl font-bold text-orange-600">--:--</div>
+    </div>
+</div>
+
 <script>
   async function checkAnswer(questionId, answer) {
     const feedbackContainer = document.getElementById(`feedback-q${questionId}`);
@@ -357,30 +365,20 @@
     {% endfor %}
 
     {% if short_questions %}
-      <div class="flex justify-end">
-        <button
-          type="submit"
-          class="sticky bottom-4 ml-auto w-fit bg-[hsl(26,100%,62%)] hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transform transition duration-300 hover:scale-105 z-50"
-        >
-          Save Results
-        </button>
-      </div>
+      <button
+        type="submit"
+        class="sticky bottom-4 ml-auto flex bg-[hsl(26,100%,62%)] hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transform transition duration-300 hover:scale-105 z-50"
+      >
+        Save Results
+      </button>
     {% endif %}
   </form>
-</div>
-
-<!-- Add this right after the breadcrumb section in short_question_test.html -->
-<div class="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border border-orange-200 z-50">
-    <div class="text-center">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">Time Remaining</h3>
-        <div id="timer" class="text-2xl font-bold text-orange-600">--:--</div>
-    </div>
 </div>
 
 <!-- Add this script section at the bottom of the page -->
 <script>
     // Timer functionality
-    const TIMER_MINUTES = {{ timer_minutes|default:45 }}; // Get from context or default to 45 minutes
+    const TIMER_MINUTES = {{ timer_minutes|default:30 }}; // Get from context or default to 30 minutes
     let timeLeft = TIMER_MINUTES * 60; // Convert to seconds
     const timerDisplay = document.getElementById('timer');
     const shortQuestionForm = document.querySelector('form');

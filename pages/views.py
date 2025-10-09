@@ -750,7 +750,7 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
             mcqs = MCQ.objects.filter(
                 topic__chapter_id=topic_obj.chapter.id,
                 topic__id=topic_obj.id
-            ).order_by('?')
+            ).order_by('?')[:20]
             
             logger.info(f"SQL Query for MCQs: {mcqs.query}")
             logger.info(f"Found {mcqs.count()} MCQs")
@@ -870,7 +870,8 @@ def mcq_test(request, subject_slug, grade, chapter_slug, topic):
                     'is_correct': submitted_answers.get(mcq.id) == mcq.correct_answer if mcq.id in submitted_answers else None
                 } for mcq in mcqs
             ] if submitted_answers else []
-        }
+        },
+        'timer_minutes': len(mcqs)
     }
     
     return render(request, 'pages/mcq_test.html', context)
@@ -901,7 +902,7 @@ def short_question_test(request, subject_slug, grade, chapter_slug, topic):
             short_questions = ShortQuestion.objects.filter(
                 topic__chapter_id=topic_obj.chapter.id,
                 topic__id=topic_obj.id
-            )
+            ).order_by('?')[:10]
             logger.info(f"Found {short_questions.count()} Short Questions")
             subject = topic_obj.chapter.subject
             chapter = topic_obj.chapter
@@ -967,7 +968,8 @@ def short_question_test(request, subject_slug, grade, chapter_slug, topic):
         'short_questions': short_questions,
         'submitted_answers': submitted_answers,
         'total_marks': sum(q.marks if q.marks is not None else 2 for q in short_questions),
-        'debug': True
+        'debug': True,
+        'timer_minutes': 30
     }
 
     return render(request, 'pages/short_question_test.html', context)

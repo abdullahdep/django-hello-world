@@ -42,7 +42,7 @@
     </div>
 
     <!-- Time Remaining Timer -->
-    <div class="fixed top-4 right-4 bg-white p-4 rounded-lg shadow-lg border border-orange-200 z-50">
+    <div class="bg-white p-4 rounded-lg shadow-lg border border-orange-200 mb-6">
         <div class="text-center">
             <h3 class="text-lg font-semibold text-gray-800 mb-2">Time Remaining</h3>
             <div id="timer" class="text-2xl font-bold text-orange-600">--:--</div>
@@ -266,7 +266,7 @@
 
 <script>
     // Timer functionality
-    const TIMER_MINUTES = {{ timer_minutes|default:1 }}; // Get from context or default to 30 minutes
+    const TIMER_MINUTES = {{ timer_minutes|default:20 }}; // Get from context or default to 20 minutes
     let timeLeft = TIMER_MINUTES * 60; // Convert to seconds
     const timerDisplay = document.getElementById('timer');
     const mcqForm = document.getElementById('mcqForm');

@@ -498,67 +498,67 @@ def global_variables(request):
     {
         "name": "Real Numbers",
         "slug": "real-numbers",
-        "topics": ["1.1", "1.2", "1.3"]
+        "topics": [" Class 9: 1.1", "Class 9:1.2", "Class 9:1.3"]
     },
     {
         "name": "Logarithms",
         "slug": "logarithms",
-        "topics": ["2.1", "2.2", "2.3", "2.4"]
+        "topics": ["Class 9: 2.1", "Class 9: 2.2", "Class 9:2.3", "Class 9: 2.4"]
     },
     {
         "name": "Set and Functions",
         "slug": "set-and-functions",
-        "topics": ["3.1", "3.2", "3.3"]
+        "topics": ["Class 9: 3.1", "Class 9: 3.2", "Class 9: 3.3"]
     },
     {
         "name": "Factoization and Algebric Manipulation",
         "slug": "factoization-and-algebric-manipulation",
-        "topics": ["4.1", "4.2", "4.3", "4.4"]
+        "topics": ["Class 9: 4.1", "Class 9: 4.2", "Class 9: 4.3", "Class 9: 4.4"]
     },
     {
         "name": "Linear Equation and Inequalities",
         "slug": "linear-equation-and-inequalities",
-        "topics": ["5.1", "5.2"]
+        "topics": ["Class 9: 5.1", "Class 9: 5.2"]
     },
     {
         "name": "Trigonometry",
         "slug": "trigonometry",
-        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6"]
+        "topics": ["Class 9: 6.1", "Class 9: 6.2", "Class 9: 6.3", "Class 9: 6.4", "Class 9: 6.5", "Class 9: 6.6"]
     },
     {
         "name": "Coordinate Geometry",
         "slug": "coordinate-geometry",
-        "topics": ["7.1", "7.2", "7.3"]
+        "topics": ["Class 9: 7.1", "Class 9: 7.2", "Class 9: 7.3"]
     },
     {
         "name": "Logic",
         "slug": "logic",
-        "topics": ["8.1"]
+        "topics": ["Class 9: 8.1"]
     },
     {
         "name": "Similar Figures",
         "slug": "similar-figures",
-        "topics": ["9.1", "9.2", "9.3", "9.4"]
+        "topics": ["Class 9: 9.1", "Class 9: 9.2", "Class 9: 9.3", "Class 9: 9.4"]
     },
     {
         "name": "Graphs of Function",
         "slug": "graphs-of-function",
-        "topics": ["10.1", "10.2"]
+        "topics": ["Class 9: 10.1", "Class 9: 10.2"]
     },
     {
         "name": "Loci and Construction",
         "slug": "loci-and-construction",
-        "topics": ["11.1", "11.2"]
+        "topics": ["Class 9:11.1", "Class 9:11.2"]
     },
     {
         "name": "Information Handling",
         "slug": "information-handling",
-        "topics": ["12.1", "12.2"]
+        "topics": ["Class 9: 12.1", "Class 9:12.2"]
     },
     {
         "name": "Probability",
         "slug": "probability",
-        "topics": ["13.1", "13.2"]
+        "topics": ["Class 9: 13.1", "Class 9: 13.2"]
     }
 ]
 ,
@@ -566,67 +566,67 @@ def global_variables(request):
     {
         "name": "Quadratic Equations",
         "slug": "quadratic-equations",
-        "topics": ["1.1", "1.2", "1.3", "1.4"]
+        "topics": ["Class 10: 1.1", "Class 10: 1.2", "Class 10: 1.3", "Class 10: 1.4"]
     },
     {
         "name": "Theory of Quadratic Equations",
         "slug": "theory-of-quadratic-equations",
-        "topics": ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8"]
+        "topics": ["Class 10: 2.1", "Class 10: 2.2", "Class 10: 2.3", "Class 10: 2.4", "Class 10: 2.5", "Class 10: 2.6", "Class 10: 2.7", "Class 10: 2.8"]
     },
     {
         "name": "Variations",
         "slug": "variations",
-        "topics": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]
+        "topics": ["Class 10: 3.1", "Class 10: 3.2", "Class 10: 3.3", "Class 10: 3.4", "Class 10: 3.5", "Class 10: 3.6", "Class 10: 3.7"]
     },
     {
         "name": "Partial Fractions",
         "slug": "partial-fractions",
-        "topics": ["4.1", "4.2", "4.3", "4.4"]
+        "topics": ["Class 10: 4.1", "Class 10: 4.2", "Class 10: 4.3", "Class 10: 4.4"]
     },
     {
         "name": "Sets and Functions",
         "slug": "sets-and-functions",
-        "topics": ["5.1", "5.2", "5.3", "5.4", "5.5"]
+        "topics": ["Class 10: 5.1", "Class 10: 5.2", "Class 10: 5.3", "Class 10: 5.4", "Class 10: 5.5"]
     },
     {
         "name": "Basic Statistics",
         "slug": "basic-statistics",
-        "topics": ["6.1", "6.2", "6.3"]
+        "topics": ["Class 10: 6.1", "Class 10: 6.2", "Class 10: 6.3"]
     },
     {
         "name": "Introduction to Trigonometry",
         "slug": "introduction-to-trigonometry",
-        "topics": ["7.1", "7.2", "7.3", "7.4", "7.5"]
+        "topics": ["Class 10: 7.1", "Class 10: 7.2", "Class 10: 7.3", "Class 10: 7.4", "Class 10: 7.5"]
     },
     {
         "name": "Projection of a Side of a Triangle",
         "slug": "projection-of-a-side-of-a-triangle",
-        "topics": ["8.1", "8.2"]
+        "topics": ["Class 10: 8.1", "Class 10: 8.2"]
     },
     {
         "name": "Chords of a Circle",
         "slug": "chords-of-a-circle",
-        "topics": ["9.1", "9.2"]
+        "topics": ["Class 10: 9.1", "Class 10: 9.2"]
     },
     {
         "name": "Tangent to a Circle",
         "slug": "tangent-to-a-circle",
-        "topics": ["10.1", "10.2", "10.3"]
+        "topics": ["Class 10: 10.1", "Class 10: 10.2", "Class 10: 10.3"]
     },
     {
         "name": "Chords and Arcs",
         "slug": "chords-and-arcs",
-        "topics": ["11.1"]
+        "topics": ["Class 10: 11.1"]
     },
     {
         "name": "Angle in a Segment of a Circle",
         "slug": "angle-in-a-segment-of-a-circle",
-        "topics": ["12.1"]
+        "topics": ["Class 10: 12.1"]
     },
     {
         "name": "Practical Geometry - Circles",
         "slug": "practical-geometry-circles",
-        "topics": ["13.1", "13.2", "13.3"]
+        "topics": ["Class 10: 13.1", "Class 10: 13.2", "Class 10: 13.3"]
     }
 ]
 ,
@@ -634,72 +634,72 @@ def global_variables(request):
     {
         "name": "Complex Numbers",
         "slug": "complex-numbers",
-        "topics": ["1.1", "1.2", "1.3", "1.4", "1.5"]
+        "topics": ["Class 11:1.1", "Class 11:1.2", "Class 11:1.3", "Class 11:1.4", "Class 11: 1.5"]
     },
     {
         "name": "Function and Graphs",
         "slug": "function-and-graphs",
-        "topics": ["2.1", "2.2"]
+        "topics": ["Class 11: 2.1", "Class 11: 2.2"]
     },
     {
         "name": "Theory of Quadratic Function",
         "slug": "theory-of-quadratic-function",
-        "topics": ["3.1", "3.2"]
+        "topics": ["Class 11: 3.1", "Class 11: 3.2"]
     },
     {
         "name": "Matrices and Determinants",
         "slug": "matrices-and-determinants",
-        "topics": ["4.1", "4.2", "4.3"]
+        "topics": ["Class 11: 4.1", "Class 11: 4.2", "Class 11: 4.3"]
     },
     {
         "name": "Partial Fractions",
         "slug": "partial-fractions",
-        "topics": ["5.1", "5.2"]
+        "topics": ["Class 11: 5.1", "Class 11: 5.2"]
     },
     {
         "name": "Sequence and Series",
         "slug": "sequence-and-series",
-        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11"]
+        "topics": ["Class 11: 6.1", "Class 11: 6.2", "Class 11: 6.3", "Class 11: 6.4", "Class 11: 6.5", "Class 11: 6.6", "Class 11: 6.7", "Class 11: 6.8", "Class 11: 6.9", "Class 11: 6.10", "Class 11: 6.11"]
     },
     {
         "name": "Permutations and Combinations",
         "slug": "permutations-and-combinations",
-        "topics": ["7.1", "7.2", "7.3", "7.4"]
+        "topics": ["Class 11: 7.1", "Class 11: 7.2", "Class 11: 7.3", "Class 11: 7.4"]
     },
     {
         "name": "Mathematical Inductions and Binomial Theorem",
         "slug": "mathematical-inductions-and-binomial-theorem",
-        "topics": ["8.1", "8.2", "8.3", "8.4"]
+        "topics": ["Class 11: 8.1", "Class 11: 8.2", "Class 11: 8.3", "Class 11: 8.4"]
     },
     {
         "name": "Division of Polynomials",
         "slug": "division-of-polynomials",
-        "topics": ["9.1", "9.2"]
+        "topics": ["Class 11: 9.1", "Class 11: 9.2"]
     },
     {
         "name": "Trigonometric Identities",
         "slug": "trigonometric-identities",
-        "topics": ["10.1", "10.2", "10.3", "10.4"]
+        "topics": ["Class 11: 10.1", "Class 11: 10.2", "Class 11: 10.3", "Class 11: 10.4"]
     },
     {
         "name": "Trigonometric Functions and their Graphs",
         "slug": "trigonometric-functions-and-their-graphs",
-        "topics": ["11.1", "11.2", "11.3"]
+        "topics": ["Class 11: 11.1", "Class 11: 11.2", "Class 11: 11.3"]
     },
     {
         "name": "Limit and Continuity",
         "slug": "limit-and-continuity",
-        "topics": ["12.1", "12.2", "12.3"]
+        "topics": ["Class 11: 12.1", "Class 11: 12.2", "Class 11: 12.3"]
     },
     {
         "name": "Differentiation",
         "slug": "differentiation",
-        "topics": ["13.1", "13.2", "13.3"]
+        "topics": ["Class 11: 13.1", "Class 11: 13.2", "Class 11: 13.3"]
     },
     {
         "name": "Vectors in Space",
         "slug": "vectors-in-space",
-        "topics": ["14.1", "14.2", "14.3", "14.4"]
+        "topics": ["Class 11: 14.1", "Class 11: 14.2", "Class 11: 14.3", "Class 11: 14.4"]
     }
 ]
 ,
@@ -707,37 +707,37 @@ def global_variables(request):
     {
         "name": "Functions and Limits",
         "slug": "functions-and-limits",
-        "topics": ["1.1", "1.2", "1.3", "1.4", "1.5"]
+        "topics": ["Class 12: 1.1", "Class 12: 1.2", "Class 12: 1.3", "Class 12: 1.4", "Class 12: 1.5"]
     },
     {
         "name": "Differentiation",
         "slug": "differentiation",
-        "topics": ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8", "2.9", "2.10"]
+        "topics": ["Class 12: 2.1", "Class 12: 2.2", "Class 12: 2.3", "Class 12: 2.4", "Class 12: 2.5", "Class 12: 2.6", "Class 12: 2.7", "Class 12: 2.8", "Class 12: 2.9", "Class 12: 2.10"]
     },
     {
         "name": "Integration",
         "slug": "integration",
-        "topics": ["3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8"]
+        "topics": ["Class 12: 3.1", "Class 12: 3.2", "Class 12: 3.3", "Class 12: 3.4", "Class 12: 3.5", "Class 12: 3.6", "Class 12: 3.7", "Class 12: 3.8"]
     },
     {
         "name": "Introduction to Analytic Geometry",
         "slug": "introduction-to-analytic-geometry",
-        "topics": ["4.1", "4.2", "4.3", "4.4", "4.5"]
+        "topics": ["Class 12: 4.1", "Class 12: 4.2", "Class 12: 4.3", "Class 12: 4.4", "Class 12: 4.5"]
     },
     {
         "name": "Linear Inequalities and Linear Programming",
         "slug": "linear-inequalities-and-linear-programming",
-        "topics": ["5.1", "5.2", "5.3"]
+        "topics": ["Class 12: 5.1", "Class 12: 5.2", "Class 12: 5.3"]
     },
     {
         "name": "Conic Sections",
         "slug": "conic-sections",
-        "topics": ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9"]
+        "topics": ["Class 12: 6.1", "Class 12: 6.2", "Class 12: 6.3", "Class 12: 6.4", "Class 12: 6.5", "Class 12: 6.6", "Class 12: 6.7", "Class 12: 6.8", "Class 12: 6.9"]
     },
     {
         "name": "Vectors",
         "slug": "vectors",
-        "topics": ["7.1", "7.2", "7.3", "7.4", "7.5"]
+        "topics": ["Class 12: 7.1", "Class 12: 7.2", "Class 12: 7.3", "Class 12: 7.4", "Class 12: 7.5"]
     }
 ]
 
